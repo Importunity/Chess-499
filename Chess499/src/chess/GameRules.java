@@ -149,7 +149,7 @@ public class GameRules {
 				if(legalMove(currentSquare, currentSquare + 8, movingPiece.getColor(), chessBoard)) {
 					possibleMoves.add(new Move(currentSquare, currentSquare + 8, movingPiece, null, currentSquare + 8 == movingPiece.getColor().getLastRow()));
 				}
-				if (currentSquare < 16) {
+				if (currentSquare < 16 && chessBoard.getPieceOnSquare(currentSquare + 16) == null) {
 					if(legalMove(currentSquare, currentSquare + 16, movingPiece.getColor(), chessBoard)) {
 						possibleMoves.add(new Move(currentSquare, currentSquare + 16, movingPiece, null, false));
 					}
@@ -182,7 +182,7 @@ public class GameRules {
 				if(legalMove(currentSquare, currentSquare - 8, movingPiece.getColor(), chessBoard)) {
 					possibleMoves.add(new Move(currentSquare, currentSquare - 8, movingPiece, null, currentSquare - 8 == movingPiece.getColor().getLastRow()));
 				}
-				if (currentSquare > 47) {
+				if (currentSquare > 47 && chessBoard.getPieceOnSquare(currentSquare - 16) == null) {
 					if(legalMove(currentSquare, currentSquare - 16, movingPiece.getColor(), chessBoard)) {
 						possibleMoves.add(new Move(currentSquare, currentSquare - 16, movingPiece, null, false));
 					}
