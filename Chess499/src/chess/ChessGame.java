@@ -1,15 +1,21 @@
 package chess;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class ChessGame {
 	
 	private ChessBoard chessBoard;
 	private int movesMade;
+	private MoveHistory moveHistory;
 	
 	public ChessGame() {
 		chessBoard = new ChessBoard();
 		initializeChessBoard();
+		moveHistory = new MoveHistory();
 		movesMade = 0;
 	}
 	
@@ -67,57 +73,69 @@ public class ChessGame {
 			return false;
 		}
 		ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(targetSquare);
-		if (movingPiece != null) {
-			if (movingPiece instanceof Pawn) {
-				Move moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece);
-				ArrayList<Move> possibleMoves = GameRules.getPossiblePawnMoves(sourceSquare, chessBoard);
-				if(possibleMoves.contains(moveAttempt)) {
-					chessBoard.placePieceOnSquare(null, sourceSquare);
-					if(targetSquare > 55 && movingPiece.getColor() == Color.WHITE) {
-						chessBoard.placePieceOnSquare(new Queen(Color.WHITE), targetSquare);
-					}
-					else if (targetSquare < 8 && movingPiece.getColor() == Color.BLACK) {
-						chessBoard.placePieceOnSquare(new Queen(Color.BLACK), targetSquare);
-					} else {
-						chessBoard.placePieceOnSquare(movingPiece, targetSquare);
-					}
-					movesMade++;
-					return true;
-				}
-			} else if (movingPiece instanceof Knight) {
-				Move moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece);
-				ArrayList<Move> possibleMoves = GameRules.getPossibleKnightMoves(sourceSquare, chessBoard);
-				if(possibleMoves.contains(moveAttempt)) {
-					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
-					chessBoard.placePieceOnSquare(null, sourceSquare);
-					movesMade++;
-					return true;
-				}
-			} else if (movingPiece instanceof Bishop || movingPiece instanceof Rook || movingPiece instanceof Queen) {
-				Move moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece);
-				ArrayList<Move> possibleMoves = GameRules.getPossibleQRBMoves(sourceSquare, chessBoard);
-				if(possibleMoves.contains(moveAttempt)) {
-					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
-					chessBoard.placePieceOnSquare(null, sourceSquare);
-					movesMade++;
-					return true;
-				}
-			} else if (movingPiece instanceof King){
-				Move moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece);
-				ArrayList<Move> possibleMoves = GameRules.getPossibleKingMoves(sourceSquare, chessBoard);
-				if(possibleMoves.contains(moveAttempt)) {
-					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
-					chessBoard.placePieceOnSquare(null, sourceSquare);
-					movesMade++;
-					return true;
-				}
+		Move moveAttempt;
+		if (movingPiece instanceof Pawn) {
+			if (targetSquare / 8 == movingPiece.getColor().getLastRow()) {
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, true);
 			} else {
-				return false;
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false);
 			}
-		}
+			ArrayList<Move> possibleMoves = GameRules.getPossiblePawnMoves(sourceSquare, chessBoard);
+			if(possibleMoves.contains(moveAttempt)) {
+				chessBoard.placePieceOnSquare(null, sourceSquare);
+				if (moveAttempt.isPawnPromotion()) {
+					chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor()), targetSquare);
+				} else {
+					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+				}
+				moveHistory.addMove(moveAttempt);
+				movesMade++;
+				return true;
+			}
+		} else if (movingPiece instanceof Knight) {
+			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false);
+			ArrayList<Move> possibleMoves = GameRules.getPossibleKnightMoves(sourceSquare, chessBoard);
+			if(possibleMoves.contains(moveAttempt)) {
+				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+				chessBoard.placePieceOnSquare(null, sourceSquare);
+				moveHistory.addMove(moveAttempt);
+				movesMade++;
+				return true;
+			}
+		} else if (movingPiece instanceof Bishop || movingPiece instanceof Rook || movingPiece instanceof Queen) {
+			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false);
+			ArrayList<Move> possibleMoves = GameRules.getPossibleQRBMoves(sourceSquare, chessBoard);
+			if(possibleMoves.contains(moveAttempt)) {
+				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+				chessBoard.placePieceOnSquare(null, sourceSquare);
+				moveHistory.addMove(moveAttempt);
+				movesMade++;
+				return true;
+			}
+		} else if (movingPiece instanceof King){
+			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false);
+			ArrayList<Move> possibleMoves = GameRules.getPossibleKingMoves(sourceSquare, chessBoard);
+			if(possibleMoves.contains(moveAttempt)) {
+				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+				chessBoard.placePieceOnSquare(null, sourceSquare);
+				moveHistory.addMove(moveAttempt);
+				movesMade++;
+				return true;
+			}
+		} else {
+			return false;
+		}	
 		return false;
 	}
 
+	/**
+	 * This method may be deleted later on. I am only using it to test.
+	 * @return
+	 */
+	public String lastMove() {
+		return moveHistory.getLastMoveMade().toString();
+	}
+	
 	public boolean kingInCheck(Color player) {
 		return GameRules.kingInCheck(player, chessBoard);
 	}

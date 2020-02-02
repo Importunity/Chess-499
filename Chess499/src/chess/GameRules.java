@@ -1,7 +1,11 @@
 package chess;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class GameRules {
 	
 	
@@ -35,7 +39,7 @@ public class GameRules {
 					chessBoard.getPieceOnSquare(destinationSquare) == null) {
 				
 				if(legalMove(originalSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-					possibleMove = new Move(originalSquare, destinationSquare, movingPiece, null);
+					possibleMove = new Move(originalSquare, destinationSquare, movingPiece, null, false);
 					possibleMoves.add(possibleMove);
 				}
 				
@@ -50,7 +54,7 @@ public class GameRules {
 					// possible capture
 					ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i));
 					if(legalMove(originalSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-						possibleMove = new Move(originalSquare, destinationSquare, movingPiece, possibleCapturedPiece);
+						possibleMove = new Move(originalSquare, destinationSquare, movingPiece, possibleCapturedPiece, false);
 						possibleMoves.add(possibleMove);
 					}
 					
@@ -79,13 +83,13 @@ public class GameRules {
 					ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 					if (possibleCapturedPiece == null) {
 						if(legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null);
+							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null, false);
 							possibleMoves.add(possibleMove);
 						}
 						
 					} else if (possibleCapturedPiece.getColor() != movingPiece.getColor()) {
 						if(legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece);
+							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false);
 							possibleMoves.add(possibleMove);
 						}
 						
@@ -112,12 +116,12 @@ public class GameRules {
 				ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 				if(possibleCapturedPiece == null) {
 					if (legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null);
+						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null, false);
 						possibleMoves.add(possibleMove);
 					}
 				} else if(possibleCapturedPiece.getColor() != movingPiece.getColor()){
 					if (legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece);
+						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false);
 						possibleMoves.add(possibleMove);
 					}
 				}
@@ -143,11 +147,11 @@ public class GameRules {
 			if (chessBoard.getPieceOnSquare(currentSquare + 8) == null) {
 				
 				if(legalMove(currentSquare, currentSquare + 8, movingPiece.getColor(), chessBoard)) {
-					possibleMoves.add(new Move(currentSquare, currentSquare + 8, movingPiece, null));
+					possibleMoves.add(new Move(currentSquare, currentSquare + 8, movingPiece, null, currentSquare + 8 == movingPiece.getColor().getLastRow()));
 				}
 				if (currentSquare < 16) {
 					if(legalMove(currentSquare, currentSquare + 16, movingPiece.getColor(), chessBoard)) {
-						possibleMoves.add(new Move(currentSquare, currentSquare + 16, movingPiece, null));
+						possibleMoves.add(new Move(currentSquare, currentSquare + 16, movingPiece, null, false));
 					}
 				}
 				
@@ -158,7 +162,7 @@ public class GameRules {
 				possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 				if (possibleCapturedPiece != null && possibleCapturedPiece.getColor() == Color.BLACK) {
 					if(legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-						possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece));
+						possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, destinationSquare == movingPiece.getColor().getLastRow()));
 					}
 				}
 			}
@@ -167,7 +171,7 @@ public class GameRules {
 				possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 				if (possibleCapturedPiece != null && possibleCapturedPiece.getColor() == Color.BLACK) {
 					if(legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-						possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece));
+						possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, destinationSquare == movingPiece.getColor().getLastRow()));
 					}
 				}
 			}
@@ -176,11 +180,11 @@ public class GameRules {
 			// we do not have to worry about going off the board in the South direction
 			if (chessBoard.getPieceOnSquare(currentSquare - 8) == null) {
 				if(legalMove(currentSquare, currentSquare - 8, movingPiece.getColor(), chessBoard)) {
-					possibleMoves.add(new Move(currentSquare, currentSquare - 8, movingPiece, null));
+					possibleMoves.add(new Move(currentSquare, currentSquare - 8, movingPiece, null, currentSquare - 8 == movingPiece.getColor().getLastRow()));
 				}
 				if (currentSquare > 47) {
 					if(legalMove(currentSquare, currentSquare - 16, movingPiece.getColor(), chessBoard)) {
-						possibleMoves.add(new Move(currentSquare, currentSquare - 16, movingPiece, null));
+						possibleMoves.add(new Move(currentSquare, currentSquare - 16, movingPiece, null, false));
 					}
 				}
 				
@@ -191,7 +195,7 @@ public class GameRules {
 				possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 				if (possibleCapturedPiece != null && possibleCapturedPiece.getColor() == Color.WHITE) {
 					if(legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-						possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece));
+						possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, destinationSquare == movingPiece.getColor().getLastRow()));
 					}
 					
 				}
@@ -200,7 +204,7 @@ public class GameRules {
 				possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 				if (possibleCapturedPiece != null && possibleCapturedPiece.getColor() == Color.WHITE) {
 					if(legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard)) {
-						possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece));
+						possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, destinationSquare == movingPiece.getColor().getLastRow()));
 					}
 					
 				}

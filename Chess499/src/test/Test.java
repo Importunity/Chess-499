@@ -3,7 +3,11 @@ package test;
 import java.util.Scanner;
 
 import chess.*;
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class Test {
 
 	public static void main(String[] args) {
@@ -27,7 +31,9 @@ public class Test {
 				System.out.println("Enter the square number of the square you'd like to move it to.");
 				targetSquare = input.nextInt();
 			}
+			System.out.println(game.lastMove());
 			System.out.println(board.toString());
+			
 			moveCounter++;
 		}
 		if (game.kingInCheck(Color.values()[moveCounter%2])) {

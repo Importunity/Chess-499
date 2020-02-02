@@ -1,5 +1,9 @@
 package chess;
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class King extends ChessPiece{
 	
 	public King(Color color) {

@@ -1,5 +1,9 @@
 package chess;
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class ChessBoard {
 	
 	private Square[][] chessBoard;
