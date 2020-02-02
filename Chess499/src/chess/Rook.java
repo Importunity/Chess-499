@@ -1,5 +1,9 @@
 package chess;
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class Rook extends ChessPiece {
 	
 	public Rook(Color color) {

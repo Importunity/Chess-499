@@ -1,17 +1,27 @@
 package chess;
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class Move {
 	
 	private int source;
 	private int destination;
 	private ChessPiece movingPiece;
 	private ChessPiece capturedPiece;
+	private boolean pawnPromotion;
 	
-	
-	public Move(int source, int destination, ChessPiece movingPiece, ChessPiece capturedPiece) {
+	public Move(int source, int destination, ChessPiece movingPiece, ChessPiece capturedPiece, boolean pawnPromotion) {
 		this.source = source;
 		this.destination = destination;
+		this.movingPiece = movingPiece;
 		this.capturedPiece = capturedPiece;
+		this.pawnPromotion = pawnPromotion;
+	}
+	
+	public boolean isPawnPromotion(){
+		return pawnPromotion;
 	}
 	
 	public boolean equals(Object obj) {
@@ -35,6 +45,6 @@ public class Move {
 	}
 	
 	public String toString() {
-		return "Moving " + movingPiece + " from "+ source + " to " + destination + " capturing " + capturedPiece;
+		return movingPiece + " from " + source + " to " + destination + " " + (capturedPiece != null? " capturing " + capturedPiece: "") + " " + (pawnPromotion? "+Q": "");
 	}
 }

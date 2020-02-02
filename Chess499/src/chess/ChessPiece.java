@@ -1,5 +1,9 @@
 package chess;
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public abstract class ChessPiece {
 	
 	protected Color color;
