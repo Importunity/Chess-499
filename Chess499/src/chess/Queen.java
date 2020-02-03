@@ -6,10 +6,17 @@ package chess;
  */
 public class Queen extends ChessPiece {
 	
+	/**
+	 * 
+	 * @param color
+	 */
 	public Queen(Color color) {
-		super.setColor(color);
+		super(color);
 	}
 	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return color.toString() + " Queen";
 	}

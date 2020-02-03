@@ -84,6 +84,12 @@ public class AdjacentSquares {
 			
 	};
 	
+	/**
+	 * 
+	 * @param squareNumber
+	 * @param direction
+	 * @return
+	 */
 	public static int get(int squareNumber, int direction) {
 		if (squareNumber < 0 || squareNumber > 63 || direction < 0 || direction > 7) {
 			return -1;

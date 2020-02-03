@@ -7,7 +7,7 @@ package chess;
 public class King extends ChessPiece{
 	
 	public King(Color color) {
-		super.setColor(color);
+		super(color);
 	}
 	
 	public String toString() {
