@@ -1,4 +1,5 @@
 package chess;
+
 /**
  * 
  * @author Luke Newman
@@ -6,10 +7,17 @@ package chess;
  */
 public class Knight extends ChessPiece {
 	
+	/**
+	 * 
+	 * @param color
+	 */
 	public Knight(Color color) {
-		super.setColor(color);
+		super(color);
 	}
 	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return color.toString() + " Knight";
 	}

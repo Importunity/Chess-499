@@ -11,19 +11,69 @@ public class Move {
 	private ChessPiece movingPiece;
 	private ChessPiece capturedPiece;
 	private boolean pawnPromotion;
+	private boolean enpaesant;
 	
-	public Move(int source, int destination, ChessPiece movingPiece, ChessPiece capturedPiece, boolean pawnPromotion) {
+	/**
+	 * 
+	 * @param source
+	 * @param destination
+	 * @param movingPiece
+	 * @param capturedPiece
+	 * @param pawnPromotion
+	 * @param enpaesant
+	 */
+	public Move(int source, int destination, ChessPiece movingPiece, ChessPiece capturedPiece, boolean pawnPromotion, boolean enpaesant) {
 		this.source = source;
 		this.destination = destination;
 		this.movingPiece = movingPiece;
 		this.capturedPiece = capturedPiece;
 		this.pawnPromotion = pawnPromotion;
+		this.enpaesant = enpaesant;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public ChessPiece getMovingPiece() {
+		return movingPiece;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getSource() {
+		return source;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getDestination() {
+		return destination;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isPawnPromotion(){
 		return pawnPromotion;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isEnPaesant() {
+		return enpaesant;
+	}
+	
+	/**
+	 * 
+	 */
 	public boolean equals(Object obj) {
 		
 		if (obj == this) {
@@ -44,7 +94,10 @@ public class Move {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public String toString() {
-		return movingPiece + " from " + source + " to " + destination + " " + (capturedPiece != null? " capturing " + capturedPiece: "") + " " + (pawnPromotion? "+Q": "");
+		return movingPiece + " from " + source + " to " + destination + " " + (capturedPiece != null? " capturing " + capturedPiece: "") + " " + (enpaesant? "ep": "") + " " + (pawnPromotion? "+Q": "");
 	}
 }

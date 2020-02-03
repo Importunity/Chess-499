@@ -10,6 +10,9 @@ public class ChessBoard {
 	private int whiteKingPosition;
 	private int blackKingPosition;
 	
+	/**
+	 * 
+	 */
 	public ChessBoard() {
 		chessBoard = new Square[8][8];
 		for (int i = 0; i < 64; i++) {
@@ -18,10 +21,23 @@ public class ChessBoard {
 		
 	}
 	
+	/**
+	 * 
+	 * @param squareNumber
+	 * @return
+	 */
 	public ChessPiece getPieceOnSquare(int squareNumber) {
+		if (squareNumber < 0 || squareNumber > 63) {
+			return null;
+		}
 		return chessBoard[squareNumber/8][squareNumber%8].getPiece();
 	}
 	
+	/**
+	 * 
+	 * @param piece
+	 * @param squareNumber
+	 */
 	public void placePieceOnSquare(ChessPiece piece, int squareNumber) {
 		
 		// row = squareNumber/8 and column = squareNumber%8
@@ -36,22 +52,41 @@ public class ChessBoard {
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getWhiteKingPosition() {
 		return whiteKingPosition;
 	}
-
+	
+	/**
+	 * 
+	 * @param whiteKingPosition
+	 */
 	private void setWhiteKingPosition(int whiteKingPosition) {
 		this.whiteKingPosition = whiteKingPosition;
 	}
-
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getBlackKingPosition() {
 		return blackKingPosition;
 	}
 
+	/**
+	 * 
+	 * @param blackKingPosition
+	 */
 	private void setBlackKingPosition(int blackKingPosition) {
 		this.blackKingPosition = blackKingPosition;
 	}
 	
+	/**
+	 * 
+	 */
 	public String toString() {
 		int rowCounter = 7;
 		String output = "";

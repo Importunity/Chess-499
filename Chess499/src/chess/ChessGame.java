@@ -12,6 +12,9 @@ public class ChessGame {
 	private int movesMade;
 	private MoveHistory moveHistory;
 	
+	/**
+	 * 
+	 */
 	public ChessGame() {
 		chessBoard = new ChessBoard();
 		initializeChessBoard();
@@ -19,6 +22,9 @@ public class ChessGame {
 		movesMade = 0;
 	}
 	
+	/**
+	 * 
+	 */
 	private void initializeChessBoard() {
 		for (int i = 0; i < 16; i++) {
 			// place rooks
@@ -59,10 +65,20 @@ public class ChessGame {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ChessBoard getChessBoard() {
 		return chessBoard;
 	}
 	
+	/**
+	 * 
+	 * @param sourceSquare
+	 * @param targetSquare
+	 * @return
+	 */
 	public boolean makeMove(int sourceSquare, int targetSquare) {
 		
 		ChessPiece movingPiece = chessBoard.getPieceOnSquare(sourceSquare);
@@ -74,18 +90,27 @@ public class ChessGame {
 		}
 		ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(targetSquare);
 		Move moveAttempt;
+		Move opponentsLastMove;
 		if (movingPiece instanceof Pawn) {
-			if (targetSquare / 8 == movingPiece.getColor().getLastRow()) {
-				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, true);
-			} else {
-				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false);
+			if (targetSquare / 8 == movingPiece.getColor().getPerspectiveRow(7)) {
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, true, false);
+			}else if((opponentsLastMove = moveHistory.getLastMoveMade()) != null && opponentsLastMove.getMovingPiece() instanceof Pawn  
+					&& targetSquare == opponentsLastMove.getSource() - (8 * movingPiece.getColor().getBoardPerspective())
+					&& opponentsLastMove.getDestination() == opponentsLastMove.getSource() - (16 * movingPiece.getColor().getBoardPerspective())) {
+				// en paesant
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, chessBoard.getPieceOnSquare(targetSquare - (8 * movingPiece.getColor().getBoardPerspective())), false, true);
+			}else {
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false);
 			}
-			ArrayList<Move> possibleMoves = GameRules.getPossiblePawnMoves(sourceSquare, chessBoard);
+			ArrayList<Move> possibleMoves = GameRules.getPossiblePawnMoves(sourceSquare, this);
 			if(possibleMoves.contains(moveAttempt)) {
 				chessBoard.placePieceOnSquare(null, sourceSquare);
 				if (moveAttempt.isPawnPromotion()) {
 					chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor()), targetSquare);
-				} else {
+				} else if(moveAttempt.isEnPaesant()){
+					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+					chessBoard.placePieceOnSquare(null, targetSquare - (8 * movingPiece.getColor().getBoardPerspective()));
+				}else {
 					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 				}
 				moveHistory.addMove(moveAttempt);
@@ -93,8 +118,8 @@ public class ChessGame {
 				return true;
 			}
 		} else if (movingPiece instanceof Knight) {
-			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false);
-			ArrayList<Move> possibleMoves = GameRules.getPossibleKnightMoves(sourceSquare, chessBoard);
+			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false);
+			ArrayList<Move> possibleMoves = GameRules.getPossibleKnightMoves(sourceSquare, this);
 			if(possibleMoves.contains(moveAttempt)) {
 				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 				chessBoard.placePieceOnSquare(null, sourceSquare);
@@ -103,8 +128,8 @@ public class ChessGame {
 				return true;
 			}
 		} else if (movingPiece instanceof Bishop || movingPiece instanceof Rook || movingPiece instanceof Queen) {
-			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false);
-			ArrayList<Move> possibleMoves = GameRules.getPossibleQRBMoves(sourceSquare, chessBoard);
+			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false);
+			ArrayList<Move> possibleMoves = GameRules.getPossibleQRBMoves(sourceSquare, this);
 			if(possibleMoves.contains(moveAttempt)) {
 				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 				chessBoard.placePieceOnSquare(null, sourceSquare);
@@ -113,8 +138,8 @@ public class ChessGame {
 				return true;
 			}
 		} else if (movingPiece instanceof King){
-			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false);
-			ArrayList<Move> possibleMoves = GameRules.getPossibleKingMoves(sourceSquare, chessBoard);
+			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false);
+			ArrayList<Move> possibleMoves = GameRules.getPossibleKingMoves(sourceSquare, this);
 			if(possibleMoves.contains(moveAttempt)) {
 				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 				chessBoard.placePieceOnSquare(null, sourceSquare);
@@ -129,19 +154,37 @@ public class ChessGame {
 	}
 
 	/**
-	 * This method may be deleted later on. I am only using it to test.
+	 * 
 	 * @return
 	 */
 	public String lastMove() {
 		return moveHistory.getLastMoveMade().toString();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public MoveHistory getMoveHistory() {
+		return moveHistory;
+	}
+	
+	/**
+	 * 
+	 * @param player
+	 * @return
+	 */
 	public boolean kingInCheck(Color player) {
 		return GameRules.kingInCheck(player, chessBoard);
 	}
 	
+	/**
+	 * 
+	 * @param player
+	 * @return
+	 */
 	public boolean isCheckmateOrStalemate(Color player) {
-		return GameRules.isCheckmateOrStalemate(player, chessBoard);
+		return GameRules.isCheckmateOrStalemate(player, this);
 	}
 	
 }

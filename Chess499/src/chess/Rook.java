@@ -6,10 +6,17 @@ package chess;
  */
 public class Rook extends ChessPiece {
 	
+	/**
+	 * 
+	 * @param color
+	 */
 	public Rook(Color color) {
-		super.setColor(color);
+		super(color);
 	}
 	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return color + " Rook";
 	}

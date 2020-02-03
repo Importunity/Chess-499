@@ -3,13 +3,18 @@ package test;
 import java.util.Scanner;
 
 import chess.*;
+
 /**
  * 
  * @author Luke Newman
  *
  */
 public class Test {
-
+	
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		ChessGame game = new ChessGame();

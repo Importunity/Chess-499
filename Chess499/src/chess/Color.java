@@ -5,15 +5,47 @@ package chess;
  *
  */
 public enum Color {
-	WHITE(7), BLACK(0);
+	WHITE(0, 1, new int[] {7, 1}), BLACK(7, -1, new int []{3, 5});
 	
-	private int lastRow;
+	private int firstRow;
+	private int boardPerspective;
+	private int[] pawnCapturingDirections;
 	
-	Color(int lastRow){
-		this.lastRow = lastRow;
+	/**
+	 * 
+	 * @param firstRow
+	 * @param boardPerspective
+	 * @param pawnCapturingDirections
+	 */
+	Color(int firstRow, int boardPerspective, int[] pawnCapturingDirections){
+		this.firstRow = firstRow;
+		this.boardPerspective = boardPerspective;
+		this.pawnCapturingDirections = pawnCapturingDirections;
+		
 	}
 	
-	public int getLastRow() {
-		return lastRow;
+	/**
+	 * 
+	 * @param row
+	 * @return
+	 */
+	public int getPerspectiveRow(int row) {
+		return firstRow + (row * boardPerspective);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getBoardPerspective() {
+		return boardPerspective;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int[] getPawnCapturingDirections() {
+		return pawnCapturingDirections;
 	}
 }
