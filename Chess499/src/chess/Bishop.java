@@ -6,10 +6,17 @@ package chess;
  */
 public class Bishop extends ChessPiece {
 	
+	/**
+	 * 
+	 * @param color
+	 */
 	public Bishop(Color color) {
 		super(color);
 	}
 	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return color.toString() + " Bishop";
 	}

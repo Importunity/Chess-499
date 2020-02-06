@@ -10,6 +10,73 @@ public class GameRules {
 	
 	/**
 	 * 
+	 * @param sourceSquare
+	 * @param targetSquare
+	 * @param chessGame
+	 * @return
+	 */
+	public static Move validateMove(int sourceSquare, int targetSquare, ChessGame chessGame) {
+		
+		ChessBoard chessBoard = chessGame.getChessBoard();
+		ChessPiece movingPiece = chessBoard.getPieceOnSquare(sourceSquare);
+		
+		if (movingPiece == null) {
+			return null;
+		}
+		
+		if (chessBoard.getPieceOnSquare(sourceSquare).getColor().ordinal() != chessGame.getMovesMade() % 2) {
+			return null;
+		} 
+		
+		ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(targetSquare);
+		Move moveAttempt;
+		Move opponentsLastMove;
+		if (movingPiece instanceof Pawn) {
+			// Pawn is trying to reach the end of the board (PawnPromotion)
+			if (targetSquare / 8 == movingPiece.getColor().getPerspectiveRow(7)) {
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, true, false, false);
+			} else if((opponentsLastMove = chessGame.getMoveHistory().getLastMoveMade()) != null && opponentsLastMove.getMovingPiece() instanceof Pawn  
+					&& targetSquare == opponentsLastMove.getSource() - (8 * movingPiece.getColor().getBoardPerspective())
+					&& opponentsLastMove.getDestination() == opponentsLastMove.getSource() - (16 * movingPiece.getColor().getBoardPerspective())) {
+				// en paesant
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, chessBoard.getPieceOnSquare(targetSquare - (8 * movingPiece.getColor().getBoardPerspective())), false, true, false);
+			} else {
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false, false);
+			}
+			// Later I will create a RemainingPieces class that will be updated with available moves for each piece
+			ArrayList<Move> possibleMoves = getPossiblePawnMoves(sourceSquare, chessGame);
+			if(possibleMoves.contains(moveAttempt)) {
+				return moveAttempt;
+			}
+		} else if (movingPiece instanceof Knight) {
+			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false, false);
+			ArrayList<Move> possibleMoves = getPossibleKnightMoves(sourceSquare, chessGame);
+			if(possibleMoves.contains(moveAttempt)) {
+				return moveAttempt;
+			}
+		} else if (movingPiece instanceof Bishop || movingPiece instanceof Rook || movingPiece instanceof Queen) {
+			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false, false);
+			ArrayList<Move> possibleMoves = getPossibleQRBMoves(sourceSquare, chessGame);
+			if(possibleMoves.contains(moveAttempt)) {
+				return moveAttempt;
+			}
+		} else { // movingPiece is a King
+			if (sourceSquare == movingPiece.getColor().getStartingKingPosition() && targetSquare == movingPiece.getColor().getStartingKingPosition() + 2) {
+				// attempting to castle
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, null, false, false, true);
+			} else {
+				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false, false);
+			}
+			ArrayList<Move> possibleMoves = getPossibleKingMoves(sourceSquare, chessGame);
+			if(possibleMoves.contains(moveAttempt)) {
+				return moveAttempt;
+			}
+		} 	
+		return null;
+	}
+	
+	/**
+	 * 
 	 * @param currentSquare
 	 * @param chessGame
 	 * @return
@@ -45,7 +112,7 @@ public class GameRules {
 					chessBoard.getPieceOnSquare(destinationSquare) == null) {
 				
 				if(legalMove(originalSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-					possibleMove = new Move(originalSquare, destinationSquare, movingPiece, null, false, false);
+					possibleMove = new Move(originalSquare, destinationSquare, movingPiece, null, false, false, false);
 					possibleMoves.add(possibleMove);
 				}
 				
@@ -60,7 +127,7 @@ public class GameRules {
 					// possible capture
 					ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i));
 					if(legalMove(originalSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-						possibleMove = new Move(originalSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, false);
+						possibleMove = new Move(originalSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, false, false);
 						possibleMoves.add(possibleMove);
 					}
 					
@@ -96,13 +163,13 @@ public class GameRules {
 					ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 					if (possibleCapturedPiece == null) {
 						if(legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null, false, false);
+							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null, false, false, false);
 							possibleMoves.add(possibleMove);
 						}
 						
 					} else if (possibleCapturedPiece.getColor() != movingPiece.getColor()) {
 						if(legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, false);
+							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, false, false);
 							possibleMoves.add(possibleMove);
 						}
 						
@@ -129,6 +196,7 @@ public class GameRules {
 		Move possibleMove;
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		ChessPiece movingPiece = chessBoard.getPieceOnSquare(currentSquare);
+	
 		for (int i = 0; i < 8; i++) {
 			int destinationSquare = AdjacentSquares.get(currentSquare, i);
 			
@@ -136,21 +204,50 @@ public class GameRules {
 				ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 				if(possibleCapturedPiece == null) {
 					if (legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null, false, false);
+						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null, false, false, false);
 						possibleMoves.add(possibleMove);
 					}
 				} else if(possibleCapturedPiece.getColor() != movingPiece.getColor()){
 					if (legalMove(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, false);
+						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, false, false);
 						possibleMoves.add(possibleMove);
 					}
 				}
 			}
 		
 		}
-	
-		// to be implemented (castling)
-	
+		ChessPiece kingSideRook;
+		int startingKingPosition = movingPiece.getColor().getStartingKingPosition();
+		if(currentSquare == startingKingPosition) {
+			if ( movingPiece instanceof King && ((King) movingPiece).getMotioned() == 0) {
+				if (!kingInCheck(movingPiece.getColor(), chessBoard)) {
+					if (chessBoard.getPieceOnSquare(startingKingPosition + 1) == null && chessBoard.getPieceOnSquare(startingKingPosition + 2) == null) {
+						if ((kingSideRook = chessBoard.getPieceOnSquare(startingKingPosition + 3)) instanceof Rook) {
+							if ( ((Rook) kingSideRook).getMotioned() == 0) {
+								
+								chessBoard.placePieceOnSquare(null, startingKingPosition);
+								chessBoard.placePieceOnSquare(movingPiece, startingKingPosition + 1);
+								if (!kingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition + 1, 2, chessBoard)) {
+									chessBoard.placePieceOnSquare(null, startingKingPosition + 1);
+									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition + 2);
+									if(!kingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition + 2, 2, chessBoard)) {
+										Move castleKingSideMove = new Move(startingKingPosition, startingKingPosition + 2, movingPiece, null, false, false, true);
+										possibleMoves.add(castleKingSideMove);
+									}
+									chessBoard.placePieceOnSquare(null, startingKingPosition + 2);
+									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
+								}
+								
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		// to be implemented queenside castling
+		
+		
 		return possibleMoves;
 	
 	}
@@ -171,11 +268,11 @@ public class GameRules {
 		
 		if (chessBoard.getPieceOnSquare(currentSquare + (8 * player.getBoardPerspective())) == null) {
 			if(legalMove(currentSquare, currentSquare + (8 * player.getBoardPerspective()), player, chessBoard, false)) {
-				possibleMoves.add(new Move(currentSquare, currentSquare + (8 * player.getBoardPerspective()), movingPiece, null, (currentSquare + (8 * player.getBoardPerspective()) / 8) == movingPiece.getColor().getPerspectiveRow(7), false));
+				possibleMoves.add(new Move(currentSquare, currentSquare + (8 * player.getBoardPerspective()), movingPiece, null, (currentSquare + (8 * player.getBoardPerspective()) / 8) == movingPiece.getColor().getPerspectiveRow(7), false, false));
 			}
 			if (currentSquare / 8 ==  player.getPerspectiveRow(1)) {
 				if(legalMove(currentSquare, currentSquare + (16 * player.getBoardPerspective()), player, chessBoard, false)) {
-					possibleMoves.add(new Move(currentSquare, currentSquare + (16 * player.getBoardPerspective()), movingPiece, null, false, false));
+					possibleMoves.add(new Move(currentSquare, currentSquare + (16 * player.getBoardPerspective()), movingPiece, null, false, false, false));
 				}
 			}
 		}
@@ -191,7 +288,7 @@ public class GameRules {
 					
 					possibleCapturedPiece = chessBoard.getPieceOnSquare(opponentsLastMove.getDestination());
 					if(legalMove(currentSquare, destinationSquare, player, chessBoard, true)) {
-						Move enPaesant = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, true);
+						Move enPaesant = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, true, false);
 						possibleMoves.add(enPaesant);
 					}
 					
@@ -199,7 +296,7 @@ public class GameRules {
 					possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 					if (possibleCapturedPiece != null && possibleCapturedPiece.getColor() != player) {
 						if(legalMove(currentSquare, destinationSquare, player, chessBoard, false)) {
-							possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, destinationSquare / 8 == movingPiece.getColor().getPerspectiveRow(7), false));
+							possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, destinationSquare / 8 == movingPiece.getColor().getPerspectiveRow(7), false, false));
 						}
 					}
 				}
@@ -273,130 +370,74 @@ public class GameRules {
 	
 	/**
 	 * 
-	 * @param player
+	 * @param squareNumber
 	 * @param chessBoard
 	 * @return
 	 */
 	public static boolean kingInCheck(Color player, ChessBoard chessBoard) {
 		
+		int kingLocation;
+		Color opponent;
 		if (player == Color.WHITE) {
-			int whiteKingLocation = chessBoard.getWhiteKingPosition();
-			int currentSquare = whiteKingLocation;
-			// check to see if there is an attacking Queen, Rook, or Bishop
-			for (int i = 0; i < 8; i++) {
-				if (i % 2 == 0) {
-					// check to see if there is an attacking Queen or Rook
-					while (AdjacentSquares.get(currentSquare, i) != -1 && chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i)) == null) {
-						currentSquare = AdjacentSquares.get(currentSquare, i);
-					}
-					if (AdjacentSquares.get(currentSquare, i) != -1) {
-						ChessPiece piece = chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i));
-						if (piece.getColor() == Color.BLACK && (piece instanceof Rook || piece instanceof Queen)) {
-							return true;
-						}
-					}
-				} else {
-					// check to see if there is an attacking Queen or Bishop
-					while (AdjacentSquares.get(currentSquare, i) != -1 && chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i)) == null) {
-						currentSquare = AdjacentSquares.get(currentSquare, i);
-					}
-					if (AdjacentSquares.get(currentSquare, i) != -1) {
-						ChessPiece piece = chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i));
-						if (piece.getColor() == Color.BLACK && (piece instanceof Bishop || piece instanceof Queen)) {
-							return true;
-						}
-					}
-				}
-				currentSquare = whiteKingLocation;
-			}
-			// check to see if there is an attacking knight
-			ChessPiece knight;
-			for (int i = 0; i < 8; i++) {
-				try{
-					if ((knight = chessBoard.getPieceOnSquare(AdjacentSquares.get(i, (i + 1)%8))) instanceof Knight) {
-						if (knight.getColor() == Color.BLACK) {
-							return true;
-						}
-					}
-				} catch (IndexOutOfBoundsException ex) {
-					// location is off the board
-				}
-			}
-			// check to see if there is an attacking pawn
-			// an attacking pawn will be coming from the NorthEast or NorthWest
-			ChessPiece pawn;
-			if (AdjacentSquares.get(whiteKingLocation, 1) != -1 && (pawn = chessBoard.getPieceOnSquare(AdjacentSquares.get(whiteKingLocation, 1))) instanceof Pawn) {
-				if (pawn.getColor() == Color.BLACK) {
-					return true;
-				}
-			}
-			
-			if (AdjacentSquares.get(whiteKingLocation, 7) != -1 && (pawn = chessBoard.getPieceOnSquare(AdjacentSquares.get(whiteKingLocation, 7))) instanceof Pawn) {
-				if (pawn.getColor() == Color.BLACK) {
-					return true;
-				}
-			}
+			kingLocation = chessBoard.getWhiteKingPosition();
+			opponent = Color.BLACK;
 		} else {
-			int blackKingLocation = chessBoard.getBlackKingPosition();
-			int currentSquare = blackKingLocation;
-			// check to see if there is an attacking Queen, Rook, or Bishop
-			for (int i = 0; i < 8; i++) {
-				if (i % 2 == 0) {
-					// check to see if there is an attacking Queen or Rook
-					while (AdjacentSquares.get(currentSquare, i) != -1 && chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i)) == null) {
-						currentSquare = AdjacentSquares.get(currentSquare, i);
-					}
-					if (AdjacentSquares.get(currentSquare, i) != -1) {
-						ChessPiece piece = chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i));
-						if (piece.getColor() == Color.WHITE && (piece instanceof Rook || piece instanceof Queen)) {
-							return true;
-						}
-					}
-				} else {
-					// check to see if there is an attacking Queen or Bishop
-					while (AdjacentSquares.get(currentSquare, i) != -1 && chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i)) == null) {
-						currentSquare = AdjacentSquares.get(currentSquare, i);
-					}
-					if (AdjacentSquares.get(currentSquare, i) != -1) {
-						ChessPiece piece = chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i));
-						if (piece.getColor() == Color.WHITE && (piece instanceof Bishop || piece instanceof Queen)) {
-							return true;
-						}
+			kingLocation = chessBoard.getBlackKingPosition();
+			opponent = Color.WHITE;
+		}
+		
+		int currentSquare = kingLocation;
+		ChessPiece theKing = chessBoard.getPieceOnSquare(kingLocation);
+		// check to see if there is an attacking Queen, Rook, or Bishop
+		for (int i = 0; i < 8; i++) {
+			if (i % 2 == 0) {
+				// check to see if there is an attacking Queen or Rook
+				while (AdjacentSquares.get(currentSquare, i) != -1 && chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i)) == null) {
+					currentSquare = AdjacentSquares.get(currentSquare, i);
+				}
+				if (AdjacentSquares.get(currentSquare, i) != -1) {
+					ChessPiece piece = chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i));
+					if (piece.getColor() != theKing.getColor() && (piece instanceof Rook || piece instanceof Queen)) {
+						return true;
 					}
 				}
-				currentSquare = blackKingLocation;
-			}
-			// check to see if there is an attacking knight
-			ChessPiece knight;
-			for (int i = 0; i < 8; i++) {
-				try{
-					if ((knight = chessBoard.getPieceOnSquare(AdjacentSquares.get(AdjacentSquares.get(currentSquare, i), (i + 1)%8))) instanceof Knight) {
-						if (knight.getColor() == Color.WHITE) {
-							return true;
-						}
+			} else {
+				// check to see if there is an attacking Queen or Bishop
+				while (AdjacentSquares.get(currentSquare, i) != -1 && chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i)) == null) {
+					currentSquare = AdjacentSquares.get(currentSquare, i);
+				}
+				if (AdjacentSquares.get(currentSquare, i) != -1) {
+					ChessPiece piece = chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i));
+					if (piece.getColor() != theKing.getColor() && (piece instanceof Bishop || piece instanceof Queen)) {
+						return true;
 					}
-				} catch (IndexOutOfBoundsException ex) {
-					// location is off the board
 				}
 			}
-			// check to see if there is an attacking pawn
-			// an attacking pawn will be coming from the SouthEast or SouthWest
-			ChessPiece pawn;
-			if (AdjacentSquares.get(blackKingLocation, 3) != -1 && (pawn = chessBoard.getPieceOnSquare(AdjacentSquares.get(blackKingLocation, 3))) instanceof Pawn) {
-				if (pawn.getColor() == Color.WHITE) {
+			currentSquare = kingLocation;
+		}
+		// check to see if there is an attacking knight
+		ChessPiece knight;
+		for (int i = 0; i < 8; i++) {
+			if ((knight = chessBoard.getPieceOnSquare(AdjacentSquares.get(i, (i + 1)%8))) instanceof Knight) {
+				if (knight.getColor() != theKing.getColor()) {
 					return true;
 				}
 			}
-			
-			if (AdjacentSquares.get(blackKingLocation, 5) != -1 && (pawn = chessBoard.getPieceOnSquare(AdjacentSquares.get(blackKingLocation, 5))) instanceof Pawn) {
-				if (pawn.getColor() == Color.WHITE) {
+		}
+		// check to see if there is an attacking pawn
+		// an attacking pawn will be coming from the NorthEast or NorthWest
+		ChessPiece pawn;
+		int[] directionsOfAttackingPawns = opponent.getPawnCapturingDirections();
+		for (int direction: directionsOfAttackingPawns) {
+			if (AdjacentSquares.get(kingLocation, direction) != -1 && (pawn = chessBoard.getPieceOnSquare(AdjacentSquares.get(kingLocation, direction))) instanceof Pawn) {
+				if (pawn.getColor() != theKing.getColor()) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @param player

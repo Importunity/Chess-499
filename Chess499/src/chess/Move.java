@@ -12,6 +12,7 @@ public class Move {
 	private ChessPiece capturedPiece;
 	private boolean pawnPromotion;
 	private boolean enpaesant;
+	private boolean castling;
 	
 	/**
 	 * 
@@ -22,13 +23,14 @@ public class Move {
 	 * @param pawnPromotion
 	 * @param enpaesant
 	 */
-	public Move(int source, int destination, ChessPiece movingPiece, ChessPiece capturedPiece, boolean pawnPromotion, boolean enpaesant) {
+	public Move(int source, int destination, ChessPiece movingPiece, ChessPiece capturedPiece, boolean pawnPromotion, boolean enpaesant, boolean castling) {
 		this.source = source;
 		this.destination = destination;
 		this.movingPiece = movingPiece;
 		this.capturedPiece = capturedPiece;
 		this.pawnPromotion = pawnPromotion;
 		this.enpaesant = enpaesant;
+		this.castling = castling;
 	}
 	
 	/**
@@ -73,6 +75,14 @@ public class Move {
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public boolean isCastling() {
+		return castling;
+	}
+	
+	/**
+	 * 
 	 */
 	public boolean equals(Object obj) {
 		
@@ -98,6 +108,6 @@ public class Move {
 	 * 
 	 */
 	public String toString() {
-		return movingPiece + " from " + source + " to " + destination + " " + (capturedPiece != null? " capturing " + capturedPiece: "") + " " + (enpaesant? "ep": "") + " " + (pawnPromotion? "+Q": "");
+		return movingPiece + " from " + source + " to " + destination + " " + (capturedPiece != null? " capturing " + capturedPiece: "") + " " + (enpaesant? "ep": "") + " " + (pawnPromotion? "+Q": "") + " " + (castling? "castling": "");
 	}
 }

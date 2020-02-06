@@ -10,7 +10,6 @@ import chess.*;
  *
  */
 public class Test {
-	
 	/**
 	 * 
 	 * @param args

@@ -23,6 +23,12 @@ public class MoveHistory {
 	 * @param move
 	 */
 	public void addMove(Move move) {
+		ChessPiece movingPiece = move.getMovingPiece();
+		if(movingPiece instanceof King) {
+			((King) movingPiece).motion();
+		} else if (movingPiece instanceof Rook) {
+			((Rook) movingPiece).motion();
+		}
 		historyOfMoves.push(move);
 		//undoneMoves.clear();
 	}

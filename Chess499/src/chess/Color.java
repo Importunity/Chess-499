@@ -5,11 +5,12 @@ package chess;
  *
  */
 public enum Color {
-	WHITE(0, 1, new int[] {7, 1}), BLACK(7, -1, new int []{3, 5});
+	WHITE(0, 1, new int[] {7, 1}, 4), BLACK(7, -1, new int []{3, 5}, 60);
 	
 	private int firstRow;
 	private int boardPerspective;
 	private int[] pawnCapturingDirections;
+	private int startingKingPosition;
 	
 	/**
 	 * 
@@ -17,11 +18,11 @@ public enum Color {
 	 * @param boardPerspective
 	 * @param pawnCapturingDirections
 	 */
-	Color(int firstRow, int boardPerspective, int[] pawnCapturingDirections){
+	Color(int firstRow, int boardPerspective, int[] pawnCapturingDirections, int startingKingPosition){
 		this.firstRow = firstRow;
 		this.boardPerspective = boardPerspective;
 		this.pawnCapturingDirections = pawnCapturingDirections;
-		
+		this.startingKingPosition = startingKingPosition;
 	}
 	
 	/**
@@ -47,5 +48,13 @@ public enum Color {
 	 */
 	public int[] getPawnCapturingDirections() {
 		return pawnCapturingDirections;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getStartingKingPosition() {
+		return startingKingPosition;
 	}
 }
