@@ -377,13 +377,11 @@ public class GameRules {
 	public static boolean kingInCheck(Color player, ChessBoard chessBoard) {
 		
 		int kingLocation;
-		Color opponent;
+		
 		if (player == Color.WHITE) {
 			kingLocation = chessBoard.getWhiteKingPosition();
-			opponent = Color.BLACK;
 		} else {
 			kingLocation = chessBoard.getBlackKingPosition();
-			opponent = Color.WHITE;
 		}
 		
 		int currentSquare = kingLocation;
@@ -427,7 +425,7 @@ public class GameRules {
 		// check to see if there is an attacking pawn
 		// an attacking pawn will be coming from the NorthEast or NorthWest
 		ChessPiece pawn;
-		int[] directionsOfAttackingPawns = opponent.getPawnCapturingDirections();
+		int[] directionsOfAttackingPawns = theKing.getColor().getPawnCapturingDirections();
 		for (int direction: directionsOfAttackingPawns) {
 			if (AdjacentSquares.get(kingLocation, direction) != -1 && (pawn = chessBoard.getPieceOnSquare(AdjacentSquares.get(kingLocation, direction))) instanceof Pawn) {
 				if (pawn.getColor() != theKing.getColor()) {
