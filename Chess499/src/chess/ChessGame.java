@@ -112,7 +112,8 @@ public class ChessGame {
 					chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(targetSquare + 1), sourceSquare + 1);
 					chessBoard.placePieceOnSquare(null, targetSquare + 1);
 				} else if (move.isCastling()){
-					// castling queenside to be implemented
+					chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(targetSquare - 2), sourceSquare - 1);
+					chessBoard.placePieceOnSquare(null, targetSquare - 2);
 				}
 				moveHistory.addMove(move);
 				movesMade++;
