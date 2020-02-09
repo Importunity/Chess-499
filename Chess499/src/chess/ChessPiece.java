@@ -8,6 +8,10 @@ public abstract class ChessPiece {
 	
 	protected Color color;
 	
+	/**
+	 * 
+	 * @param color
+	 */
 	public ChessPiece(Color color){
 		this.color = color;
 	}

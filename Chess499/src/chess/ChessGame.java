@@ -29,8 +29,8 @@ public class ChessGame {
 			// place rooks
 			if (i == 0 || i == 7) {
 				// 0, 7, 56, 63 (i and 63 - i) 
-				chessBoard.placePieceOnSquare(new Rook(Color.WHITE, i), i);
-				chessBoard.placePieceOnSquare(new Rook(Color.BLACK, 63 - i), 63 - i);
+				chessBoard.placePieceOnSquare(new Rook(Color.WHITE), i);
+				chessBoard.placePieceOnSquare(new Rook(Color.BLACK), 63 - i);
 			}
 			// place knights
 			else if (i == 1 || i == 6) {
@@ -94,7 +94,7 @@ public class ChessGame {
 			if(movingPiece instanceof Pawn) {
 				chessBoard.placePieceOnSquare(null, sourceSquare);
 				if (move.isPawnPromotion()) {
-					chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor()), targetSquare);
+					chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor(), true), targetSquare);
 				} else if(move.isEnPaesant()){
 					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 					chessBoard.placePieceOnSquare(null, targetSquare - (8 * movingPiece.getColor().getBoardPerspective()));
