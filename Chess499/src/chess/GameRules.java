@@ -240,7 +240,8 @@ public class GameRules {
 									chessBoard.placePieceOnSquare(null, startingKingPosition + 2);
 									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 								}
-								
+								chessBoard.placePieceOnSquare(null, startingKingPosition + 1);
+								chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 							}
 						}
 					}
@@ -248,7 +249,6 @@ public class GameRules {
 					if (chessBoard.getPieceOnSquare(startingKingPosition - 1) == null && chessBoard.getPieceOnSquare(startingKingPosition - 2) == null && chessBoard.getPieceOnSquare(startingKingPosition - 3) == null ) {
 						if((queenSideRook = chessBoard.getPieceOnSquare(startingKingPosition - 4)) instanceof Rook) {
 							if (((Rook) queenSideRook).getMotioned() == 0) {
-								
 								chessBoard.placePieceOnSquare(null, startingKingPosition);
 								chessBoard.placePieceOnSquare(movingPiece, startingKingPosition - 1);
 								if (!kingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition - 1, 6, chessBoard)) {
@@ -261,6 +261,8 @@ public class GameRules {
 									chessBoard.placePieceOnSquare(null, startingKingPosition - 2);
 									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 								}
+								chessBoard.placePieceOnSquare(null, startingKingPosition - 1);
+								chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 							}
 						}
 						
@@ -439,7 +441,7 @@ public class GameRules {
 		// check to see if there is an attacking knight
 		ChessPiece knight;
 		for (int i = 0; i < 8; i++) {
-			if ((knight = chessBoard.getPieceOnSquare(AdjacentSquares.get(i, (i + 1)%8))) instanceof Knight) {
+			if ((knight = chessBoard.getPieceOnSquare(AdjacentSquares.get(AdjacentSquares.get(currentSquare, i), (i + 1) % 8))) instanceof Knight) {
 				if (knight.getColor() != theKing.getColor()) {
 					return true;
 				}

@@ -21,7 +21,7 @@ public class Test {
 		System.out.println(board.toString());
 		
 		Scanner input = new Scanner(System.in);
-		// playing the game
+		
 		int moveCounter = 0;
 		while (!game.isCheckmateOrStalemate(Color.values()[moveCounter%2])) {
 			System.out.println("Enter the square number of the piece you'd like to move.");

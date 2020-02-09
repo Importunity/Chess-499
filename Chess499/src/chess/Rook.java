@@ -6,25 +6,15 @@ package chess;
  */
 public class Rook extends ChessPiece {
 	
-	private int startingPosition;
 	private int motioned;
 	
 	/**
 	 * 
 	 * @param color
 	 */
-	public Rook(Color color, int startingPosition) {
+	public Rook(Color color) {
 		super(color);
-		this.startingPosition = startingPosition;
 		motioned = 0;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getStartingPosition() {
-		return startingPosition;
 	}
 	
 	/**
