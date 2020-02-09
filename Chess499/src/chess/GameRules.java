@@ -295,7 +295,7 @@ public class GameRules {
 			if(!abandoningKing(currentSquare, currentSquare + (8 * player.getBoardPerspective()), player, chessBoard, false)) {
 				possibleMoves.add(new Move(currentSquare, currentSquare + (8 * player.getBoardPerspective()), movingPiece, null, (currentSquare + (8 * player.getBoardPerspective()) / 8) == movingPiece.getColor().getPerspectiveRow(7), false, false));
 			}
-			if (currentSquare / 8 ==  player.getPerspectiveRow(1)) {
+			if (currentSquare / 8 ==  player.getPerspectiveRow(1) && chessBoard.getPieceOnSquare(currentSquare + (16 * player.getBoardPerspective())) == null) {
 				if(!abandoningKing(currentSquare, currentSquare + (16 * player.getBoardPerspective()), player, chessBoard, false)) {
 					possibleMoves.add(new Move(currentSquare, currentSquare + (16 * player.getBoardPerspective()), movingPiece, null, false, false, false));
 				}
