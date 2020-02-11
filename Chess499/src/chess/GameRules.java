@@ -246,8 +246,8 @@ public class GameRules {
 					
 					possibleCapturedPiece = chessBoard.getPieceOnSquare(opponentsLastMove.getDestination());
 					if(!abandoningKing(currentSquare, destinationSquare, player, chessBoard, true)) {
-						Move enPaesant = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, true, false);
-						possibleMoves.add(enPaesant);
+						Move enPassant = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, true, false);
+						possibleMoves.add(enPassant);
 					}
 				}else {
 					possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
@@ -268,19 +268,19 @@ public class GameRules {
 	 * @param destinationSquare
 	 * @param player
 	 * @param chessBoard
-	 * @param enPaesant
+	 * @param enPassant
 	 * @return
 	 */
-	private static boolean abandoningKing(int originalSquare, int destinationSquare, Color player, ChessBoard chessBoard, boolean enPaesant) {
+	private static boolean abandoningKing(int originalSquare, int destinationSquare, Color player, ChessBoard chessBoard, boolean enPassant) {
 		
 		boolean abandoningKing = false;
 		
-		ChessPiece possibleCapturedPiece = enPaesant? chessBoard.getPieceOnSquare(destinationSquare - (8 * player.getBoardPerspective())): chessBoard.getPieceOnSquare(destinationSquare);
+		ChessPiece possibleCapturedPiece = enPassant? chessBoard.getPieceOnSquare(destinationSquare - (8 * player.getBoardPerspective())): chessBoard.getPieceOnSquare(destinationSquare);
 		ChessPiece movingPiece = chessBoard.getPieceOnSquare(originalSquare);
 		
 		chessBoard.placePieceOnSquare(null, originalSquare);
 		chessBoard.placePieceOnSquare(movingPiece, destinationSquare);
-		if(enPaesant) {
+		if(enPassant) {
 			chessBoard.placePieceOnSquare(null, destinationSquare - (8 * player.getBoardPerspective()));
 		}
 		
@@ -288,9 +288,9 @@ public class GameRules {
 			abandoningKing = true;
 		}
 		
-		chessBoard.placePieceOnSquare(possibleCapturedPiece, enPaesant? destinationSquare - (8 * player.getBoardPerspective()):destinationSquare);
+		chessBoard.placePieceOnSquare(possibleCapturedPiece, enPassant? destinationSquare - (8 * player.getBoardPerspective()):destinationSquare);
 		chessBoard.placePieceOnSquare(movingPiece, originalSquare);
-		if(enPaesant) {
+		if(enPassant) {
 			chessBoard.placePieceOnSquare(null, destinationSquare);
 		}
 		return abandoningKing;

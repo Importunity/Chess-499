@@ -1,13 +1,24 @@
 package chess;
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class MoveFactory {
 
 	private static MoveFactory moveFactory;
 	
+	/**
+	 * 
+	 */
 	private MoveFactory() {
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public static MoveFactory getInstance() {
 		if (moveFactory == null) {
 			moveFactory = new MoveFactory();
@@ -15,6 +26,13 @@ public class MoveFactory {
 		return moveFactory;
 	}
 	
+	/**
+	 * 
+	 * @param sourceSquare
+	 * @param targetSquare
+	 * @param chessGame
+	 * @return
+	 */
 	public Move createMove(int sourceSquare, int targetSquare, ChessGame chessGame) {
 		
 		ChessBoard chessBoard = chessGame.getChessBoard();
