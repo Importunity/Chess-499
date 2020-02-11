@@ -359,7 +359,9 @@ public class GameRules {
 		
 		chessBoard.placePieceOnSquare(possibleCapturedPiece, enPaesant? destinationSquare - (8 * player.getBoardPerspective()):destinationSquare);
 		chessBoard.placePieceOnSquare(movingPiece, originalSquare);
-		
+		if(enPaesant) {
+			chessBoard.placePieceOnSquare(null, destinationSquare);
+		}
 		return abandoningKing;
 	}
 	
