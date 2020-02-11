@@ -11,7 +11,7 @@ public class Move {
 	private ChessPiece movingPiece;
 	private ChessPiece capturedPiece;
 	private boolean pawnPromotion;
-	private boolean enpaesant;
+	private boolean enPassant;
 	private boolean castling;
 	
 	/**
@@ -21,15 +21,15 @@ public class Move {
 	 * @param movingPiece
 	 * @param capturedPiece
 	 * @param pawnPromotion
-	 * @param enpaesant
+	 * @param enPassant
 	 */
-	public Move(int source, int destination, ChessPiece movingPiece, ChessPiece capturedPiece, boolean pawnPromotion, boolean enpaesant, boolean castling) {
+	public Move(int source, int destination, ChessPiece movingPiece, ChessPiece capturedPiece, boolean pawnPromotion, boolean enPassant, boolean castling) {
 		this.source = source;
 		this.destination = destination;
 		this.movingPiece = movingPiece;
 		this.capturedPiece = capturedPiece;
 		this.pawnPromotion = pawnPromotion;
-		this.enpaesant = enpaesant;
+		this.enPassant = enPassant;
 		this.castling = castling;
 	}
 	
@@ -69,8 +69,8 @@ public class Move {
 	 * 
 	 * @return
 	 */
-	public boolean isEnPaesant() {
-		return enpaesant;
+	public boolean isEnPassant() {
+		return enPassant;
 	}
 	
 	/**
@@ -108,6 +108,6 @@ public class Move {
 	 * 
 	 */
 	public String toString() {
-		return movingPiece + " from " + source + " to " + destination + " " + (capturedPiece != null? " capturing " + capturedPiece: "") + " " + (enpaesant? "ep": "") + " " + (pawnPromotion? "+Q": "") + " " + (castling? "castling": "");
+		return movingPiece + " from " + source + " to " + destination + " " + (capturedPiece != null? " capturing " + capturedPiece: "") + " " + (enPassant? "ep": "") + " " + (pawnPromotion? "+Q": "") + " " + (castling? "castling": "");
 	}
 }

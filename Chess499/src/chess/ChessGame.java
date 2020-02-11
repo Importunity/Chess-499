@@ -60,7 +60,7 @@ public class ChessGame {
 				chessBoard.placePieceOnSquare(null, sourceSquare);
 				if (move.isPawnPromotion()) {
 					chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor(), true), targetSquare);
-				} else if(move.isEnPaesant()){
+				} else if(move.isEnPassant()){
 					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 					chessBoard.placePieceOnSquare(null, targetSquare - (8 * movingPiece.getColor().getBoardPerspective()));
 				} else {
