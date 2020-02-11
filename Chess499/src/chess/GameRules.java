@@ -10,73 +10,6 @@ public class GameRules {
 	
 	/**
 	 * 
-	 * @param sourceSquare
-	 * @param targetSquare
-	 * @param chessGame
-	 * @return
-	 */
-	public static Move validateMove(int sourceSquare, int targetSquare, ChessGame chessGame) {
-		
-		ChessBoard chessBoard = chessGame.getChessBoard();
-		ChessPiece movingPiece = chessBoard.getPieceOnSquare(sourceSquare);
-		
-		if (movingPiece == null) {
-			return null;
-		}
-		
-		if (chessBoard.getPieceOnSquare(sourceSquare).getColor().ordinal() != chessGame.getMovesMade() % 2) {
-			return null;
-		} 
-		
-		ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(targetSquare);
-		Move moveAttempt;
-		Move opponentsLastMove;
-		if (movingPiece instanceof Pawn) {
-			// Pawn is trying to reach the end of the board (PawnPromotion)
-			if (targetSquare / 8 == movingPiece.getColor().getPerspectiveRow(7)) {
-				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, true, false, false);
-			} else if((opponentsLastMove = chessGame.getMoveHistory().getLastMoveMade()) != null && opponentsLastMove.getMovingPiece() instanceof Pawn  
-					&& targetSquare == opponentsLastMove.getSource() - (8 * movingPiece.getColor().getBoardPerspective())
-					&& opponentsLastMove.getDestination() == opponentsLastMove.getSource() - (16 * movingPiece.getColor().getBoardPerspective())) {
-				// En Passant
-				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, chessBoard.getPieceOnSquare(targetSquare - (8 * movingPiece.getColor().getBoardPerspective())), false, true, false);
-			} else {
-				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false, false);
-			}
-			// Later I will create a RemainingPieces class that will be updated with available moves for each piece
-			ArrayList<Move> possibleMoves = getPossiblePawnMoves(sourceSquare, chessGame);
-			if(possibleMoves.contains(moveAttempt)) {
-				return moveAttempt;
-			}
-		} else if (movingPiece instanceof Knight) {
-			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false, false);
-			ArrayList<Move> possibleMoves = getPossibleKnightMoves(sourceSquare, chessGame);
-			if(possibleMoves.contains(moveAttempt)) {
-				return moveAttempt;
-			}
-		} else if (movingPiece instanceof Bishop || movingPiece instanceof Rook || movingPiece instanceof Queen) {
-			moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false, false);
-			ArrayList<Move> possibleMoves = getPossibleQRBMoves(sourceSquare, chessGame);
-			if(possibleMoves.contains(moveAttempt)) {
-				return moveAttempt;
-			}
-		} else { // movingPiece is a King
-			if (sourceSquare == movingPiece.getColor().getStartingKingPosition() && (targetSquare == movingPiece.getColor().getStartingKingPosition() + 2 || targetSquare == movingPiece.getColor().getStartingKingPosition() - 2)) {
-				// attempting to castle
-				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, null, false, false, true);
-			} else {
-				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, false, false, false);
-			}
-			ArrayList<Move> possibleMoves = getPossibleKingMoves(sourceSquare, chessGame);
-			if(possibleMoves.contains(moveAttempt)) {
-				return moveAttempt;
-			}
-		} 	
-		return null;
-	}
-	
-	/**
-	 * 
 	 * @param currentSquare
 	 * @param chessGame
 	 * @return
@@ -316,7 +249,6 @@ public class GameRules {
 						Move enPaesant = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, true, false);
 						possibleMoves.add(enPaesant);
 					}
-					
 				}else {
 					possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 					if (possibleCapturedPiece != null && possibleCapturedPiece.getColor() != player) {
@@ -342,7 +274,6 @@ public class GameRules {
 	private static boolean abandoningKing(int originalSquare, int destinationSquare, Color player, ChessBoard chessBoard, boolean enPaesant) {
 		
 		boolean abandoningKing = false;
-		
 		
 		ChessPiece possibleCapturedPiece = enPaesant? chessBoard.getPieceOnSquare(destinationSquare - (8 * player.getBoardPerspective())): chessBoard.getPieceOnSquare(destinationSquare);
 		ChessPiece movingPiece = chessBoard.getPieceOnSquare(originalSquare);
@@ -463,41 +394,4 @@ public class GameRules {
 		return false;
 	}
 
-	/**
-	 * 
-	 * @param player
-	 * @param chessGame
-	 * @return
-	 */
-	public static boolean isCheckmateOrStalemate(Color player, ChessGame chessGame) {
-		
-		ChessBoard chessBoard = chessGame.getChessBoard();
-		ArrayList<Move> allPossibleMoves = new ArrayList<Move>();
-		ArrayList<Move> possibleMovesForPiece;
-		for (int i = 0; i < 64; i++) {
-			ChessPiece piece = chessBoard.getPieceOnSquare(i);
-			if (piece != null && piece.getColor() == player) {
-				if (piece instanceof Pawn) {
-					possibleMovesForPiece = getPossiblePawnMoves(i, chessGame);
-					allPossibleMoves.addAll(possibleMovesForPiece);
-				}
-				else if(piece instanceof Knight) {
-					possibleMovesForPiece = getPossibleKnightMoves(i, chessGame);
-					allPossibleMoves.addAll(possibleMovesForPiece);
-				}
-				else if(piece instanceof Bishop || piece instanceof Rook || piece instanceof Queen) {
-					possibleMovesForPiece = getPossibleQRBMoves(i, chessGame);
-					allPossibleMoves.addAll(possibleMovesForPiece);
-				}
-				else if(piece instanceof King) {
-					possibleMovesForPiece = getPossibleKingMoves(i, chessGame);
-					allPossibleMoves.addAll(possibleMovesForPiece);
-				}
-			}
-		}
-		if (allPossibleMoves.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
 }
