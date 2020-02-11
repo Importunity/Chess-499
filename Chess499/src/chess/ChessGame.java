@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.ArrayList;
+
 /**
  * 
  * @author Luke Newman
@@ -10,58 +12,17 @@ public class ChessGame {
 	private ChessBoard chessBoard;
 	private int movesMade;
 	private MoveHistory moveHistory;
+	private AvailableMoves availableMoves;
 	
 	/**
 	 * 
 	 */
 	public ChessGame() {
 		chessBoard = new ChessBoard();
-		initializeChessBoard();
+		chessBoard.initialize();
 		moveHistory = new MoveHistory();
+		availableMoves = new AvailableMoves();
 		movesMade = 0;
-	}
-	
-	/**
-	 * 
-	 */
-	private void initializeChessBoard() {
-		for (int i = 0; i < 16; i++) {
-			// place rooks
-			if (i == 0 || i == 7) {
-				// 0, 7, 56, 63 (i and 63 - i) 
-				chessBoard.placePieceOnSquare(new Rook(Color.WHITE), i);
-				chessBoard.placePieceOnSquare(new Rook(Color.BLACK), 63 - i);
-			}
-			// place knights
-			else if (i == 1 || i == 6) {
-				// 1, 6, 57, 62 (i and 63 - i)
-				chessBoard.placePieceOnSquare(new Knight(Color.WHITE), i);
-				chessBoard.placePieceOnSquare(new Knight(Color.BLACK), 63 - i);
-			}
-			//place bishops
-			else if (i == 2 || i == 5) {
-				// 2, 5, 58, 61 (i and 63 - i)
-				chessBoard.placePieceOnSquare(new Bishop(Color.WHITE), i);
-				chessBoard.placePieceOnSquare(new Bishop(Color.BLACK), 63 - i);
-			}
-			// place white queen and black king
-			else if (i == 3) {
-				chessBoard.placePieceOnSquare(new Queen(Color.WHITE), i);
-				chessBoard.placePieceOnSquare(new King(Color.BLACK), 63 - i);
-			}
-			// place white king and black queen
-			else if (i == 4) {
-				chessBoard.placePieceOnSquare(new King(Color.WHITE), i);
-				chessBoard.placePieceOnSquare(new Queen(Color.BLACK), 63 - i);
-			}
-			// place pawns
-			else {
-				// 8 - 15, 48 - 55 (i and 63 - i)
-				chessBoard.placePieceOnSquare(new Pawn(Color.WHITE), i);
-				chessBoard.placePieceOnSquare(new Pawn(Color.BLACK), 63 - i);
-			}
-			
-		}
 	}
 	
 	/**
@@ -88,8 +49,12 @@ public class ChessGame {
 	 */
 	public boolean makeMove(int sourceSquare, int targetSquare) {
 		
-		Move move = GameRules.validateMove(sourceSquare, targetSquare, this);
-		if (move != null) {
+		Move move = MoveFactory.getInstance().createMove(sourceSquare, targetSquare, this);
+		if (move == null) {
+			return false;
+		}
+		
+		if (availableMoves.isAvailable(move)) {
 			ChessPiece movingPiece = move.getMovingPiece();
 			if(movingPiece instanceof Pawn) {
 				chessBoard.placePieceOnSquare(null, sourceSquare);
@@ -160,7 +125,43 @@ public class ChessGame {
 	 * @return
 	 */
 	public boolean isCheckmateOrStalemate(Color player) {
-		return GameRules.isCheckmateOrStalemate(player, this);
+
+		ArrayList<Move> allPossibleMoves = new ArrayList<Move>();
+		ArrayList<Move> possibleMovesForPiece;
+		for (int i = 0; i < 64; i++) {
+			ChessPiece piece = chessBoard.getPieceOnSquare(i);
+			if (piece != null) {
+				if(piece.getColor() == player) {
+					if (piece instanceof Pawn) {
+						possibleMovesForPiece = GameRules.getPossiblePawnMoves(i, this);
+						availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
+						allPossibleMoves.addAll(possibleMovesForPiece);
+					}
+					else if(piece instanceof Knight) {
+						possibleMovesForPiece = GameRules.getPossibleKnightMoves(i, this);
+						availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
+						allPossibleMoves.addAll(possibleMovesForPiece);
+					}
+					else if(piece instanceof Bishop || piece instanceof Rook || piece instanceof Queen) {
+						possibleMovesForPiece = GameRules.getPossibleQRBMoves(i, this);
+						availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
+						allPossibleMoves.addAll(possibleMovesForPiece);
+					}
+					else if(piece instanceof King) {
+						possibleMovesForPiece = GameRules.getPossibleKingMoves(i, this);
+						availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
+						allPossibleMoves.addAll(possibleMovesForPiece);
+					}
+				} else {
+					// it is not the other players turn so we clear all available moves for their pieces
+					availableMoves.clearAvailableMovesForPiece(piece);
+				}
+			}
+		}
+		if (allPossibleMoves.isEmpty()) {
+			return true;
+		}
+		return false;
 	}
 	
 }

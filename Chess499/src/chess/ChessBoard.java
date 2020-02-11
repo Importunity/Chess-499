@@ -87,6 +87,49 @@ public class ChessBoard {
 	/**
 	 * 
 	 */
+	void initialize() {
+		for (int i = 0; i < 16; i++) {
+			// place rooks
+			if (i == 0 || i == 7) {
+				// 0, 7, 56, 63 (i and 63 - i) 
+				placePieceOnSquare(new Rook(Color.WHITE), i);
+				placePieceOnSquare(new Rook(Color.BLACK), 63 - i);
+			}
+			// place knights
+			else if (i == 1 || i == 6) {
+				// 1, 6, 57, 62 (i and 63 - i)
+				placePieceOnSquare(new Knight(Color.WHITE), i);
+				placePieceOnSquare(new Knight(Color.BLACK), 63 - i);
+			}
+			//place bishops
+			else if (i == 2 || i == 5) {
+				// 2, 5, 58, 61 (i and 63 - i)
+				placePieceOnSquare(new Bishop(Color.WHITE), i);
+				placePieceOnSquare(new Bishop(Color.BLACK), 63 - i);
+			}
+			// place white queen and black king
+			else if (i == 3) {
+				placePieceOnSquare(new Queen(Color.WHITE), i);
+				placePieceOnSquare(new King(Color.BLACK), 63 - i);
+			}
+			// place white king and black queen
+			else if (i == 4) {
+				placePieceOnSquare(new King(Color.WHITE), i);
+				placePieceOnSquare(new Queen(Color.BLACK), 63 - i);
+			}
+			// place pawns
+			else {
+				// 8 - 15, 48 - 55 (i and 63 - i)
+				placePieceOnSquare(new Pawn(Color.WHITE), i);
+				placePieceOnSquare(new Pawn(Color.BLACK), 63 - i);
+			}
+			
+		}
+	}
+	
+	/**
+	 * 
+	 */
 	public String toString() {
 		int rowCounter = 7;
 		String output = "";
