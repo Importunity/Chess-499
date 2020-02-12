@@ -31,7 +31,7 @@ public class GameRules {
 	/**
 	 * 
 	 * @param currentSquare
-	 * @param chessGame
+	 * @param chessBoard
 	 * @return
 	 */
 	public ArrayList<Move> getPossibleQRBMoves(int currentSquare, ChessBoard chessBoard){
@@ -93,7 +93,7 @@ public class GameRules {
 	/**
 	 * 
 	 * @param currentSquare
-	 * @param chessGame
+	 * @param chessBoard
 	 * @return
 	 */
 	public ArrayList<Move> getPossibleKnightMoves(int currentSquare, ChessBoard chessBoard){
@@ -124,7 +124,7 @@ public class GameRules {
 	/**
 	 * 
 	 * @param currentSquare
-	 * @param chessGame
+	 * @param chessBoard
 	 * @return
 	 */
 	public ArrayList<Move> getPossibleKingMoves(int currentSquare, ChessBoard chessBoard){
@@ -224,7 +224,8 @@ public class GameRules {
 	/**
 	 * 
 	 * @param currentSquare
-	 * @param chessGame
+	 * @param chessBoard
+	 * @param opponentsLastMove
 	 * @return
 	 */
 	public ArrayList<Move> getPossiblePawnMoves(int currentSquare, ChessBoard chessBoard, Move opponentsLastMove){
