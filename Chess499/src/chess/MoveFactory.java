@@ -30,7 +30,8 @@ public class MoveFactory {
 	 * 
 	 * @param sourceSquare
 	 * @param targetSquare
-	 * @param chessGame
+	 * @param chessBoard
+	 * @param opponentsLastMove
 	 * @return
 	 */
 	public Move createMove(int sourceSquare, int targetSquare, ChessBoard chessBoard, Move opponentsLastMove) {
