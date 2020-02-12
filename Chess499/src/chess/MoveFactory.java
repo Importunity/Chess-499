@@ -33,9 +33,8 @@ public class MoveFactory {
 	 * @param chessGame
 	 * @return
 	 */
-	public Move createMove(int sourceSquare, int targetSquare, ChessGame chessGame) {
+	public Move createMove(int sourceSquare, int targetSquare, ChessBoard chessBoard, Move opponentsLastMove) {
 		
-		ChessBoard chessBoard = chessGame.getChessBoard();
 		ChessPiece movingPiece = chessBoard.getPieceOnSquare(sourceSquare);
 		
 		if (movingPiece == null) {
@@ -44,13 +43,12 @@ public class MoveFactory {
 		
 		ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(targetSquare);
 		Move moveAttempt = null;
-		Move opponentsLastMove;
 		
 		if (movingPiece instanceof Pawn) {
 			// Pawn is trying to reach the end of the board (PawnPromotion)
 			if (targetSquare / 8 == movingPiece.getColor().getPerspectiveRow(7)) {
 				moveAttempt = new Move(sourceSquare, targetSquare, movingPiece, possibleCapturedPiece, true, false, false);
-			} else if((opponentsLastMove = chessGame.getMoveHistory().getLastMoveMade()) != null && opponentsLastMove.getMovingPiece() instanceof Pawn  
+			} else if(opponentsLastMove != null && opponentsLastMove.getMovingPiece() instanceof Pawn  
 					&& targetSquare == opponentsLastMove.getSource() - (8 * movingPiece.getColor().getBoardPerspective())
 					&& opponentsLastMove.getDestination() == opponentsLastMove.getSource() - (16 * movingPiece.getColor().getBoardPerspective())) {
 				// En Passant

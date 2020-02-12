@@ -8,15 +8,34 @@ import java.util.ArrayList;
  */
 public class GameRules {
 	
+	private static GameRules gameRules;
+	
+	/**
+	 * 
+	 */
+	private GameRules() {
+		
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static GameRules getInstance() {
+		if (gameRules == null) {
+			gameRules = new GameRules();
+		}
+		return gameRules;
+	}
+	
 	/**
 	 * 
 	 * @param currentSquare
 	 * @param chessGame
 	 * @return
 	 */
-	public static ArrayList<Move> getPossibleQRBMoves(int currentSquare, ChessGame chessGame){
+	public ArrayList<Move> getPossibleQRBMoves(int currentSquare, ChessBoard chessBoard){
 		
-		ChessBoard chessBoard = chessGame.getChessBoard();
 		int originalSquare = currentSquare;
 		int destinationSquare;
 		Move possibleMove;
@@ -45,33 +64,29 @@ public class GameRules {
 					chessBoard.getPieceOnSquare(destinationSquare) == null) {
 				
 				if(!abandoningKing(originalSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-					possibleMove = new Move(originalSquare, destinationSquare, movingPiece, null, false, false, false);
+					// old code - possibleMove = new Move(originalSquare, destinationSquare, movingPiece, null, false, false, false);
+					possibleMove = MoveFactory.getInstance().createMove(originalSquare, destinationSquare, chessBoard, null);
 					possibleMoves.add(possibleMove);
 				}
-				
 				// advance to the next square in same direction
 				currentSquare = AdjacentSquares.get(currentSquare, i);
-			}
 				
+			}	
 			// if it is not the end of the board there is either a black or white piece there
 			if(destinationSquare != -1) {
-			
+				
 				if(chessBoard.getPieceOnSquare(destinationSquare).getColor() != movingPiece.getColor()) {
 					// possible capture
-					ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(AdjacentSquares.get(currentSquare, i));
 					if(!abandoningKing(originalSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-						possibleMove = new Move(originalSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, false, false);
+						possibleMove = MoveFactory.getInstance().createMove(originalSquare, destinationSquare, chessBoard, null);
 						possibleMoves.add(possibleMove);
 					}
-					
 				}
 				
 			}
-			
 			currentSquare = originalSquare;
 			
 		}
-	
 		return possibleMoves;
 	}
 	
@@ -81,37 +96,26 @@ public class GameRules {
 	 * @param chessGame
 	 * @return
 	 */
-	public static ArrayList<Move> getPossibleKnightMoves(int currentSquare, ChessGame chessGame){
+	public ArrayList<Move> getPossibleKnightMoves(int currentSquare, ChessBoard chessBoard){
 		
-		ChessBoard chessBoard = chessGame.getChessBoard();
 		Move possibleMove;
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		ChessPiece movingPiece = chessBoard.getPieceOnSquare(currentSquare);
 		int destinationSquare;
-		
+		// 8 total directions
 		for(int i = 0; i < 8; i++) {
 		
-			try{
-				if ((destinationSquare = AdjacentSquares.get(AdjacentSquares.get(currentSquare, i), (i + 1)%8)) != -1) {
+			if ((destinationSquare = AdjacentSquares.get(AdjacentSquares.get(currentSquare, i), (i + 1)%8)) != -1) {
+					
 					ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
-					if (possibleCapturedPiece == null) {
+					if (possibleCapturedPiece == null || possibleCapturedPiece.getColor() != movingPiece.getColor()) {
 						if(!abandoningKing(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null, false, false, false);
+							possibleMove = MoveFactory.getInstance().createMove(currentSquare, destinationSquare, chessBoard, null);
 							possibleMoves.add(possibleMove);
 						}
-						
-					} else if (possibleCapturedPiece.getColor() != movingPiece.getColor()) {
-						if(!abandoningKing(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-							possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, false, false);
-							possibleMoves.add(possibleMove);
-						}
-						
 					}
+					
 				}
-			} catch (IndexOutOfBoundsException ex) {
-				// out of range off the board
-			}
-		
 		}
 	
 		return possibleMoves;
@@ -123,9 +127,8 @@ public class GameRules {
 	 * @param chessGame
 	 * @return
 	 */
-	public static ArrayList<Move> getPossibleKingMoves(int currentSquare, ChessGame chessGame){
+	public ArrayList<Move> getPossibleKingMoves(int currentSquare, ChessBoard chessBoard){
 		
-		ChessBoard chessBoard = chessGame.getChessBoard();
 		Move possibleMove;
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		ChessPiece movingPiece = chessBoard.getPieceOnSquare(currentSquare);
@@ -134,21 +137,19 @@ public class GameRules {
 			int destinationSquare = AdjacentSquares.get(currentSquare, i);
 			
 			if (destinationSquare != -1 && kingInBorderingSquare(destinationSquare, i, chessBoard) == false) {
+				
 				ChessPiece possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
-				if(possibleCapturedPiece == null) {
+				if (possibleCapturedPiece == null || possibleCapturedPiece.getColor() != movingPiece.getColor()) {
 					if (!abandoningKing(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, null, false, false, false);
-						possibleMoves.add(possibleMove);
-					}
-				} else if(possibleCapturedPiece.getColor() != movingPiece.getColor()){
-					if (!abandoningKing(currentSquare, destinationSquare, movingPiece.getColor(), chessBoard, false)) {
-						possibleMove = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, false, false);
+						possibleMove = MoveFactory.getInstance().createMove(currentSquare, destinationSquare, chessBoard, null);
 						possibleMoves.add(possibleMove);
 					}
 				}
+				
 			}
 		
 		}
+		
 		ChessPiece kingSideRook;
 		ChessPiece queenSideRook;
 		int startingKingPosition = movingPiece.getColor().getStartingKingPosition();
@@ -167,14 +168,19 @@ public class GameRules {
 									chessBoard.placePieceOnSquare(null, startingKingPosition + 1);
 									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition + 2);
 									if(!kingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition + 2, 2, chessBoard)) {
-										Move castleKingSideMove = new Move(startingKingPosition, startingKingPosition + 2, movingPiece, null, false, false, true);
+										chessBoard.placePieceOnSquare(null, startingKingPosition + 2);
+										chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
+										// old code - Move castleKingSideMove = new Move(startingKingPosition, startingKingPosition + 2, movingPiece, null, false, false, true);
+										Move castleKingSideMove = MoveFactory.getInstance().createMove(startingKingPosition, startingKingPosition + 2, chessBoard, null);
 										possibleMoves.add(castleKingSideMove);
+									}else {
+										chessBoard.placePieceOnSquare(null, startingKingPosition + 2);
+										chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 									}
-									chessBoard.placePieceOnSquare(null, startingKingPosition + 2);
+								}else {
+									chessBoard.placePieceOnSquare(null, startingKingPosition + 1);
 									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 								}
-								chessBoard.placePieceOnSquare(null, startingKingPosition + 1);
-								chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 							}
 						}
 					}
@@ -188,14 +194,19 @@ public class GameRules {
 									chessBoard.placePieceOnSquare(null, startingKingPosition - 1);
 									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition - 2);
 									if(!kingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition - 2, 6, chessBoard)) {
-										Move castleQueenSideMove = new Move(startingKingPosition, startingKingPosition - 2, movingPiece, null, false, false, true);
+										chessBoard.placePieceOnSquare(null, startingKingPosition - 2);
+										chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
+										//Move castleQueenSideMove = new Move(startingKingPosition, startingKingPosition - 2, movingPiece, null, false, false, true);
+										Move castleQueenSideMove = MoveFactory.getInstance().createMove(startingKingPosition, startingKingPosition - 2, chessBoard, null);
 										possibleMoves.add(castleQueenSideMove);
+									} else {
+										chessBoard.placePieceOnSquare(null, startingKingPosition - 2);
+										chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 									}
-									chessBoard.placePieceOnSquare(null, startingKingPosition - 2);
+								} else {
+									chessBoard.placePieceOnSquare(null, startingKingPosition - 1);
 									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 								}
-								chessBoard.placePieceOnSquare(null, startingKingPosition - 1);
-								chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 							}
 						}
 						
@@ -216,9 +227,8 @@ public class GameRules {
 	 * @param chessGame
 	 * @return
 	 */
-	public static ArrayList<Move> getPossiblePawnMoves(int currentSquare, ChessGame chessGame){
+	public ArrayList<Move> getPossiblePawnMoves(int currentSquare, ChessBoard chessBoard, Move opponentsLastMove){
 		
-		ChessBoard chessBoard = chessGame.getChessBoard();
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
 		ChessPiece movingPiece = chessBoard.getPieceOnSquare(currentSquare);
 		Color player = movingPiece.getColor();
@@ -226,11 +236,11 @@ public class GameRules {
 		
 		if (chessBoard.getPieceOnSquare(currentSquare + (8 * player.getBoardPerspective())) == null) {
 			if(!abandoningKing(currentSquare, currentSquare + (8 * player.getBoardPerspective()), player, chessBoard, false)) {
-				possibleMoves.add(new Move(currentSquare, currentSquare + (8 * player.getBoardPerspective()), movingPiece, null, (currentSquare + (8 * player.getBoardPerspective()) / 8) == movingPiece.getColor().getPerspectiveRow(7), false, false));
+				possibleMoves.add(MoveFactory.getInstance().createMove(currentSquare, currentSquare + (8 * player.getBoardPerspective()), chessBoard, opponentsLastMove));
 			}
 			if (currentSquare / 8 ==  player.getPerspectiveRow(1) && chessBoard.getPieceOnSquare(currentSquare + (16 * player.getBoardPerspective())) == null) {
 				if(!abandoningKing(currentSquare, currentSquare + (16 * player.getBoardPerspective()), player, chessBoard, false)) {
-					possibleMoves.add(new Move(currentSquare, currentSquare + (16 * player.getBoardPerspective()), movingPiece, null, false, false, false));
+					possibleMoves.add(MoveFactory.getInstance().createMove(currentSquare, currentSquare + (16 * player.getBoardPerspective()), chessBoard, opponentsLastMove));
 				}
 			}
 		}
@@ -238,7 +248,6 @@ public class GameRules {
 		int[] directions = player.getPawnCapturingDirections();
 		for(int i: directions) {
 			if ((destinationSquare = AdjacentSquares.get(currentSquare, i)) != -1) {
-				Move opponentsLastMove = chessGame.getMoveHistory().getLastMoveMade();
 				
 				if(opponentsLastMove != null && opponentsLastMove.getMovingPiece() instanceof Pawn  
 						&& destinationSquare == opponentsLastMove.getSource() - (8 * player.getBoardPerspective())
@@ -246,14 +255,14 @@ public class GameRules {
 					
 					possibleCapturedPiece = chessBoard.getPieceOnSquare(opponentsLastMove.getDestination());
 					if(!abandoningKing(currentSquare, destinationSquare, player, chessBoard, true)) {
-						Move enPassant = new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, false, true, false);
+						Move enPassant = MoveFactory.getInstance().createMove(currentSquare, destinationSquare, chessBoard, opponentsLastMove);
 						possibleMoves.add(enPassant);
 					}
 				}else {
 					possibleCapturedPiece = chessBoard.getPieceOnSquare(destinationSquare);
 					if (possibleCapturedPiece != null && possibleCapturedPiece.getColor() != player) {
 						if(!abandoningKing(currentSquare, destinationSquare, player, chessBoard, false)) {
-							possibleMoves.add(new Move(currentSquare, destinationSquare, movingPiece, possibleCapturedPiece, destinationSquare / 8 == movingPiece.getColor().getPerspectiveRow(7), false, false));
+							possibleMoves.add(MoveFactory.getInstance().createMove(currentSquare, destinationSquare, chessBoard, opponentsLastMove));
 						}
 					}
 				}
@@ -271,7 +280,7 @@ public class GameRules {
 	 * @param enPassant
 	 * @return
 	 */
-	private static boolean abandoningKing(int originalSquare, int destinationSquare, Color player, ChessBoard chessBoard, boolean enPassant) {
+	private boolean abandoningKing(int originalSquare, int destinationSquare, Color player, ChessBoard chessBoard, boolean enPassant) {
 		
 		boolean abandoningKing = false;
 		
@@ -303,7 +312,7 @@ public class GameRules {
 	 * @param chessBoard
 	 * @return
 	 */
-	private static boolean kingInBorderingSquare(int destinationSquare, int directionMoved, ChessBoard chessBoard) {
+	private boolean kingInBorderingSquare(int destinationSquare, int directionMoved, ChessBoard chessBoard) {
 		if(directionMoved % 2 == 0) {
 			// 7 8 9
 			for (int i = 7; i < 10; i++){
@@ -332,7 +341,7 @@ public class GameRules {
 	 * @param chessBoard
 	 * @return
 	 */
-	public static boolean kingInCheck(Color player, ChessBoard chessBoard) {
+	public boolean kingInCheck(Color player, ChessBoard chessBoard) {
 		
 		int kingLocation;
 		

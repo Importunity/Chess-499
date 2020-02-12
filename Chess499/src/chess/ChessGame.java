@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.ArrayList;
+//import java.util.Iterator;
 
 /**
  * 
@@ -49,7 +50,7 @@ public class ChessGame {
 	 */
 	public boolean makeMove(int sourceSquare, int targetSquare) {
 		
-		Move move = MoveFactory.getInstance().createMove(sourceSquare, targetSquare, this);
+		Move move = MoveFactory.getInstance().createMove(sourceSquare, targetSquare, chessBoard, moveHistory.getLastMoveMade());
 		if (move == null) {
 			return false;
 		}
@@ -116,7 +117,7 @@ public class ChessGame {
 	 * @return
 	 */
 	public boolean kingInCheck(Color player) {
-		return GameRules.kingInCheck(player, chessBoard);
+		return GameRules.getInstance().kingInCheck(player, chessBoard);
 	}
 	
 	/**
@@ -133,22 +134,22 @@ public class ChessGame {
 			if (piece != null) {
 				if(piece.getColor() == player) {
 					if (piece instanceof Pawn) {
-						possibleMovesForPiece = GameRules.getPossiblePawnMoves(i, this);
+						possibleMovesForPiece = GameRules.getInstance().getPossiblePawnMoves(i, chessBoard, moveHistory.getLastMoveMade());
 						availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
 						allPossibleMoves.addAll(possibleMovesForPiece);
 					}
 					else if(piece instanceof Knight) {
-						possibleMovesForPiece = GameRules.getPossibleKnightMoves(i, this);
+						possibleMovesForPiece = GameRules.getInstance().getPossibleKnightMoves(i, chessBoard);
 						availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
 						allPossibleMoves.addAll(possibleMovesForPiece);
 					}
 					else if(piece instanceof Bishop || piece instanceof Rook || piece instanceof Queen) {
-						possibleMovesForPiece = GameRules.getPossibleQRBMoves(i, this);
+						possibleMovesForPiece = GameRules.getInstance().getPossibleQRBMoves(i, chessBoard);
 						availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
 						allPossibleMoves.addAll(possibleMovesForPiece);
 					}
 					else if(piece instanceof King) {
-						possibleMovesForPiece = GameRules.getPossibleKingMoves(i, this);
+						possibleMovesForPiece = GameRules.getInstance().getPossibleKingMoves(i, chessBoard);
 						availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
 						allPossibleMoves.addAll(possibleMovesForPiece);
 					}
@@ -161,6 +162,14 @@ public class ChessGame {
 		if (allPossibleMoves.isEmpty()) {
 			return true;
 		}
+		/** IF YOU WANT TO PRINT OUT ALL AVAILABLE MOVES USE THIS CODE
+		else {
+			Iterator<Move> it = allPossibleMoves.iterator();
+			while (it.hasNext()) {
+				System.out.println(it.next());
+			}
+		}
+		**/
 		return false;
 	}
 	
