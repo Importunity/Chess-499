@@ -1,0 +1,106 @@
+This method belongs to the ChessGame class.
+
+/**
+ * This method accepts a source square and a target square which represents the move a user wants to make.
+ * 	It will make the move if the move is a valid move in the context of the current game.  
+ * 
+ * @param sourceSquare
+ * @param targetSquare
+ * @return	true or false, move made or move unable to be made
+ */
+public boolean makeMove(int sourceSquare, int targetSquare) {
+	
+	// create Move object
+	Move move = MoveFactory.getInstance().createMove(sourceSquare, targetSquare, chessBoard, moveHistory.getLastMoveMade());
+	
+	if (move == null) {
+		// sourceSquare didn't even have a piece on it
+		return false;
+	}
+	
+	// check the availableMoves object to validate the move
+	if (availableMoves.isAvailable(move)) {
+		
+		ChessPiece movingPiece = move.getMovingPiece();
+		
+		if(movingPiece instanceof Pawn) {
+			
+			// remove piece from original location
+			chessBoard.placePieceOnSquare(null, sourceSquare);
+			
+			// 3 different scenarios for updating the chessboard
+			if (move.isPawnPromotion()) {
+				chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor(), true), targetSquare);
+			} else if(move.isEnPassant()){
+				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+				chessBoard.placePieceOnSquare(null, targetSquare - (8 * movingPiece.getColor().getBoardPerspective()));
+			} else {
+				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+			}
+			
+			moveHistory.addMove(move);
+			movesMade++;
+			return true;
+			
+		} else if (movingPiece instanceof King) {
+			
+			// remove king from source square and place on target square
+			chessBoard.placePieceOnSquare(null, sourceSquare);
+			chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+			
+			// castling KingSide
+			if (move.isCastling() && targetSquare > sourceSquare) {
+				// place kingside rook
+				chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(targetSquare + 1), sourceSquare + 1);
+				chessBoard.placePieceOnSquare(null, targetSquare + 1);
+			} 
+			// castling QueenSide
+			else if (move.isCastling()){
+				// place queenside rook
+				chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(targetSquare - 2), sourceSquare - 1);
+				chessBoard.placePieceOnSquare(null, targetSquare - 2);
+			}
+			moveHistory.addMove(move);
+			movesMade++;
+			return true;
+			
+		} else {
+			
+			// the piece is a knight, a bishop, a rook, or a queen (no special moves)
+			chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+			chessBoard.placePieceOnSquare(null, sourceSquare);
+			moveHistory.addMove(move);
+			movesMade++;
+			return true;
+			
+		}
+	}
+	// move is not valid at this time or maybe it is never a valid move
+	return false;
+	
+}
+
+	/**
+	
+	Some things might change:
+		1. We may want to call isCheckmateOrStalemate() from within this method at the end so that 
+			availableMoves is updated for the next move.  isCheckmateOrStalemate() could be called from 
+			within the ChessGame constructor.  That way we don't have to rely on the controller to do it.
+		
+		2. The return type of makeMove might change from boolean to int.  We could return 0 if the game 
+			should continue as normal, 1 for checkmate or stalemate, 2 for invalid move (no piece at source 
+			square), and so on.
+			
+	Issues: TradeOff between functionality and efficiency
+		1.  MoveFactory does not validate a move.  In other words, the move it creates might be completely 
+			disallowed according to the general behavior of the piece(a pawn jumping 7 rows capturing a king 
+			the very first move of the game) or it may be a valid move but just not available in the context 
+			of the current game (a pawn moving up one row but now the opponents bishop could capture the king).
+			There is no way to differentiate the two.
+			
+		2.  Method does not look into whether the piece that the user is trying to move belongs to the 
+			opponent.  I.e. it is not their turn.  We could probably solve this but might not be worth the time.
+			
+		3.  Method isn't able to check if move can't be made for other reasons such as user must get out of check.
+
+	**/

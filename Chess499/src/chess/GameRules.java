@@ -156,7 +156,7 @@ public class GameRules {
 		if(currentSquare == startingKingPosition) {
 			if ( movingPiece instanceof King && ((King) movingPiece).getMotioned() == 0) {
 				
-				if (!kingInCheck(movingPiece.getColor(), chessBoard)) {
+				if (!isKingInCheck(movingPiece.getColor(), chessBoard)) {
 					// KingSide Castling
 					if (chessBoard.getPieceOnSquare(startingKingPosition + 1) == null && chessBoard.getPieceOnSquare(startingKingPosition + 2) == null) {
 						if ((kingSideRook = chessBoard.getPieceOnSquare(startingKingPosition + 3)) instanceof Rook) {
@@ -164,10 +164,10 @@ public class GameRules {
 								
 								chessBoard.placePieceOnSquare(null, startingKingPosition);
 								chessBoard.placePieceOnSquare(movingPiece, startingKingPosition + 1);
-								if (!kingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition + 1, 2, chessBoard)) {
+								if (!isKingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition + 1, 2, chessBoard)) {
 									chessBoard.placePieceOnSquare(null, startingKingPosition + 1);
 									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition + 2);
-									if(!kingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition + 2, 2, chessBoard)) {
+									if(!isKingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition + 2, 2, chessBoard)) {
 										chessBoard.placePieceOnSquare(null, startingKingPosition + 2);
 										chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 										// old code - Move castleKingSideMove = new Move(startingKingPosition, startingKingPosition + 2, movingPiece, null, false, false, true);
@@ -190,10 +190,10 @@ public class GameRules {
 							if (((Rook) queenSideRook).getMotioned() == 0) {
 								chessBoard.placePieceOnSquare(null, startingKingPosition);
 								chessBoard.placePieceOnSquare(movingPiece, startingKingPosition - 1);
-								if (!kingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition - 1, 6, chessBoard)) {
+								if (!isKingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition - 1, 6, chessBoard)) {
 									chessBoard.placePieceOnSquare(null, startingKingPosition - 1);
 									chessBoard.placePieceOnSquare(movingPiece, startingKingPosition - 2);
-									if(!kingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition - 2, 6, chessBoard)) {
+									if(!isKingInCheck(movingPiece.getColor(), chessBoard) && !kingInBorderingSquare(startingKingPosition - 2, 6, chessBoard)) {
 										chessBoard.placePieceOnSquare(null, startingKingPosition - 2);
 										chessBoard.placePieceOnSquare(movingPiece, startingKingPosition);
 										//Move castleQueenSideMove = new Move(startingKingPosition, startingKingPosition - 2, movingPiece, null, false, false, true);
@@ -294,7 +294,7 @@ public class GameRules {
 			chessBoard.placePieceOnSquare(null, destinationSquare - (8 * player.getBoardPerspective()));
 		}
 		
-		if (kingInCheck(player, chessBoard)) {
+		if (isKingInCheck(player, chessBoard)) {
 			abandoningKing = true;
 		}
 		
@@ -342,7 +342,7 @@ public class GameRules {
 	 * @param chessBoard
 	 * @return
 	 */
-	public boolean kingInCheck(Color player, ChessBoard chessBoard) {
+	public boolean isKingInCheck(Color player, ChessBoard chessBoard) {
 		
 		int kingLocation;
 		

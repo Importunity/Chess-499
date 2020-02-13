@@ -40,7 +40,7 @@ public class Test {
 			
 			moveCounter++;
 		}
-		if (game.kingInCheck(Color.values()[moveCounter%2])) {
+		if (game.isKingInCheck(Color.values()[moveCounter%2])) {
 			System.out.println(Color.values()[(moveCounter - 1)%2] + " wins.");
 		} else {
 			System.out.println("Draw: Stalemate.");

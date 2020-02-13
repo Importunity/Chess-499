@@ -43,18 +43,22 @@ public class ChessGame {
 	}
 	
 	/**
+	 * This method accepts a source square and a target square which represents the move a user wants to make.
+	 * 	It will make the move if the move is a valid move in the context of the current game.  
 	 * 
 	 * @param sourceSquare
 	 * @param targetSquare
-	 * @return
+	 * @return	true or false, move made or move unable to be made
 	 */
 	public boolean makeMove(int sourceSquare, int targetSquare) {
 		
+		// create Move object
 		Move move = MoveFactory.getInstance().createMove(sourceSquare, targetSquare, chessBoard, moveHistory.getLastMoveMade());
 		if (move == null) {
+			// sourceSquare didn't even have a piece on it
 			return false;
 		}
-		
+
 		if (availableMoves.isAvailable(move)) {
 			ChessPiece movingPiece = move.getMovingPiece();
 			if(movingPiece instanceof Pawn) {
@@ -71,13 +75,15 @@ public class ChessGame {
 				movesMade++;
 				return true;
 			} else if (movingPiece instanceof King) {
-				
-				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 				chessBoard.placePieceOnSquare(null, sourceSquare);
+				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+				// castling KingSide
 				if (move.isCastling() && targetSquare > sourceSquare) {
 					chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(targetSquare + 1), sourceSquare + 1);
 					chessBoard.placePieceOnSquare(null, targetSquare + 1);
-				} else if (move.isCastling()){
+				} 
+				// castling QueenSide
+				else if (move.isCastling()){
 					chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(targetSquare - 2), sourceSquare - 1);
 					chessBoard.placePieceOnSquare(null, targetSquare - 2);
 				}
@@ -116,11 +122,13 @@ public class ChessGame {
 	 * @param player
 	 * @return
 	 */
-	public boolean kingInCheck(Color player) {
-		return GameRules.getInstance().kingInCheck(player, chessBoard);
+	public boolean isKingInCheck(Color player) {
+		return GameRules.getInstance().isKingInCheck(player, chessBoard);
 	}
 	
 	/**
+	 * This method must be called called prior to each move.  
+	 * It updates the available moves for the player and will also detect if the game is over.
 	 * 
 	 * @param player
 	 * @return
@@ -129,7 +137,10 @@ public class ChessGame {
 
 		ArrayList<Move> allPossibleMoves = new ArrayList<Move>();
 		ArrayList<Move> possibleMovesForPiece;
+		
+		// For each square of chessboard
 		for (int i = 0; i < 64; i++) {
+			
 			ChessPiece piece = chessBoard.getPieceOnSquare(i);
 			if (piece != null) {
 				if(piece.getColor() == player) {
