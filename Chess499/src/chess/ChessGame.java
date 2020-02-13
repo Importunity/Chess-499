@@ -1,7 +1,7 @@
 package chess;
 
 import java.util.ArrayList;
-//import java.util.Iterator;
+import java.util.Iterator;
 
 /**
  * 
@@ -173,14 +173,22 @@ public class ChessGame {
 		if (allPossibleMoves.isEmpty()) {
 			return true;
 		}
-		/** IF YOU WANT TO PRINT OUT ALL AVAILABLE MOVES USE THIS CODE
+		// IF YOU WANT TO PRINT OUT ALL AVAILABLE MOVES USE THIS CODE
 		else {
+			int row = 0;
+			String output = "";
 			Iterator<Move> it = allPossibleMoves.iterator();
 			while (it.hasNext()) {
-				System.out.println(it.next());
+				if(row % 3 == 0){
+					output += "\n";
+				}
+				output += "[ " + it.next() + " ]";
+				row++;
 			}
+			output += "\n";
+			System.out.println(output);
 		}
-		**/
+		
 		return false;
 	}
 	
