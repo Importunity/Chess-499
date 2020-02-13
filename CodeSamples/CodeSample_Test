@@ -1,0 +1,66 @@
+package test;
+
+import java.util.Scanner;
+
+import chess.*;
+
+/**
+ * For iteration one this is how we are testing the code.  We are simply playing a game.  
+ * 	The program quits once the game is over. 
+ *
+ * @author Luke Newman
+ *
+ */
+public class Test {
+	/**
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		ChessGame game = new ChessGame();
+		ChessBoard board = game.getChessBoard();
+		System.out.println(board.toString());
+		
+		Scanner input = new Scanner(System.in);
+		
+		// Keep track of number of moves
+		int moveCounter = 0;
+		
+		// While game is not in checkmate or stalemate - White moves first, then black ( mod 2 )
+		while (!game.isCheckmateOrStalemate(Color.values()[moveCounter%2])) {
+			
+			System.out.println("Enter the square number of the piece you'd like to move.");
+			int sourceSquare = input.nextInt();
+			System.out.println("Enter the square number of the square you'd like to move it to.");
+			int targetSquare = input.nextInt();
+			
+			// We loop until a successful move
+			while (!game.makeMove(sourceSquare, targetSquare)) {
+				System.out.println("INVALID MOVE: Try Again.\n");
+				System.out.println("Enter the square number of the piece you'd like to move.");
+				sourceSquare = input.nextInt();
+				System.out.println("Enter the square number of the square you'd like to move it to.");
+				targetSquare = input.nextInt();
+			}
+			
+			// print the move just made
+			System.out.println(game.lastMove());
+			// print the board to show update
+			System.out.println(board.toString());
+			
+			moveCounter++;
+		}
+		
+		// Game is over check and print results
+		if (game.isKingInCheck(Color.values()[moveCounter%2])) {
+			System.out.println(Color.values()[(moveCounter - 1)%2] + " wins.");
+		} else {
+			System.out.println("Draw: Stalemate.");
+		}
+		
+		input.close();
+		
+	}
+
+}

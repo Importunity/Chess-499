@@ -1,0 +1,606 @@
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn
+            40            41            42            43            44            45            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King  WHITE Bishop  WHITE Knight    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+12
+Enter the square number of the square you'd like to move it to.
+28
+WHITE Pawn from 12 to 28    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn
+            40            41            42            43            44            45            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27    WHITE Pawn            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn            12    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King  WHITE Bishop  WHITE Knight    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+51
+Enter the square number of the square you'd like to move it to.
+35
+BLACK Pawn from 51 to 35    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn
+            40            41            42            43            44            45            46            47
+            32            33            34    BLACK Pawn            36            37            38            39
+            24            25            26            27    WHITE Pawn            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn            12    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King  WHITE Bishop  WHITE Knight    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+28
+Enter the square number of the square you'd like to move it to.
+36
+WHITE Pawn from 28 to 36    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn
+            40            41            42            43            44            45            46            47
+            32            33            34    BLACK Pawn    WHITE Pawn            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn            12    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King  WHITE Bishop  WHITE Knight    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+35
+Enter the square number of the square you'd like to move it to.
+27
+BLACK Pawn from 35 to 27    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn
+            40            41            42            43            44            45            46            47
+            32            33            34            35    WHITE Pawn            37            38            39
+            24            25            26    BLACK Pawn            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn            12    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King  WHITE Bishop  WHITE Knight    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+53
+Enter the square number of the square you'd like to move it to.
+37
+INVALID MOVE: Try Again.
+
+Enter the square number of the piece you'd like to move.
+5
+Enter the square number of the square you'd like to move it to.
+12
+WHITE Bishop from 5 to 12    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn    BLACK Pawn    BLACK Pawn    BLACK Pawn
+            40            41            42            43            44            45            46            47
+            32            33            34            35    WHITE Pawn            37            38            39
+            24            25            26    BLACK Pawn            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King             5  WHITE Knight    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+53
+Enter the square number of the square you'd like to move it to.
+37
+BLACK Pawn from 53 to 37    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53    BLACK Pawn    BLACK Pawn
+            40            41            42            43            44            45            46            47
+            32            33            34            35    WHITE Pawn    BLACK Pawn            38            39
+            24            25            26    BLACK Pawn            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King             5  WHITE Knight    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+36
+Enter the square number of the square you'd like to move it to.
+45
+WHITE Pawn from 36 to 45  capturing BLACK Pawn ep  
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53    BLACK Pawn    BLACK Pawn
+            40            41            42            43            44    WHITE Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26    BLACK Pawn            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King             5  WHITE Knight    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+54
+Enter the square number of the square you'd like to move it to.
+45
+BLACK Pawn from 54 to 45  capturing WHITE Pawn   
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40            41            42            43            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26    BLACK Pawn            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King             5  WHITE Knight    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+6
+Enter the square number of the square you'd like to move it to.
+21
+WHITE Knight from 6 to 21    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40            41            42            43            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26    BLACK Pawn            28            29            30            31
+            16            17            18            19            20  WHITE Knight            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King             5             6    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+27
+Enter the square number of the square you'd like to move it to.
+19
+BLACK Pawn from 27 to 19    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40            41            42            43            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18    BLACK Pawn            20  WHITE Knight            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen    WHITE King             5             6    WHITE Rook
+
+Enter the square number of the piece you'd like to move.
+4
+Enter the square number of the square you'd like to move it to.
+6
+WHITE King from 4 to 6    castling
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40            41            42            43            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18    BLACK Pawn            20  WHITE Knight            22            23
+    WHITE Pawn    WHITE Pawn    WHITE Pawn    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+19
+Enter the square number of the square you'd like to move it to.
+10
+BLACK Pawn from 19 to 10  capturing WHITE Pawn   
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40            41            42            43            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20  WHITE Knight            22            23
+    WHITE Pawn    WHITE Pawn    BLACK Pawn    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop   WHITE Queen             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+3
+Enter the square number of the square you'd like to move it to.
+4
+WHITE Queen from 3 to 4    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40            41            42            43            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20  WHITE Knight            22            23
+    WHITE Pawn    WHITE Pawn    BLACK Pawn    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook  WHITE Knight  WHITE Bishop             3   WHITE Queen    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+10
+Enter the square number of the square you'd like to move it to.
+1
+BLACK Pawn from 10 to 1  capturing WHITE Knight  +Q 
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40            41            42            43            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20  WHITE Knight            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook   BLACK Queen  WHITE Bishop             3   WHITE Queen    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+57
+Enter the square number of the square you'd like to move it to.
+42
+INVALID MOVE: Try Again.
+
+Enter the square number of the piece you'd like to move.
+21
+Enter the square number of the square you'd like to move it to.
+36
+WHITE Knight from 21 to 36    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn    BLACK Pawn    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40            41            42            43            44    BLACK Pawn            46            47
+            32            33            34            35  WHITE Knight            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook   BLACK Queen  WHITE Bishop             3   WHITE Queen    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+49
+Enter the square number of the square you'd like to move it to.
+41
+BLACK Pawn from 49 to 41    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40    BLACK Pawn            42            43            44    BLACK Pawn            46            47
+            32            33            34            35  WHITE Knight            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook   BLACK Queen  WHITE Bishop             3   WHITE Queen    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+4
+Enter the square number of the square you'd like to move it to.
+3
+WHITE Queen from 4 to 3    
+    BLACK Rook  BLACK Knight  BLACK Bishop   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40    BLACK Pawn            42            43            44    BLACK Pawn            46            47
+            32            33            34            35  WHITE Knight            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook   BLACK Queen  WHITE Bishop   WHITE Queen             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+58
+Enter the square number of the square you'd like to move it to.
+40
+BLACK Bishop from 58 to 40    
+    BLACK Rook  BLACK Knight            58   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+  BLACK Bishop    BLACK Pawn            42            43            44    BLACK Pawn            46            47
+            32            33            34            35  WHITE Knight            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook   BLACK Queen  WHITE Bishop   WHITE Queen             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+3
+Enter the square number of the square you'd like to move it to.
+17
+WHITE Queen from 3 to 17    
+    BLACK Rook  BLACK Knight            58   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+  BLACK Bishop    BLACK Pawn            42            43            44    BLACK Pawn            46            47
+            32            33            34            35  WHITE Knight            37            38            39
+            24            25            26            27            28            29            30            31
+            16   WHITE Queen            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  WHITE Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook   BLACK Queen  WHITE Bishop             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+40
+Enter the square number of the square you'd like to move it to.
+12
+BLACK Bishop from 40 to 12  capturing WHITE Bishop   
+    BLACK Rook  BLACK Knight            58   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40    BLACK Pawn            42            43            44    BLACK Pawn            46            47
+            32            33            34            35  WHITE Knight            37            38            39
+            24            25            26            27            28            29            30            31
+            16   WHITE Queen            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook   BLACK Queen  WHITE Bishop             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+36
+Enter the square number of the square you'd like to move it to.
+26
+WHITE Knight from 36 to 26    
+    BLACK Rook  BLACK Knight            58   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40    BLACK Pawn            42            43            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25  WHITE Knight            27            28            29            30            31
+            16   WHITE Queen            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook   BLACK Queen  WHITE Bishop             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+1
+Enter the square number of the square you'd like to move it to.
+2
+BLACK Queen from 1 to 2  capturing WHITE Bishop   
+    BLACK Rook  BLACK Knight            58   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40    BLACK Pawn            42            43            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25  WHITE Knight            27            28            29            30            31
+            16   WHITE Queen            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+26
+Enter the square number of the square you'd like to move it to.
+43
+WHITE Knight from 26 to 43    
+    BLACK Rook  BLACK Knight            58   BLACK Queen    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40    BLACK Pawn            42  WHITE Knight            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16   WHITE Queen            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+2
+Enter the square number of the square you'd like to move it to.
+5
+INVALID MOVE: Try Again.
+
+Enter the square number of the piece you'd like to move.
+59
+Enter the square number of the square you'd like to move it to.
+43
+BLACK Queen from 59 to 43  capturing WHITE Knight   
+    BLACK Rook  BLACK Knight            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40    BLACK Pawn            42   BLACK Queen            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16   WHITE Queen            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+17
+Enter the square number of the square you'd like to move it to.
+25
+WHITE Queen from 17 to 25    
+    BLACK Rook  BLACK Knight            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51    BLACK Pawn            53            54    BLACK Pawn
+            40    BLACK Pawn            42   BLACK Queen            44    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24   WHITE Queen            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+52
+Enter the square number of the square you'd like to move it to.
+44
+BLACK Pawn from 52 to 44    
+    BLACK Rook  BLACK Knight            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn            42   BLACK Queen    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24   WHITE Queen            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+25
+Enter the square number of the square you'd like to move it to.
+33
+WHITE Queen from 25 to 33    
+    BLACK Rook  BLACK Knight            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn            42   BLACK Queen    BLACK Pawn    BLACK Pawn            46            47
+            32   WHITE Queen            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+2
+Enter the square number of the square you'd like to move it to.
+5
+INVALID MOVE: Try Again.
+
+Enter the square number of the piece you'd like to move.
+57
+Enter the square number of the square you'd like to move it to.
+42
+BLACK Knight from 57 to 42    
+    BLACK Rook            57            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn  BLACK Knight   BLACK Queen    BLACK Pawn    BLACK Pawn            46            47
+            32   WHITE Queen            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+25
+Enter the square number of the square you'd like to move it to.
+42
+INVALID MOVE: Try Again.
+
+Enter the square number of the piece you'd like to move.
+33
+Enter the square number of the square you'd like to move it to.
+42
+WHITE Queen from 33 to 42  capturing BLACK Knight   
+    BLACK Rook            57            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   WHITE Queen   BLACK Queen    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+2
+Enter the square number of the square you'd like to move it to.
+5
+INVALID MOVE: Try Again.
+
+Enter the square number of the piece you'd like to move.
+43
+Enter the square number of the square you'd like to move it to.
+42
+BLACK Queen from 43 to 42  capturing WHITE Queen   
+    BLACK Rook            57            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21            22            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn    WHITE Pawn    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+14
+Enter the square number of the square you'd like to move it to.
+22
+WHITE Pawn from 14 to 22    
+    BLACK Rook            57            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21    WHITE Pawn            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+    WHITE Rook             1   BLACK Queen             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+2
+Enter the square number of the square you'd like to move it to.
+5
+BLACK Queen from 2 to 5  capturing WHITE Rook   
+    BLACK Rook            57            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21    WHITE Pawn            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+    WHITE Rook             1             2             3             4   BLACK Queen    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+0
+Enter the square number of the square you'd like to move it to.
+5
+WHITE Rook from 0 to 5  capturing BLACK Queen   
+    BLACK Rook            57            58            59    BLACK King  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21    WHITE Pawn            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+             0             1             2             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+60
+Enter the square number of the square you'd like to move it to.
+58
+BLACK King from 60 to 58    castling
+            56            57    BLACK King    BLACK Rook            60  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+            24            25            26            27            28            29            30            31
+            16            17            18            19            20            21    WHITE Pawn            23
+    WHITE Pawn    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+             0             1             2             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+8
+Enter the square number of the square you'd like to move it to.
+24
+WHITE Pawn from 8 to 24    
+            56            57    BLACK King    BLACK Rook            60  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+    WHITE Pawn            25            26            27            28            29            30            31
+            16            17            18            19            20            21    WHITE Pawn            23
+             8    WHITE Pawn            10    WHITE Pawn  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+             0             1             2             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+59
+Enter the square number of the square you'd like to move it to.
+11
+BLACK Rook from 59 to 11  capturing WHITE Pawn   
+            56            57    BLACK King            59            60  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+    WHITE Pawn            25            26            27            28            29            30            31
+            16            17            18            19            20            21    WHITE Pawn            23
+             8    WHITE Pawn            10    BLACK Rook  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+             0             1             2             3             4    WHITE Rook    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+5
+Enter the square number of the square you'd like to move it to.
+2
+WHITE Rook from 5 to 2    
+            56            57    BLACK King            59            60  BLACK Bishop  BLACK Knight    BLACK Rook
+    BLACK Pawn            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+            32            33            34            35            36            37            38            39
+    WHITE Pawn            25            26            27            28            29            30            31
+            16            17            18            19            20            21    WHITE Pawn            23
+             8    WHITE Pawn            10    BLACK Rook  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+             0             1    WHITE Rook             3             4             5    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+48
+Enter the square number of the square you'd like to move it to.
+32
+BLACK Pawn from 48 to 32    
+            56            57    BLACK King            59            60  BLACK Bishop  BLACK Knight    BLACK Rook
+            48            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+    BLACK Pawn            33            34            35            36            37            38            39
+    WHITE Pawn            25            26            27            28            29            30            31
+            16            17            18            19            20            21    WHITE Pawn            23
+             8    WHITE Pawn            10    BLACK Rook  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+             0             1    WHITE Rook             3             4             5    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+2
+Enter the square number of the square you'd like to move it to.
+18
+WHITE Rook from 2 to 18    
+            56            57    BLACK King            59            60  BLACK Bishop  BLACK Knight    BLACK Rook
+            48            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+    BLACK Pawn            33            34            35            36            37            38            39
+    WHITE Pawn            25            26            27            28            29            30            31
+            16            17    WHITE Rook            19            20            21    WHITE Pawn            23
+             8    WHITE Pawn            10    BLACK Rook  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+             0             1             2             3             4             5    WHITE King             7
+
+Enter the square number of the piece you'd like to move.
+11
+Enter the square number of the square you'd like to move it to.
+3
+BLACK Rook from 11 to 3    
+            56            57    BLACK King            59            60  BLACK Bishop  BLACK Knight    BLACK Rook
+            48            49    BLACK Pawn            51            52            53            54    BLACK Pawn
+            40    BLACK Pawn   BLACK Queen            43    BLACK Pawn    BLACK Pawn            46            47
+    BLACK Pawn            33            34            35            36            37            38            39
+    WHITE Pawn            25            26            27            28            29            30            31
+            16            17    WHITE Rook            19            20            21    WHITE Pawn            23
+             8    WHITE Pawn            10            11  BLACK Bishop    WHITE Pawn            14    WHITE Pawn
+             0             1             2    BLACK Rook             4             5    WHITE King             7
+
+BLACK wins.
