@@ -45,6 +45,14 @@ public class Move {
 	 * 
 	 * @return
 	 */
+	public ChessPiece getCapturedPiece() {
+		return capturedPiece;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getSource() {
 		return source;
 	}

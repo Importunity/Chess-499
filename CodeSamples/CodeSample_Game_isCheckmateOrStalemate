@@ -1,0 +1,90 @@
+
+This method belongs to the ChessGame class.
+
+/**
+ * This method must be called called prior to each move.  It updates the available moves for the player 
+ *  and will also detect if the game is over.
+ *
+ * @param player
+ * @return
+ */
+public boolean isCheckmateOrStalemate(Color player) {
+
+	ArrayList<Move> allPossibleMoves = new ArrayList<Move>();
+	ArrayList<Move> possibleMovesForPiece;
+	
+	// for each square of the chessboard 
+	for (int i = 0; i < 64; i++) {
+		
+		// obtain piece
+		ChessPiece piece = chessBoard.getPieceOnSquare(i);
+		
+		if (piece != null) {
+			
+			// within this block we have a White or Black chesspiece
+			if(piece.getColor() == player) {
+				
+				// 1. get possible moves for piece, 2. update the available moves for the upcoming move, 
+				// and 3. add it to the allPossibleMoves array
+				
+				if (piece instanceof Pawn) {
+					possibleMovesForPiece = GameRules.getInstance().getPossiblePawnMoves(i, chessBoard, moveHistory.getLastMoveMade());
+					availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
+					allPossibleMoves.addAll(possibleMovesForPiece);
+				}
+				else if(piece instanceof Knight) {
+					possibleMovesForPiece = GameRules.getInstance().getPossibleKnightMoves(i, chessBoard);
+					availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
+					allPossibleMoves.addAll(possibleMovesForPiece);
+				}
+				else if(piece instanceof Bishop || piece instanceof Rook || piece instanceof Queen) {
+					possibleMovesForPiece = GameRules.getInstance().getPossibleQRBMoves(i, chessBoard);
+					availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
+					allPossibleMoves.addAll(possibleMovesForPiece);				
+				}
+				else if(piece instanceof King) {
+					possibleMovesForPiece = GameRules.getInstance().getPossibleKingMoves(i, chessBoard);
+					availableMoves.updateAvailableMoves(piece, possibleMovesForPiece);
+					allPossibleMoves.addAll(possibleMovesForPiece);
+				}
+				
+			} else {
+				// it is not the other players turn so we clear all available moves for their pieces
+				availableMoves.clearAvailableMovesForPiece(piece);
+			}
+			
+		}
+	}
+	
+	if (allPossibleMoves.isEmpty()) {
+		// it is a checkmate or stalemate
+		return true;
+	}
+	
+	/** IF YOU WANT TO PRINT OUT ALL AVAILABLE MOVES USE THIS CODE
+	else {
+		Iterator<Move> it = allPossibleMoves.iterator();
+		while (it.hasNext()) {
+			System.out.println(it.next());
+		}
+	}
+	**/
+	
+	// game continues
+	return false;
+}
+	
+	/**
+	An alternate and more efficient way to implement the isCheckmateOrStalemate method 
+		would be to just keep track of the number of possible moves.  However, we may want to log 
+		all the available moves for each turn which is why I have chosen the former way.
+	
+	int numberOfPossibleMoves = 0;
+	
+	for each piece
+		numberOfPossibleMoves += possibleMovesForPiece.size();
+	
+	if (numberOfPossibleMoves == 0){
+		return true;
+	}
+	**/
