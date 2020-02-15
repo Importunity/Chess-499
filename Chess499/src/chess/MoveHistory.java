@@ -9,13 +9,14 @@ import java.util.Stack;
 public class MoveHistory {
 	
 	private Stack<Move> historyOfMoves;
-	//private Stack<Move> undoneMoves;
+	private Stack<Move> undoneMoves;
 	
 	/**
 	 * 
 	 */
 	public MoveHistory() {
 		historyOfMoves = new Stack<Move>();
+		undoneMoves = new Stack<>();
 	}
 	
 	/**
@@ -30,7 +31,9 @@ public class MoveHistory {
 			((Rook) movingPiece).motion();
 		}
 		historyOfMoves.push(move);
-		//undoneMoves.clear();
+		if (!undoneMoves.empty()) {
+			undoneMoves.clear();
+		}
 	}
 	
 	/**
@@ -43,17 +46,43 @@ public class MoveHistory {
 		}
 		return historyOfMoves.peek();
 	}
+	
 	/**
+	 * 
+	 */
 	public void undoMove() {
 		if(!historyOfMoves.isEmpty()) {
-			undoneMoves.push(historyOfMoves.pop());
+			Move moveUndone = historyOfMoves.pop();
+			ChessPiece movingPiece = moveUndone.getMovingPiece();
+			if(movingPiece instanceof King) {
+				((King) movingPiece).unmotion(); 
+			} else if (movingPiece instanceof Rook) {
+				((Rook) movingPiece).unMotion();
+			}
+			undoneMoves.push(moveUndone);
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void redoMove() {
 		if(!undoneMoves.isEmpty()) {
-			historyOfMoves.push(undoneMoves.pop());
+			Move moveRedone = undoneMoves.pop();
+			ChessPiece movingPiece = moveRedone.getMovingPiece();
+			if (movingPiece instanceof King) {
+				((King) movingPiece).motion();
+			} else if (movingPiece instanceof Rook) {
+				((Rook) movingPiece).motion();
+			}
+			historyOfMoves.push(moveRedone);
 		}
 	}
-	**/
+	
+	public Move getLastMoveUndone() {
+		if(undoneMoves.empty()) {
+			return null;
+		}
+		return undoneMoves.peek();
+	}
 }

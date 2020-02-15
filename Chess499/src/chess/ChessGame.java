@@ -100,7 +100,103 @@ public class ChessGame {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * 
+	 */
+	public boolean undoMove() {
+		Move moveToUndo = moveHistory.getLastMoveMade();
+		if (moveToUndo == null) {
+			return false;
+		}
+		ChessPiece movedPiece = moveToUndo.getMovingPiece();
+		ChessPiece capturedPiece = moveToUndo.getCapturedPiece();
+		int previousSourceSquare = moveToUndo.getSource();
+		int previousDestinationSquare = moveToUndo.getDestination();
+		
+		if (movedPiece instanceof Pawn) {
+			chessBoard.placePieceOnSquare(null, previousDestinationSquare);
+			chessBoard.placePieceOnSquare(movedPiece, previousSourceSquare);
+			if(moveToUndo.isEnPassant()) {
+				chessBoard.placePieceOnSquare(capturedPiece, previousDestinationSquare - (8 * movedPiece.getColor().getBoardPerspective()));
+			} else if(capturedPiece != null) {
+				chessBoard.placePieceOnSquare(capturedPiece, previousDestinationSquare);
+			}
+			moveHistory.undoMove();
+			movesMade--;
+		} else if(movedPiece instanceof King) {
+			chessBoard.placePieceOnSquare(capturedPiece, previousDestinationSquare);
+			chessBoard.placePieceOnSquare(movedPiece, previousSourceSquare);
+			// undoing a KingSide castle
+			if (moveToUndo.isCastling() && previousDestinationSquare > previousSourceSquare) {
+				chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(previousDestinationSquare - 1), previousDestinationSquare + 1);
+				chessBoard.placePieceOnSquare(null, previousDestinationSquare - 1);
+			} 
+			// undoing a QueenSide castle
+			else if(moveToUndo.isCastling()) { 
+				chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(previousDestinationSquare + 1), previousDestinationSquare - 2);
+				chessBoard.placePieceOnSquare(null, previousDestinationSquare + 1);
+			}
+			moveHistory.undoMove();
+			movesMade--;
+		} else {
+			chessBoard.placePieceOnSquare(capturedPiece, previousDestinationSquare);
+			chessBoard.placePieceOnSquare(movedPiece, previousSourceSquare);
+			moveHistory.undoMove();
+			movesMade--;
+		}
+		return true;
+	}
+	
+	/**
+	 * 
+	 */
+	public boolean redoMove() {
+		Move moveToRedo = moveHistory.getLastMoveUndone();
+		if (moveToRedo == null) {
+			return false;
+		}
+		
+		ChessPiece movingPiece = moveToRedo.getMovingPiece();
+		int sourceSquare = moveToRedo.getSource();
+		int targetSquare = moveToRedo.getDestination();
+		
+		if(movingPiece instanceof Pawn) {
+			chessBoard.placePieceOnSquare(null, sourceSquare);
+			if (moveToRedo.isPawnPromotion()) {
+				chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor(), true), targetSquare);
+			} else if(moveToRedo.isEnPassant()){
+				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+				chessBoard.placePieceOnSquare(null, targetSquare - (8 * movingPiece.getColor().getBoardPerspective()));
+			} else {
+				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+			}
+			moveHistory.redoMove();
+			movesMade++;
+		} else if (movingPiece instanceof King) {
+			chessBoard.placePieceOnSquare(null, sourceSquare);
+			chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+			// castling KingSide
+			if (moveToRedo.isCastling() && targetSquare > sourceSquare) {
+				chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(targetSquare + 1), sourceSquare + 1);
+				chessBoard.placePieceOnSquare(null, targetSquare + 1);
+			} 
+			// castling QueenSide
+			else if (moveToRedo.isCastling()){
+				chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(targetSquare - 2), sourceSquare - 1);
+				chessBoard.placePieceOnSquare(null, targetSquare - 2);
+			}
+			moveHistory.redoMove();
+			movesMade++;
+		} else {
+			chessBoard.placePieceOnSquare(movingPiece, targetSquare);
+			chessBoard.placePieceOnSquare(null, sourceSquare);
+			moveHistory.redoMove();
+			movesMade++;
+		}
+		return true;
+	}
+	
 	/**
 	 * 
 	 * @return
