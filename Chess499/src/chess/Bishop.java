@@ -18,6 +18,6 @@ public class Bishop extends ChessPiece {
 	 * 
 	 */
 	public String toString() {
-		return color.toString() + " Bishop";
+		return super.toString() + "Bishop";
 	}
 }

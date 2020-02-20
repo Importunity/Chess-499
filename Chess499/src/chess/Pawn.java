@@ -19,6 +19,6 @@ public class Pawn extends ChessPiece {
 	 * 
 	 */
 	public String toString() {
-		return color.toString() + " Pawn";
+		return super.toString() + "Pawn";
 	}
 }

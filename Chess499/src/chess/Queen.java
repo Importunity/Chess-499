@@ -39,6 +39,6 @@ public class Queen extends ChessPiece {
 	 * 
 	 */
 	public String toString() {
-		return color.toString() + " Queen";
+		return super.toString() + "Queen";
 	}
 }
