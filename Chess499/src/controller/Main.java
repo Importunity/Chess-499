@@ -35,15 +35,15 @@ public class Main extends Application{
 		
 		// All this block of code will be moved to a new class HistoryOfMovesUI in the view package
 		TableView<String> historyOfMoves = new TableView<String>();
-		historyOfMoves.setBorder(new Border(new BorderStroke(Paint.valueOf("Orange"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.FULL)));
+		historyOfMoves.setBorder(new Border(new BorderStroke(Paint.valueOf("Gold"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.FULL)));
 		historyOfMoves.setVisible(true);
 		TableColumn<String, Move> whiteMoves = new TableColumn<String, Move>("White");
 		TableColumn<String, Move> blackMoves = new TableColumn<String, Move>("Black");
-		whiteMoves.setPrefWidth(50);
-		blackMoves.setPrefWidth(50);
+		whiteMoves.setPrefWidth(75);
+		blackMoves.setPrefWidth(75);
 		historyOfMoves.getColumns().add(whiteMoves);
 		historyOfMoves.getColumns().add(blackMoves);
-		historyOfMoves.setPrefSize(100, 100);
+		historyOfMoves.setPrefSize(150, 200);
 		
 		// HBox for undo and redo moves, and score, and timer
 		HBox hbox1 = new HBox();

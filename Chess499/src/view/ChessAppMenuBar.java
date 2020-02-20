@@ -47,5 +47,6 @@ public class ChessAppMenuBar extends MenuBar{
 		
 		MenuItem flipBoard = new MenuItem("Flip Board");
 		viewMenu.getItems().add(flipBoard);
+		flipBoard.setOnAction(eventHandler);
 	}
 }

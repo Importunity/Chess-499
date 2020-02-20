@@ -13,9 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
-import view.ChessBoardUI.SquarePane;
 
 public class GameController {
 
@@ -49,24 +49,9 @@ public class GameController {
 		for (int i = 0; i < 64; i++) {
 			if ((piece = game.getChessBoard().getPieceOnSquare(i)) != null) {
 				ImageView pieceImage = ChessPieceImages.getImageView(piece.toString());
-				SquarePane pane = board.getSquarePane(i % 8, 7 - (i / 8));
-				List<Node> list = pane.getChildren();
-				Node capturedPiece = null;
-				for (Node node: list) {
-					if(node instanceof ImageView) {
-						capturedPiece = node;
-					}
-				}
-				if (capturedPiece != null) {
-					pane.getChildren().remove(capturedPiece);
-				}
-				pane.getChildren().add(pieceImage);
-				
+				board.add(pieceImage, i);
 			} else {
-				SquarePane pane = board.getSquarePane(i % 8, 7 - (i / 8));
-				pane.getChildren().clear();
-				pane.getChildren().add(new Label(pane.getID() + ""));
-				pane.getChildren().get(0).setVisible(false);
+				board.clearImageFromSquare(i);
 			}
 		}
 	}
@@ -85,19 +70,20 @@ public class GameController {
 		
 		@Override
 		public void handle(MouseEvent event) {
-			SquarePane square = (SquarePane) event.getSource();
+			StackPane square = (StackPane) event.getSource();
+			int squareID = board.getSquareID(square);
 			if (sourceSquare == -1) {
-				if(game.hasAvailableMove(square.getID())) {
-					targetSquares = game.getAvailableTargetSquares(square.getID());
+				if(game.hasAvailableMove(squareID)) {
+					targetSquares = game.getAvailableTargetSquares(squareID);
 					if (!targetSquares.isEmpty()) {
-						sourceSquare = square.getID();
+						sourceSquare = squareID;
 						System.out.println(sourceSquare);
 					}
 				}
 				
 			}
 			else {
-				targetSquare = square.getID();
+				targetSquare = squareID;
 				
 				if (targetSquares.contains( (Integer) targetSquare)) {
 					System.out.println(targetSquare);
@@ -129,6 +115,10 @@ public class GameController {
 			case "New Game":
 				game = new ChessGame();
 				game.isCheckmateOrStalemate(Color.WHITE);
+				updateBoard();
+				break;
+			case "Flip Board":
+				board.flipBoard();
 				updateBoard();
 				break;
 			default:
