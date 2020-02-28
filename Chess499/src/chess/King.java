@@ -43,6 +43,6 @@ public class King extends ChessPiece{
 	 * 
 	 */
 	public String toString() {
-		return color.toString() + " King";
+		return super.toString() + "King";
 	}
 }

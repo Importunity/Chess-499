@@ -43,6 +43,41 @@ public class ChessGame {
 	}
 	
 	/**
+	 * 
+	 * @param squareNumber
+	 * @return
+	 */
+	public boolean hasAvailableMove(int squareNumber) {
+		ChessPiece pieceAttemptingToMove = chessBoard.getPieceOnSquare(squareNumber);
+		if (pieceAttemptingToMove == null) {
+			return false;
+		}
+		if (availableMoves.hasAvailable(pieceAttemptingToMove)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param sourceSquare
+	 * @return
+	 */
+	public ArrayList<Integer> getAvailableTargetSquares(int sourceSquare) {
+		ChessPiece pieceAttemptingToMove = chessBoard.getPieceOnSquare(sourceSquare);
+		ArrayList<Integer> targetSquares = new ArrayList<Integer>();
+		if (pieceAttemptingToMove == null) {
+			return targetSquares;
+		}
+		ArrayList<Move> movesAvailable = availableMoves.getMovesForPiece(pieceAttemptingToMove);
+		for(Move move: movesAvailable) {
+			targetSquares.add(move.getDestination());
+		}
+		return targetSquares;
+	}
+	
+	/**
 	 * This method accepts a source square and a target square which represents the move a user wants to make.
 	 * 	It will make the move if the move is a valid move in the context of the current game.  
 	 * 

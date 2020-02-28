@@ -43,6 +43,6 @@ public class Rook extends ChessPiece {
 	 * 
 	 */
 	public String toString() {
-		return color + " Rook";
+		return super.toString() + "Rook";
 	}
 }

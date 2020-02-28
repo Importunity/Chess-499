@@ -19,6 +19,6 @@ public class Knight extends ChessPiece {
 	 * 
 	 */
 	public String toString() {
-		return color.toString() + " Knight";
+		return super.toString() + "Knight";
 	}
 }
