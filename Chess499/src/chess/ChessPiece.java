@@ -23,4 +23,11 @@ public abstract class ChessPiece {
 	public Color getColor() {
 		return color;
 	}
+	
+	/**
+	 * 
+	 */
+	public String toString() {
+		return color == Color.WHITE ? "white" : "black";
+	}
 }

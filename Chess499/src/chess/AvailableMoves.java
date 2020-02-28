@@ -40,6 +40,27 @@ public class AvailableMoves {
 	
 	/**
 	 * 
+	 * @param piece
+	 * @return
+	 */
+	public boolean hasAvailable(ChessPiece piece) {
+		if (availableMoves.get(piece) != null) {
+			return !availableMoves.get(piece).isEmpty();
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param piece
+	 * @return
+	 */
+	public ArrayList<Move> getMovesForPiece(ChessPiece piece){
+		return availableMoves.get(piece);
+	}
+	
+	/**
+	 * 
 	 * @param move
 	 * @return
 	 */
