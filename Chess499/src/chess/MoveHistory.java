@@ -1,13 +1,15 @@
 package chess;
 
+import java.io.Serializable;
 import java.util.Stack;
 /**
  * 
  * @author Luke Newman
  *
  */
-public class MoveHistory {
+public class MoveHistory implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private Stack<Move> historyOfMoves;
 	private Stack<Move> undoneMoves;
 	

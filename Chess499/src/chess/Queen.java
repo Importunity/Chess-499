@@ -6,6 +6,7 @@ package chess;
  */
 public class Queen extends ChessPiece {
 	
+	private static final long serialVersionUID = 1L;
 	private boolean promoted;
 	
 	/**

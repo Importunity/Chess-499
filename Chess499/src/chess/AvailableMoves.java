@@ -1,5 +1,6 @@
 package chess;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -8,8 +9,10 @@ import java.util.HashMap;
  * @author Luke Newman
  *
  */
-public class AvailableMoves {
+public class AvailableMoves implements Serializable{
 	
+	
+	private static final long serialVersionUID = 1L;
 	private Map<ChessPiece, ArrayList<Move>> availableMoves;
 	
 	/**

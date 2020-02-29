@@ -1,5 +1,6 @@
 package chess;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -8,8 +9,9 @@ import java.util.Iterator;
  * @author Luke Newman
  *
  */
-public class ChessGame {
+public class ChessGame implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private ChessBoard chessBoard;
 	private int movesMade;
 	private MoveHistory moveHistory;

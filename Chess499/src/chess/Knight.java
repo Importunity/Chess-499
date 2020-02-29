@@ -7,6 +7,8 @@ package chess;
  */
 public class Knight extends ChessPiece {
 	
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 
 	 * @param color
