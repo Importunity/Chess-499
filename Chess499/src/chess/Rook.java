@@ -6,6 +6,7 @@ package chess;
  */
 public class Rook extends ChessPiece {
 	
+	private static final long serialVersionUID = 1L;
 	private int motioned;
 	
 	/**

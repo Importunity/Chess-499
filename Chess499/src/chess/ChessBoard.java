@@ -1,11 +1,15 @@
 package chess;
+
+import java.io.Serializable;
+
 /**
  * 
  * @author Luke Newman
  *
  */
-public class ChessBoard {
+public class ChessBoard implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private Square[][] chessBoard;
 	private int whiteKingPosition;
 	private int blackKingPosition;

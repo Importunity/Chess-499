@@ -30,8 +30,10 @@ public class ChessAppMenuBar extends MenuBar{
 		newGame.setOnAction(eventHandler);
 		MenuItem saveGame = new MenuItem("Save Game");
 		fileMenu.getItems().add(saveGame);
+		saveGame.setOnAction(eventHandler);
 		MenuItem loadGame = new MenuItem("Load Game");
 		fileMenu.getItems().add(loadGame);
+		loadGame.setOnAction(eventHandler);
 		MenuItem setBoard = new MenuItem("Set Board");
 		fileMenu.getItems().add(setBoard);
 		

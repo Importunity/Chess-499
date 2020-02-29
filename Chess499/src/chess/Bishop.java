@@ -1,11 +1,16 @@
 package chess;
+
+import java.io.Serializable;
+
 /**
  * 
  * @author Luke Newman
  *
  */
-public class Bishop extends ChessPiece {
+public class Bishop extends ChessPiece{
 	
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 
 	 * @param color

@@ -1,11 +1,15 @@
 package chess;
+
+import java.io.Serializable;
+
 /**
  * 
  * @author Luke Newman
  *
  */
-public class Move {
+public class Move implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private int source;
 	private int destination;
 	private ChessPiece movingPiece;

@@ -1,11 +1,15 @@
 package chess;
+
+import java.io.Serializable;
+
 /**
  * 
  * @author Luke Newman
  *
  */
-public class Square {
+public class Square implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private int squareNumber;
 	private ChessPiece piece;
 	

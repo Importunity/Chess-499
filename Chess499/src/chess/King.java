@@ -6,6 +6,7 @@ package chess;
  */
 public class King extends ChessPiece{
 	
+	private static final long serialVersionUID = 1L;
 	private int motioned;
 	
 	/**

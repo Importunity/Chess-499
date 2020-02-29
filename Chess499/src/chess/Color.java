@@ -1,10 +1,14 @@
 package chess;
+
+import java.io.Serializable;
+
 /**
  * 
  * @author Luke Newman
  *
  */
-public enum Color {
+public enum Color implements Serializable{
+	
 	WHITE(0, 1, new int[] {7, 1}, 4), BLACK(7, -1, new int []{3, 5}, 60);
 	
 	private int firstRow;

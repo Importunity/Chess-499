@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class GameController {
 
@@ -23,12 +26,14 @@ public class GameController {
 	private ChessGame game;
 	private ChessBoardUI board;
 	private ChessAppMenuBar menu;
+	private Stage stage;
 	
-	public GameController() {
+	public GameController(Stage stage) {
 		// the model
 		game = new ChessGame();
 		game.isCheckmateOrStalemate(Color.WHITE);
 		// the view
+		this.stage = stage;
 		board = new ChessBoardUI(new ChessBoardController());
 		menu = new ChessAppMenuBar(new MenuBarController());
 		ChessPieceImages.setImages();
@@ -119,6 +124,19 @@ public class GameController {
 				break;
 			case "Flip Board":
 				board.flipBoard();
+				updateBoard();
+				break;
+			case "Save Game":
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setInitialDirectory(new File("./ChessGames"));
+				File fileToSave = fileChooser.showSaveDialog(stage);
+				Persistence.getInstance().saveGame(fileToSave, game);
+				break;
+			case "Load Game":
+				FileChooser fileChooserLoad = new FileChooser();
+				fileChooserLoad.setInitialDirectory(new File("./ChessGames"));
+				File fileToLoad = fileChooserLoad.showOpenDialog(stage);
+				game = Persistence.getInstance().loadGame(fileToLoad);
 				updateBoard();
 				break;
 			default:

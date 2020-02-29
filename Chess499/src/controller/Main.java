@@ -55,7 +55,7 @@ public class Main extends Application{
 		VBox vbox2 = new VBox();
 		
 		// Set up a GameController to manage coordination between the view and the model
-		GameController gameController = new GameController();
+		GameController gameController = new GameController(primaryStage);
 		// get the Board UI to place in the scene
 		ChessBoardUI board = gameController.getChessBoardView();
 		
