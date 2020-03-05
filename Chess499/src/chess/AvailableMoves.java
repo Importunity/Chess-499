@@ -3,6 +3,7 @@ package chess;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 import java.util.HashMap;
 /**
  * 
@@ -69,5 +70,28 @@ public class AvailableMoves implements Serializable{
 	 */
 	public boolean isAvailable(Move move) {
 		return availableMoves.get(move.getMovingPiece()).contains(move);
+	}
+	
+	/**
+	 * 
+	 * @param chessMove
+	 * @param chessPiece
+	 * @return
+	 */
+	public ArrayList<Move> getCommonMovesEqualDestination(Move chessMove){
+		ArrayList<Move> movesForDestinationSquare = new ArrayList<Move>();
+		
+		Set<ChessPiece> pieces = availableMoves.keySet();
+		for (ChessPiece piece: pieces) {
+			if (piece.matches(chessMove.getMovingPiece()) && piece != chessMove.getMovingPiece()) {
+				for(Move move: availableMoves.get(piece)) {
+					if (move.getDestination() == chessMove.getDestination() && move.getSource() != chessMove.getSource()) {
+						movesForDestinationSquare.add(move);
+					}
+				}
+			}
+		}
+		
+		return movesForDestinationSquare;
 	}
 }

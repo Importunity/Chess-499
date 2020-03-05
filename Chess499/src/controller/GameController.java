@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
+import view.MoveHistoryTable;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -26,6 +27,7 @@ public class GameController {
 	private ChessGame game;
 	private ChessBoardUI board;
 	private ChessAppMenuBar menu;
+	private MoveHistoryTable moveHistoryTable;
 	private Stage stage;
 	
 	public GameController(Stage stage) {
@@ -36,6 +38,8 @@ public class GameController {
 		this.stage = stage;
 		board = new ChessBoardUI(new ChessBoardController());
 		menu = new ChessAppMenuBar(new MenuBarController());
+		moveHistoryTable = new MoveHistoryTable();
+		
 		ChessPieceImages.setImages();
 		
 		updateBoard();
@@ -47,6 +51,10 @@ public class GameController {
 	
 	public ChessAppMenuBar getMenuBar() {
 		return menu;
+	}
+	
+	public MoveHistoryTable getMoveHistoryTable() {
+		return moveHistoryTable;
 	}
 	
 	public void updateBoard() {
@@ -95,8 +103,9 @@ public class GameController {
 					if(game.makeMove(sourceSquare, targetSquare)) {
 						sourceSquare = -1;
 						targetSquare = -1;
-						game.isCheckmateOrStalemate(Color.values()[game.getMovesMade()%2]);
+						//game.isCheckmateOrStalemate(Color.values()[game.getMovesMade()%2]);
 						updateBoard();
+						moveHistoryTable.addMove(game.getMoveHistory().getLastMoveMade().getNotation());
 					}
 				}else {
 					sourceSquare = -1;

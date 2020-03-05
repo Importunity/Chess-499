@@ -97,6 +97,7 @@ public class ChessGame implements Serializable{
 		}
 
 		if (availableMoves.isAvailable(move)) {
+			ArrayList<Move> commonMoves = null;
 			ChessPiece movingPiece = move.getMovingPiece();
 			if(movingPiece instanceof Pawn) {
 				chessBoard.placePieceOnSquare(null, sourceSquare);
@@ -110,7 +111,6 @@ public class ChessGame implements Serializable{
 				}
 				moveHistory.addMove(move);
 				movesMade++;
-				return true;
 			} else if (movingPiece instanceof King) {
 				chessBoard.placePieceOnSquare(null, sourceSquare);
 				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
@@ -126,14 +126,16 @@ public class ChessGame implements Serializable{
 				}
 				moveHistory.addMove(move);
 				movesMade++;
-				return true;
 			} else {
 				chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 				chessBoard.placePieceOnSquare(null, sourceSquare);
 				moveHistory.addMove(move);
 				movesMade++;
-				return true;
+				commonMoves = availableMoves.getCommonMovesEqualDestination(move);
 			}
+			MoveFactory.getInstance().notateMove(move, chessBoard, commonMoves, isCheckmateOrStalemate(Color.values()[movesMade % 2]));
+			System.out.println(move.getNotation());
+			return true;
 		}
 		return false;
 	}

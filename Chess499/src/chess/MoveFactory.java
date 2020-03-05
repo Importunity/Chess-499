@@ -1,4 +1,7 @@
 package chess;
+
+import java.util.ArrayList;
+
 /**
  * 
  * @author Luke Newman
@@ -71,4 +74,74 @@ public class MoveFactory {
 		return moveAttempt;
 	}
 	
+	/**
+	 * 
+	 * @param move
+	 * @param chessBoard
+	 * @param commonMoves
+	 * @param checkMate
+	 */
+	public void notateMove(Move move, ChessBoard chessBoard, ArrayList<Move> commonMoves, boolean checkMate) {
+		String notation = "";
+		ChessPiece movingPiece = move.getMovingPiece();
+		String destinationRank = String.valueOf(move.getDestination() / 8 + 1);
+		String destinationFile = String.valueOf((char) (move.getDestination() % 8 + 97));
+		String sourceFile = String.valueOf((char) (move.getSource() % 8 + 97));
+		
+		if (movingPiece instanceof Pawn) {
+			
+			notation += move.getCapturedPiece() == null? destinationFile + destinationRank: sourceFile + "x" + destinationFile + destinationRank;
+			notation += move.isPawnPromotion() ? "=Q":"";
+			
+		} else if(movingPiece instanceof King){
+			
+			if (move.isCastling()) {
+				if (move.getDestination() > move.getSource()) {
+					notation += "O-O";
+				} else {
+					notation += "O-O-O";
+				}
+			} else {
+				notation += "K";
+				notation += move.getCapturedPiece() == null? destinationFile + destinationRank: "x" + destinationFile + destinationRank;
+			}
+		} else {
+			
+			notation += movingPiece.getNotation();
+			String sourceRank = String.valueOf(move.getSource() / 8 + 1);
+			boolean commonRank = false;
+			boolean commonFile = false;
+			if (!commonMoves.isEmpty()) {
+				
+				for(Move commonMove: commonMoves) {
+					String sourceFileForCommonMove = String.valueOf( (char) (commonMove.getSource() % 8 + 97));
+					if (sourceFile.contentEquals(sourceFileForCommonMove)) {
+						commonFile = true;
+					}
+					
+					String sourceRankForCommonMove = String.valueOf(commonMove.getSource() / 8 + 1);
+					if (sourceRank.equals(sourceRankForCommonMove)) {
+						commonRank = true;
+					}
+				}
+				if (commonRank || commonFile) {
+					notation += commonRank? sourceFile: "";
+					notation += commonFile? sourceRank: "";
+				} else {
+					notation += sourceFile;
+				}
+				
+				
+			} 
+			notation += move.getCapturedPiece() == null? destinationFile + destinationRank: "x" + destinationFile + destinationRank;
+		}
+		
+		// check for check or checkmate
+		if (checkMate) {
+			notation += "#";
+		}else if (GameRules.getInstance().isKingInCheck(movingPiece.getColor() == Color.BLACK? Color.WHITE:Color.BLACK, chessBoard)) {
+			notation += "+";
+		}
+		move.setNotation(notation);
+	}
 }

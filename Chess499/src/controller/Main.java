@@ -19,6 +19,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
+import view.MoveHistoryTable;
 
 public class Main extends Application{
 	
@@ -33,18 +34,6 @@ public class Main extends Application{
 		ScrollPane logger = new ScrollPane();
 		logger.setMaxWidth(480);
 		
-		// All this block of code will be moved to a new class HistoryOfMovesUI in the view package
-		TableView<String> historyOfMoves = new TableView<String>();
-		historyOfMoves.setBorder(new Border(new BorderStroke(Paint.valueOf("Gold"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.FULL)));
-		historyOfMoves.setVisible(true);
-		TableColumn<String, Move> whiteMoves = new TableColumn<String, Move>("White");
-		TableColumn<String, Move> blackMoves = new TableColumn<String, Move>("Black");
-		whiteMoves.setPrefWidth(75);
-		blackMoves.setPrefWidth(75);
-		historyOfMoves.getColumns().add(whiteMoves);
-		historyOfMoves.getColumns().add(blackMoves);
-		historyOfMoves.setPrefSize(150, 200);
-		
 		// HBox for undo and redo moves, and score, and timer
 		HBox hbox1 = new HBox();
 		// ChessPieceSet box to hold pieces
@@ -58,7 +47,7 @@ public class Main extends Application{
 		GameController gameController = new GameController(primaryStage);
 		// get the Board UI to place in the scene
 		ChessBoardUI board = gameController.getChessBoardView();
-		
+		MoveHistoryTable historyOfMoves = gameController.getMoveHistoryTable();
 		// Set up left side of scene with Board and Logger
 		vbox1.getChildren().add(board);
 		vbox1.getChildren().add(logger);

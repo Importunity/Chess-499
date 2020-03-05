@@ -39,6 +39,13 @@ public class Queen extends ChessPiece {
 	/**
 	 * 
 	 */
+	public String getNotation() {
+		return "Q";
+	}
+	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return super.toString() + "Queen";
 	}
