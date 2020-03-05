@@ -30,6 +30,23 @@ public abstract class ChessPiece implements Serializable{
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public String getNotation() {
+		return "";
+	}
+	
+	/**
+	 * 
+	 * @param piece
+	 * @return
+	 */
+	public boolean matches(ChessPiece piece) {
+		return this.toString().equals(piece.toString());
+	}
+	
+	/**
+	 * 
 	 */
 	public String toString() {
 		return color == Color.WHITE ? "white" : "black";

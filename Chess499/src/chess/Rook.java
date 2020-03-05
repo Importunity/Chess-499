@@ -43,6 +43,13 @@ public class Rook extends ChessPiece {
 	/**
 	 * 
 	 */
+	public String getNotation() {
+		return "R";
+	}
+	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return super.toString() + "Rook";
 	}

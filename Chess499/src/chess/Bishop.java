@@ -1,7 +1,5 @@
 package chess;
 
-import java.io.Serializable;
-
 /**
  * 
  * @author Luke Newman
@@ -17,6 +15,14 @@ public class Bishop extends ChessPiece{
 	 */
 	public Bishop(Color color) {
 		super(color);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getNotation() {
+		return "B";
 	}
 	
 	/**

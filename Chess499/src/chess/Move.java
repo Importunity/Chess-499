@@ -17,6 +17,7 @@ public class Move implements Serializable{
 	private boolean pawnPromotion;
 	private boolean enPassant;
 	private boolean castling;
+	private String notation;
 	
 	/**
 	 * 
@@ -91,6 +92,22 @@ public class Move implements Serializable{
 	 */
 	public boolean isCastling() {
 		return castling;
+	}
+	
+	/**
+	 * 
+	 * @param notation
+	 */
+	public void setNotation(String notation) {
+		this.notation = notation;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getNotation() {
+		return notation;
 	}
 	
 	/**

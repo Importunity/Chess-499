@@ -20,6 +20,13 @@ public class Knight extends ChessPiece {
 	/**
 	 * 
 	 */
+	public String getNotation() {
+		return "N";
+	}
+	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return super.toString() + "Knight";
 	}

@@ -43,6 +43,13 @@ public class King extends ChessPiece{
 	/**
 	 * 
 	 */
+	public String getNotation() {
+		return "K";
+	}
+	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return super.toString() + "King";
 	}
