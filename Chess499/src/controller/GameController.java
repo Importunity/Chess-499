@@ -130,6 +130,7 @@ public class GameController {
 				game = new ChessGame();
 				game.isCheckmateOrStalemate(Color.WHITE);
 				updateBoard();
+				moveHistoryTable.clear();
 				break;
 			case "Flip Board":
 				board.flipBoard();
@@ -146,6 +147,7 @@ public class GameController {
 				fileChooserLoad.setInitialDirectory(new File("./ChessGames"));
 				File fileToLoad = fileChooserLoad.showOpenDialog(stage);
 				game = Persistence.getInstance().loadGame(fileToLoad);
+				moveHistoryTable.loadMoves(game.getMoveHistory().getMovesMade());
 				updateBoard();
 				break;
 			default:

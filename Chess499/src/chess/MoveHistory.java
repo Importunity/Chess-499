@@ -1,6 +1,7 @@
 package chess;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Stack;
 /**
  * 
@@ -86,5 +87,15 @@ public class MoveHistory implements Serializable{
 			return null;
 		}
 		return undoneMoves.peek();
+	}
+	
+	public Stack<String> getMovesMade(){
+		@SuppressWarnings("unchecked")
+		Stack<Move> clone = (Stack <Move>)historyOfMoves.clone();
+		Stack<String> inverted = new Stack<String>();
+		while(!clone.isEmpty()) {
+			inverted.add(clone.pop().getNotation());
+		}
+		return inverted;
 	}
 }
