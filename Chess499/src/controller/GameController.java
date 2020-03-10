@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -18,6 +19,7 @@ import javafx.scene.layout.StackPane;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
 import view.MoveHistoryTable;
+import view.UtilityPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -28,17 +30,20 @@ public class GameController {
 	private ChessBoardUI board;
 	private ChessAppMenuBar menu;
 	private MoveHistoryTable moveHistoryTable;
+	private UtilityPane utilityPane;
 	private Stage stage;
 	
 	public GameController(Stage stage) {
 		// the model
 		game = new ChessGame();
 		game.isCheckmateOrStalemate(Color.WHITE);
-		// the view
+		
 		this.stage = stage;
+		// the view
 		board = new ChessBoardUI(new ChessBoardController());
 		menu = new ChessAppMenuBar(new MenuBarController());
 		moveHistoryTable = new MoveHistoryTable();
+		utilityPane = new UtilityPane(new UtilityPaneController());
 		
 		ChessPieceImages.setImages();
 		
@@ -55,6 +60,10 @@ public class GameController {
 	
 	public MoveHistoryTable getMoveHistoryTable() {
 		return moveHistoryTable;
+	}
+	
+	public UtilityPane getUtilityPane() {
+		return utilityPane;
 	}
 	
 	public void updateBoard() {
@@ -105,7 +114,7 @@ public class GameController {
 						targetSquare = -1;
 						//game.isCheckmateOrStalemate(Color.values()[game.getMovesMade()%2]);
 						updateBoard();
-						moveHistoryTable.addMove(game.getMoveHistory().getLastMoveMade().getNotation());
+						moveHistoryTable.addMove(game.lastMove());
 					}
 				}else {
 					sourceSquare = -1;
@@ -154,6 +163,29 @@ public class GameController {
 				break;	
 			}
 			
+		}
+		
+	}
+	
+	public class UtilityPaneController implements EventHandler<ActionEvent>{
+
+		@Override
+		public void handle(ActionEvent event) {
+			
+			switch( ((Labeled) event.getSource()).getText()) {
+			case "Undo":
+				if (game.undoMove()) {
+					updateBoard();
+					moveHistoryTable.undoMove();
+				}
+				break;
+			case "Redo":
+				if (game.redoMove()) {
+					updateBoard();
+					moveHistoryTable.addMove(game.lastMove());
+				}
+				break;
+			}
 		}
 		
 	}
