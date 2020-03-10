@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
 import view.MoveHistoryTable;
+import view.UtilityPane;
 
 public class Main extends Application{
 	
@@ -34,8 +35,6 @@ public class Main extends Application{
 		ScrollPane logger = new ScrollPane();
 		logger.setMaxWidth(480);
 		
-		// HBox for undo and redo moves, and score, and timer
-		HBox hbox1 = new HBox();
 		// ChessPieceSet box to hold pieces
 		GridPane chessPieceSet = new GridPane();
 		
@@ -48,12 +47,14 @@ public class Main extends Application{
 		// get the Board UI to place in the scene
 		ChessBoardUI board = gameController.getChessBoardView();
 		MoveHistoryTable historyOfMoves = gameController.getMoveHistoryTable();
+		UtilityPane utilityPane = gameController.getUtilityPane();
+		
 		// Set up left side of scene with Board and Logger
 		vbox1.getChildren().add(board);
 		vbox1.getChildren().add(logger);
 		// Set up right side of scene with History of Moves table, undo/redo controls, and the chesspiece set box
 		vbox2.getChildren().add(historyOfMoves);
-		vbox2.getChildren().add(hbox1);
+		vbox2.getChildren().add(utilityPane);
 		vbox2.getChildren().add(chessPieceSet);
 		
 		// get the menu bar

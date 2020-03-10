@@ -184,6 +184,7 @@ public class ChessGame implements Serializable{
 			moveHistory.undoMove();
 			movesMade--;
 		}
+		isCheckmateOrStalemate(Color.values()[movesMade % 2]);
 		return true;
 	}
 	
@@ -233,6 +234,7 @@ public class ChessGame implements Serializable{
 			moveHistory.redoMove();
 			movesMade++;
 		}
+		isCheckmateOrStalemate(Color.values()[movesMade % 2]);
 		return true;
 	}
 	
@@ -241,7 +243,7 @@ public class ChessGame implements Serializable{
 	 * @return
 	 */
 	public String lastMove() {
-		return moveHistory.getLastMoveMade().toString();
+		return moveHistory.getLastMoveMade().getNotation();
 	}
 	
 	/**

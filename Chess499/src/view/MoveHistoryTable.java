@@ -30,6 +30,7 @@ public class MoveHistoryTable extends TableView<ChessMove>{
 		getColumns().add(whiteMovesColumn);
 		getColumns().add(blackMovesColumn);
 		setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		setMaxWidth(300);
 		numberOfMoves = 0;
 	}
 	
@@ -47,6 +48,18 @@ public class MoveHistoryTable extends TableView<ChessMove>{
 			gameMoves.add(newMove);
 		}
 		numberOfMoves++;
+	}
+	
+	public void undoMove() {
+		if (numberOfMoves % 2 == 0) {
+			String whitesMove = gameMoves.remove(gameMoves.size() - 1).getWhiteMove();
+			ChessMove updatedMove = new ChessMove();
+			updatedMove.setWhiteMove(whitesMove);
+			gameMoves.add(updatedMove);
+		} else {
+			gameMoves.remove(gameMoves.size() - 1);
+		}
+		numberOfMoves--;
 	}
 	
 	public void clear() {
