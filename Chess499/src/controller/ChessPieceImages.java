@@ -7,6 +7,11 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class ChessPieceImages {
 	
 
@@ -23,6 +28,9 @@ public class ChessPieceImages {
 	public static Image WHITE_KING;
 	public static Image BLACK_KING;
 	
+	/**
+	 * 
+	 */
 	public static void setImages() {
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\whitePawn.png")){
@@ -122,6 +130,11 @@ public class ChessPieceImages {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param piece
+	 * @return
+	 */
 	public static ImageView getImageView(String piece) {
 		switch(piece) {
 		case "whitePawn":

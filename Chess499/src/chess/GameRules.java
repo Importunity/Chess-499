@@ -2,6 +2,8 @@ package chess;
 
 import java.util.ArrayList;
 /**
+ * GameRules is a singleton class that is the basis for discovering possible moves 
+ * 	given a ChessBoard arrangement.
  * 
  * @author Luke Newman
  *
@@ -19,7 +21,7 @@ public class GameRules {
 	
 	/**
 	 * 
-	 * @return
+	 * @return GameRules object
 	 */
 	public static GameRules getInstance() {
 		if (gameRules == null) {
@@ -29,10 +31,12 @@ public class GameRules {
 	}
 	
 	/**
+	 * Gets all possible moves for a Queen, a Bishop, or a Rook given a current 
+	 * 	ChessBoard object and the square on which the piece resides.
 	 * 
-	 * @param currentSquare
-	 * @param chessBoard
-	 * @return
+	 * @param currentSquare -  the square on which the Queen, Rook, or Bishop resides
+	 * @param chessBoard    -  the current ChessBoard object
+	 * @return				-  a list of moves that are possible for the piece residing on currentSquare
 	 */
 	public ArrayList<Move> getPossibleQRBMoves(int currentSquare, ChessBoard chessBoard){
 		
@@ -91,10 +95,12 @@ public class GameRules {
 	}
 	
 	/**
+	 * Gets all possible moves for a Knight given a current ChessBoard object 
+	 * 	and the square on which the piece resides.
 	 * 
-	 * @param currentSquare
-	 * @param chessBoard
-	 * @return
+	 * @param currentSquare   -  the square on which the Knight resides
+	 * @param chessBoard	  -  the current ChessBoard object
+	 * @return				  -  a list of moves that are possible for the piece residing on currentSquare
 	 */
 	public ArrayList<Move> getPossibleKnightMoves(int currentSquare, ChessBoard chessBoard){
 		
@@ -122,10 +128,12 @@ public class GameRules {
 	}
 	
 	/**
+	 * Gets all possible moves for a King given a current ChessBoard object 
+	 * 	and the square on which the piece resides.
 	 * 
-	 * @param currentSquare
-	 * @param chessBoard
-	 * @return
+	 * @param currentSquare   -  the square on which the King resides
+	 * @param chessBoard	  -  the current ChessBoard object
+	 * @return				  -  a list of moves that are possible for the piece residing on currentSquare
 	 */
 	public ArrayList<Move> getPossibleKingMoves(int currentSquare, ChessBoard chessBoard){
 		
@@ -222,11 +230,13 @@ public class GameRules {
 	}
 	
 	/**
+	 * Gets all possible moves for a Pawn given a current ChessBoard object 
+	 * 	and the square on which the piece resides.
 	 * 
-	 * @param currentSquare
-	 * @param chessBoard
-	 * @param opponentsLastMove
-	 * @return
+	 * @param currentSquare		-   the square on which the Pawn resides
+	 * @param chessBoard		-   the current ChessBoard object
+	 * @param opponentsLastMove	-   the last move that was made in the Game (necessary for en passant)
+	 * @return					-   a list of moves that are possible for the piece residing on currentSquare
 	 */
 	public ArrayList<Move> getPossiblePawnMoves(int currentSquare, ChessBoard chessBoard, Move opponentsLastMove){
 		
@@ -273,13 +283,14 @@ public class GameRules {
 	}
 	
 	/**
+	 * Ensures that a move made would not put the King in check.
 	 * 
-	 * @param originalSquare
-	 * @param destinationSquare
-	 * @param player
-	 * @param chessBoard
-	 * @param enPassant
-	 * @return
+	 * @param originalSquare	- square the piece is moving from
+	 * @param destinationSquare	- square the piece is moving to
+	 * @param player			- the player that is moving a piece (black or white)
+	 * @param chessBoard		- the current ChessBoard object
+	 * @param enPassant			- if the move is an en passant move (capturing isn't consistent with other captures)
+	 * @return 					- true if it's an illegal move, false if it's legal
 	 */
 	private boolean abandoningKing(int originalSquare, int destinationSquare, Color player, ChessBoard chessBoard, boolean enPassant) {
 		
@@ -307,11 +318,12 @@ public class GameRules {
 	}
 	
 	/**
+	 * Ensures, when moving a King, that the opponent's King isn't in an adjacent square.  
 	 * 
-	 * @param destinationSquare
-	 * @param directionMoved
-	 * @param chessBoard
-	 * @return
+	 * @param destinationSquare	- square the King wants to move to
+	 * @param directionMoved	- North, NorthEast, ... (0, 1,...)
+	 * @param chessBoard		- the current ChessBoard object
+	 * @return					- true if the Kings are in adjacent Squares (illegal), false otherwise (might be legal)
 	 */
 	private boolean kingInBorderingSquare(int destinationSquare, int directionMoved, ChessBoard chessBoard) {
 		if(directionMoved % 2 == 0) {
@@ -337,10 +349,14 @@ public class GameRules {
 	}
 	
 	/**
+	 * Determines if the King of the player is in check.  This method can be called from outside 
+	 * 	the GameRules class, as it is very useful.  This is why checking for Kings in adjacent 
+	 * 	squares is a separate private method (there is no need to check for adjacent Kings from 
+	 * 	outside the class).
 	 * 
-	 * @param squareNumber
-	 * @param chessBoard
-	 * @return
+	 * @param player		-   the player whose King's status is in question
+	 * @param chessBoard	-	the current ChessBoard object
+	 * @return				-	true if King is in check, false otherwise
 	 */
 	public boolean isKingInCheck(Color player, ChessBoard chessBoard) {
 		

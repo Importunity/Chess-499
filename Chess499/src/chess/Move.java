@@ -1,6 +1,7 @@
 package chess;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * 
@@ -18,6 +19,7 @@ public class Move implements Serializable{
 	private boolean enPassant;
 	private boolean castling;
 	private String notation;
+	private ArrayList<Move> counterMoves;
 	
 	/**
 	 * 
@@ -36,6 +38,7 @@ public class Move implements Serializable{
 		this.pawnPromotion = pawnPromotion;
 		this.enPassant = enPassant;
 		this.castling = castling;
+		counterMoves = new ArrayList<Move>();
 	}
 	
 	/**
@@ -108,6 +111,21 @@ public class Move implements Serializable{
 	 */
 	public String getNotation() {
 		return notation;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<Move> getCounterMoves() {
+		return counterMoves;
+	}
+	
+	/**
+	 * 
+	 */
+	public void setCounterMoves(ArrayList<Move> counterMoves) {
+		this.counterMoves = counterMoves;
 	}
 	
 	/**
