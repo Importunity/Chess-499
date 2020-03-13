@@ -1,29 +1,29 @@
 package controller;
 
-import chess.Move;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
 import view.MoveHistoryTable;
 import view.UtilityPane;
 
+/**
+ * Main class launches the application.
+ * 
+ * @author Luke Newman
+ *
+ */
 public class Main extends Application{
 	
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Application.launch(args);
 	}

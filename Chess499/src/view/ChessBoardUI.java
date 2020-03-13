@@ -14,6 +14,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class ChessBoardUI extends GridPane{
 	
 	private Background lightSquare = new Background(new BackgroundFill(Color.PAPAYAWHIP, null, null));
@@ -32,7 +37,7 @@ public class ChessBoardUI extends GridPane{
 		flipped = false;
 		for (int i = 0; i < 64; i++) {
 			StackPane square = new StackPane();
-			square.setPrefSize(60, 60);
+			square.setMinSize(60, 60);
 			square.setOnMouseClicked(eventHandler);
 			square.setBackground((i/8) % 2 == 0 && i % 2 == 0 ? lightSquare : (i / 8) % 2 == 1 && i % 2 == 1 ? lightSquare : darkSquare );
 			if (i % 8 == 0) {
@@ -113,6 +118,9 @@ public class ChessBoardUI extends GridPane{
 		return -1;
 	}
 	
+	/**
+	 * 
+	 */
 	public void flipBoard() {
 		if (flipped) {
 			for (int i = 0; i < 8 ; i++) {

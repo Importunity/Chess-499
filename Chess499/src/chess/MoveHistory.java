@@ -1,7 +1,6 @@
 package chess;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Stack;
 /**
  * 
@@ -82,6 +81,10 @@ public class MoveHistory implements Serializable{
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Move getLastMoveUndone() {
 		if(undoneMoves.empty()) {
 			return null;
@@ -89,6 +92,10 @@ public class MoveHistory implements Serializable{
 		return undoneMoves.peek();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Stack<String> getMovesMade(){
 		@SuppressWarnings("unchecked")
 		Stack<Move> clone = (Stack <Move>)historyOfMoves.clone();

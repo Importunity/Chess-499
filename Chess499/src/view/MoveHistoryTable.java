@@ -2,7 +2,6 @@ package view;
 
 import java.util.Stack;
 
-import chess.Move;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
@@ -10,6 +9,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import view.MoveHistoryTable.ChessMove;
 
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class MoveHistoryTable extends TableView<ChessMove>{
 	
 	private int numberOfMoves;
@@ -17,8 +21,9 @@ public class MoveHistoryTable extends TableView<ChessMove>{
 	TableColumn<ChessMove, String> blackMovesColumn;
 	ObservableList<ChessMove> gameMoves;
 	
-	
-	
+	/**
+	 * 
+	 */
 	public MoveHistoryTable() {
 		
 		whiteMovesColumn = new TableColumn<ChessMove, String>("White Moves");
@@ -30,10 +35,16 @@ public class MoveHistoryTable extends TableView<ChessMove>{
 		getColumns().add(whiteMovesColumn);
 		getColumns().add(blackMovesColumn);
 		setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		setMaxWidth(300);
+		setMaxWidth(200);
+		setMinWidth(100);
+		setPrefSize(200,300);
 		numberOfMoves = 0;
 	}
 	
+	/**
+	 * 
+	 * @param move
+	 */
 	public void addMove(String move) {
 		if (numberOfMoves % 2 == 0) {
 			ChessMove newMove = new ChessMove();
@@ -50,6 +61,9 @@ public class MoveHistoryTable extends TableView<ChessMove>{
 		numberOfMoves++;
 	}
 	
+	/**
+	 * 
+	 */
 	public void undoMove() {
 		if (numberOfMoves % 2 == 0) {
 			String whitesMove = gameMoves.remove(gameMoves.size() - 1).getWhiteMove();
@@ -62,11 +76,18 @@ public class MoveHistoryTable extends TableView<ChessMove>{
 		numberOfMoves--;
 	}
 	
+	/**
+	 * 
+	 */
 	public void clear() {
 		numberOfMoves = 0;
 		gameMoves.clear();
 	}
 	
+	/**
+	 * 
+	 * @param moves
+	 */
 	public void loadMoves(Stack<String> moves) {
 		clear();
 		while (!moves.isEmpty()) {
@@ -74,24 +95,44 @@ public class MoveHistoryTable extends TableView<ChessMove>{
 		}
 	}
 	
+	/**
+	 * 
+	 * @author Luke Newman
+	 *
+	 */
 	public class ChessMove{
 		
 		private String whiteMove;
 		private String blackMove;
 		
-		
+		/**
+		 * 
+		 * @return
+		 */
 		public String getWhiteMove() {
 			return whiteMove;
 		}
 		
+		/**
+		 * 
+		 * @return
+		 */
 		public String getBlackMove() {
 			return blackMove;
 		}
 		
+		/**
+		 * 
+		 * @param whiteMove
+		 */
 		public void setWhiteMove(String whiteMove) {
 			this.whiteMove = whiteMove;
 		}
 		
+		/**
+		 * 
+		 * @param blackMove
+		 */
 		public void setBlackMove(String blackMove) {
 			this.blackMove = blackMove;
 		}
