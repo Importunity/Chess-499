@@ -2,15 +2,13 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.Color;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -18,9 +16,15 @@ import javafx.scene.layout.StackPane;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
 import view.MoveHistoryTable;
+import view.UtilityPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class GameController {
 
 
@@ -28,35 +32,70 @@ public class GameController {
 	private ChessBoardUI board;
 	private ChessAppMenuBar menu;
 	private MoveHistoryTable moveHistoryTable;
+	private UtilityPane utilityPane;
 	private Stage stage;
 	
+	private int mode;
+	private static final int HUMAN_MODE = 0;
+	private static final int COMPUTER_MODE_BLACK = 1;
+	private static final int COMPUTER_MODE_WHITE = 2;
+	
+	/**
+	 * 
+	 * @param stage
+	 */
 	public GameController(Stage stage) {
 		// the model
 		game = new ChessGame();
 		game.isCheckmateOrStalemate(Color.WHITE);
-		// the view
+		
 		this.stage = stage;
+		// the view
 		board = new ChessBoardUI(new ChessBoardController());
 		menu = new ChessAppMenuBar(new MenuBarController());
 		moveHistoryTable = new MoveHistoryTable();
+		utilityPane = new UtilityPane(new UtilityPaneController());
 		
 		ChessPieceImages.setImages();
-		
+		mode = HUMAN_MODE;
 		updateBoard();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ChessBoardUI getChessBoardView() {
 		return board;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ChessAppMenuBar getMenuBar() {
 		return menu;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public MoveHistoryTable getMoveHistoryTable() {
 		return moveHistoryTable;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public UtilityPane getUtilityPane() {
+		return utilityPane;
+	}
+	
+	/**
+	 * 
+	 */
 	public void updateBoard() {
 		ChessPiece piece;
 		for (int i = 0; i < 64; i++) {
@@ -69,13 +108,20 @@ public class GameController {
 		}
 	}
 	
-	
+	/**
+	 * 
+	 * @author Luke Newman
+	 *
+	 */
 	public class ChessBoardController implements EventHandler<MouseEvent>{
 		
 		private int sourceSquare;
 		private int targetSquare;
 		ArrayList<Integer> targetSquares = new ArrayList<Integer>();
 		
+		/**
+		 * 
+		 */
 		public ChessBoardController() {
 			sourceSquare = -1;
 			targetSquare = -1;
@@ -90,22 +136,24 @@ public class GameController {
 					targetSquares = game.getAvailableTargetSquares(squareID);
 					if (!targetSquares.isEmpty()) {
 						sourceSquare = squareID;
-						System.out.println(sourceSquare);
 					}
 				}
 				
 			}
 			else {
 				targetSquare = squareID;
-				
 				if (targetSquares.contains( (Integer) targetSquare)) {
-					System.out.println(targetSquare);
 					if(game.makeMove(sourceSquare, targetSquare)) {
 						sourceSquare = -1;
 						targetSquare = -1;
-						//game.isCheckmateOrStalemate(Color.values()[game.getMovesMade()%2]);
 						updateBoard();
-						moveHistoryTable.addMove(game.getMoveHistory().getLastMoveMade().getNotation());
+						moveHistoryTable.addMove(game.lastMove());
+						if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
+							if(game.computerMove()) {
+								moveHistoryTable.addMove(game.lastMove());
+								updateBoard();
+							}
+						}
 					}
 				}else {
 					sourceSquare = -1;
@@ -119,6 +167,11 @@ public class GameController {
 		
 	}
 	
+	/**
+	 * 
+	 * @author Luke Newman
+	 *
+	 */
 	public class MenuBarController implements EventHandler<ActionEvent>{
 
 		@Override
@@ -130,6 +183,8 @@ public class GameController {
 				game = new ChessGame();
 				game.isCheckmateOrStalemate(Color.WHITE);
 				updateBoard();
+				moveHistoryTable.clear();
+				mode = HUMAN_MODE;
 				break;
 			case "Flip Board":
 				board.flipBoard();
@@ -146,12 +201,83 @@ public class GameController {
 				fileChooserLoad.setInitialDirectory(new File("./ChessGames"));
 				File fileToLoad = fileChooserLoad.showOpenDialog(stage);
 				game = Persistence.getInstance().loadGame(fileToLoad);
+				moveHistoryTable.loadMoves(game.getMoveHistory().getMovesMade());
 				updateBoard();
+				mode = HUMAN_MODE;
+				break;
+			case "Play as Black":
+				mode = COMPUTER_MODE_BLACK;
+				if (game.getMovesMade() % 2 == 0) {
+					if(game.computerMove()) {
+						moveHistoryTable.addMove(game.lastMove());
+						updateBoard();
+					}
+				}
+				break;
+			case "Play as White":
+				mode = COMPUTER_MODE_WHITE;
+				if (game.getMovesMade() % 2 == 1) {
+					if(game.computerMove()) {
+						moveHistoryTable.addMove(game.lastMove());
+						updateBoard();
+					}
+				}
+				break;
+			case "Human Mode":
+				mode = HUMAN_MODE;
 				break;
 			default:
 				break;	
 			}
 			
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @author Luke Newman
+	 *
+	 */
+	public class UtilityPaneController implements EventHandler<ActionEvent>{
+
+		@Override
+		public void handle(ActionEvent event) {
+			
+			switch( ((Labeled) event.getSource()).getText()) {
+			case "Undo":
+				if(mode == COMPUTER_MODE_BLACK && game.getMovesMade() < 2) {
+					break;
+				}
+				if (game.undoMove()) {
+					moveHistoryTable.undoMove();
+					if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
+						if (game.undoMove()) {
+							moveHistoryTable.undoMove();
+						}
+					}
+					updateBoard();
+				}
+				break;
+			case "Redo":
+				if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
+					if (game.redoMove()) {
+						moveHistoryTable.addMove(game.lastMove());
+						updateBoard();
+						if(game.redoMove()) {
+							moveHistoryTable.addMove(game.lastMove());
+							updateBoard();
+						}
+					}
+				}else {
+					if(game.redoMove()) {
+						moveHistoryTable.addMove(game.lastMove());
+						updateBoard();
+					}
+				}
+				
+				break;
+			}
 		}
 		
 	}

@@ -8,15 +8,26 @@ import java.io.ObjectOutputStream;
 
 import chess.ChessGame;
 
-
+/**
+ * 
+ * @author Luke Newman
+ *
+ */
 public class Persistence {
 	
 	private static Persistence persistence;
 	
+	/**
+	 * 
+	 */
 	private Persistence() {
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Persistence getInstance() {
 		if (persistence == null) {
 			persistence = new Persistence();
@@ -24,6 +35,11 @@ public class Persistence {
 		return persistence;
 	}
 	
+	/**
+	 * 
+	 * @param fileToSave
+	 * @param chessGame
+	 */
 	public void saveGame(File fileToSave, ChessGame chessGame) {
 		try(	FileOutputStream fileOut = new FileOutputStream(fileToSave);
 				ObjectOutputStream output = new ObjectOutputStream(fileOut);)
@@ -35,6 +51,11 @@ public class Persistence {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param fileToLoad
+	 * @return
+	 */
 	public ChessGame loadGame(File fileToLoad) {
 		
 		try(	FileInputStream fileIn = new FileInputStream(fileToLoad);

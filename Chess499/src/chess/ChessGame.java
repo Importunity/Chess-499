@@ -16,6 +16,7 @@ public class ChessGame implements Serializable{
 	private int movesMade;
 	private MoveHistory moveHistory;
 	private AvailableMoves availableMoves;
+	private Move theNullMove;
 	
 	/**
 	 * 
@@ -26,6 +27,7 @@ public class ChessGame implements Serializable{
 		moveHistory = new MoveHistory();
 		availableMoves = new AvailableMoves();
 		movesMade = 0;
+		theNullMove = new Move(-1, -1, null, null, false, false, false);
 	}
 	
 	/**
@@ -133,8 +135,10 @@ public class ChessGame implements Serializable{
 				movesMade++;
 				commonMoves = availableMoves.getCommonMovesEqualDestination(move);
 			}
+			if (move.getCapturedPiece() != null) {
+				availableMoves.clearAvailableMovesForPiece(move.getCapturedPiece());
+			}
 			MoveFactory.getInstance().notateMove(move, chessBoard, commonMoves, isCheckmateOrStalemate(Color.values()[movesMade % 2]));
-			System.out.println(move.getNotation());
 			return true;
 		}
 		return false;
@@ -142,6 +146,32 @@ public class ChessGame implements Serializable{
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public boolean computerMove() {
+		ArrayList<Move> computerMoves = availableMoves.getAvailableMoves(Color.values()[movesMade % 2]);
+		if (movesMade == 0) {
+			
+			theNullMove.setCounterMoves(computerMoves);
+			// for now we will make random moves (eventually we will pass theNullMove into the minimax algorithm as the root)
+			int randomInt = (int) (Math.random() * theNullMove.getCounterMoves().size());
+			Move moveToMake = theNullMove.getCounterMoves().get(randomInt);
+			makeMove(moveToMake.getSource(), moveToMake.getDestination());
+			return true;
+		} else {
+			if (computerMoves.size() > 0) {
+				int randomInt = (int) (Math.random() * computerMoves.size());
+				Move moveToMake = computerMoves.get(randomInt);
+				makeMove(moveToMake.getSource(), moveToMake.getDestination());
+				return true;
+			}
+			return false;
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
 	 */
 	public boolean undoMove() {
 		Move moveToUndo = moveHistory.getLastMoveMade();
@@ -184,11 +214,13 @@ public class ChessGame implements Serializable{
 			moveHistory.undoMove();
 			movesMade--;
 		}
+		isCheckmateOrStalemate(Color.values()[movesMade % 2]);
 		return true;
 	}
 	
 	/**
 	 * 
+	 * @return
 	 */
 	public boolean redoMove() {
 		Move moveToRedo = moveHistory.getLastMoveUndone();
@@ -233,6 +265,10 @@ public class ChessGame implements Serializable{
 			moveHistory.redoMove();
 			movesMade++;
 		}
+		if (moveToRedo.getCapturedPiece() != null) {
+			availableMoves.clearAvailableMovesForPiece(moveToRedo.getCapturedPiece());
+		}
+		isCheckmateOrStalemate(Color.values()[movesMade % 2]);
 		return true;
 	}
 	
@@ -241,7 +277,7 @@ public class ChessGame implements Serializable{
 	 * @return
 	 */
 	public String lastMove() {
-		return moveHistory.getLastMoveMade().toString();
+		return moveHistory.getLastMoveMade().getNotation();
 	}
 	
 	/**

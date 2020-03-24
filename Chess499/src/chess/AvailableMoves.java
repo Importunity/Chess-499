@@ -74,6 +74,21 @@ public class AvailableMoves implements Serializable{
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public ArrayList<Move> getAvailableMoves(Color player) {
+		ArrayList<Move> playersAvailableMoves = new ArrayList<Move>();
+		Set<ChessPiece> pieces = availableMoves.keySet();
+		for (ChessPiece piece : pieces) {
+			if (piece.getColor() == player) {
+				playersAvailableMoves.addAll((getMovesForPiece(piece)));
+			}
+		}
+		return playersAvailableMoves;
+	}
+	
+	/**
+	 * 
 	 * @param chessMove
 	 * @param chessPiece
 	 * @return
@@ -94,4 +109,5 @@ public class AvailableMoves implements Serializable{
 		
 		return movesForDestinationSquare;
 	}
+	
 }

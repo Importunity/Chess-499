@@ -81,10 +81,28 @@ public class MoveHistory implements Serializable{
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Move getLastMoveUndone() {
 		if(undoneMoves.empty()) {
 			return null;
 		}
 		return undoneMoves.peek();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Stack<String> getMovesMade(){
+		@SuppressWarnings("unchecked")
+		Stack<Move> clone = (Stack <Move>)historyOfMoves.clone();
+		Stack<String> inverted = new Stack<String>();
+		while(!clone.isEmpty()) {
+			inverted.add(clone.pop().getNotation());
+		}
+		return inverted;
 	}
 }
