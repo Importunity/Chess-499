@@ -43,6 +43,11 @@ public class Queen extends ChessPiece {
 		return "Q";
 	}
 	
+	@Override
+	public int getValue() {
+		return 900 * color.getBoardPerspective();
+	}
+	
 	/**
 	 * 
 	 */
