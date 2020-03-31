@@ -19,6 +19,7 @@ public class Move implements Serializable{
 	private boolean enPassant;
 	private boolean castling;
 	private String notation;
+	private int score;
 	private ArrayList<Move> counterMoves;
 	
 	/**
@@ -113,6 +114,21 @@ public class Move implements Serializable{
 		return notation;
 	}
 	
+	/**
+	 * 
+	 * @param score
+	 */
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getScore() {
+		return score;
+	}
 	/**
 	 * 
 	 * @return

@@ -24,6 +24,11 @@ public class Knight extends ChessPiece {
 		return "N";
 	}
 	
+	@Override
+	public int getValue() {
+		return 300 * color.getBoardPerspective();
+	}
+	
 	/**
 	 * 
 	 */

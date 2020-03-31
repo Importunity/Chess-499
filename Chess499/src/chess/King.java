@@ -47,10 +47,17 @@ public class King extends ChessPiece{
 		return "K";
 	}
 	
+	
+	@Override
+	public int getValue() {
+		return 0;
+	}
+	
 	/**
 	 * 
 	 */
 	public String toString() {
 		return super.toString() + "King";
 	}
+
 }
