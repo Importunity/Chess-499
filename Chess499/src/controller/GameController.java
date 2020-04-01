@@ -153,12 +153,7 @@ public class GameController {
 						
 						if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
 							
-							if (game.computerMove()) {
-								
-										moveHistoryTable.addMove(game.lastMove());
-										updateBoard();
-							}
-							/**
+							
 							new Thread(new Runnable() {
 								
 								public void run() {
@@ -176,7 +171,7 @@ public class GameController {
 								}
 										
 							}).start();
-							**/
+							
 						}
 				
 					}
