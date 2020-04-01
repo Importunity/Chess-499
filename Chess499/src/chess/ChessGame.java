@@ -199,9 +199,7 @@ public class ChessGame implements Serializable{
 	public boolean computerMove() {
 		
 		ArrayList<Move> computerMoves = availableMoves.getAvailableMoves(Color.values()[movesMade % 2]);
-		for (Move move: computerMoves) {
-			System.out.println(move);
-		}
+		
 		if (movesMade == 0) {
 			
 			theNullMove.setCounterMoves(computerMoves);
