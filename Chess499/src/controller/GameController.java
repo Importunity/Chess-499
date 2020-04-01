@@ -150,23 +150,35 @@ public class GameController {
 						updateBoard();
 						moveHistoryTable.addMove(game.lastMove());
 						// thanks to https://community.oracle.com/thread/2300778
+						
 						if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
+							
+							if (game.computerMove()) {
+								
+										moveHistoryTable.addMove(game.lastMove());
+										updateBoard();
+							}
+							/**
 							new Thread(new Runnable() {
 								
 								public void run() {
 									
-									game.computerMove();
-									
-									Platform.runLater(new Runnable() {
-										public void run() {
-											moveHistoryTable.addMove(game.lastMove());
-											updateBoard();
-										}
-									});
+									if (game.computerMove()) {
+										Platform.runLater(new Runnable() {
+											public void run() {
+												moveHistoryTable.addMove(game.lastMove());
+												updateBoard();
+											}
+										});
+									}
+											
+											
 								}
-								
+										
 							}).start();
+							**/
 						}
+				
 					}
 					
 					

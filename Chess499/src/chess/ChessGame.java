@@ -105,6 +105,7 @@ public class ChessGame implements Serializable{
 				chessBoard.placePieceOnSquare(null, sourceSquare);
 				if (move.isPawnPromotion()) {
 					chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor(), true), targetSquare);
+					availableMoves.clearAvailableMovesForPiece(movingPiece);
 				} else if(move.isEnPassant()){
 					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 					chessBoard.placePieceOnSquare(null, targetSquare - (8 * movingPiece.getColor().getBoardPerspective()));
@@ -155,6 +156,7 @@ public class ChessGame implements Serializable{
 			chessBoard.placePieceOnSquare(null, move.getSource());
 			if (move.isPawnPromotion()) {
 				chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor(), true), move.getDestination());
+				availableMoves.clearAvailableMovesForPiece(movingPiece);
 			} else if(move.isEnPassant()){
 				chessBoard.placePieceOnSquare(movingPiece, move.getDestination());
 				chessBoard.placePieceOnSquare(null, move.getDestination() - (8 * movingPiece.getColor().getBoardPerspective()));
@@ -217,6 +219,7 @@ public class ChessGame implements Serializable{
 		} else {
 			if (computerMoves.size() > 0) {
 				Move moveJustMade = moveHistory.getLastMoveMade();
+				
 				Move root = new Move(moveJustMade.getSource(), moveJustMade.getDestination(), moveJustMade.getMovingPiece(), 
 						moveJustMade.getCapturedPiece(), moveJustMade.isPawnPromotion(), moveJustMade.isEnPassant(), 
 						moveJustMade.isCastling());
@@ -246,7 +249,6 @@ public class ChessGame implements Serializable{
 	 * @param maximize
 	 */
 	private int minimax(Move move, int depth, int alpha, int beta, boolean maximize) {
-		
 		int eval;
 		if (depth == 0) {
 			return BoardEvaluator.getInstance().evaluate(chessBoard, move);
@@ -278,7 +280,6 @@ public class ChessGame implements Serializable{
 			return maxEval;
 			
 		} else {
-			
 			int minEval = Integer.MAX_VALUE;
 			for (Move counterMove: move.getCounterMoves()) {
 				makeMove(counterMove);

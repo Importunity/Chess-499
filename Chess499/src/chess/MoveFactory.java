@@ -137,10 +137,13 @@ public class MoveFactory {
 		}
 		
 		// check for check or checkmate
-		if (checkMate) {
-			notation += "#";
-		}else if (GameRules.getInstance().isKingInCheck(movingPiece.getColor() == Color.BLACK? Color.WHITE:Color.BLACK, chessBoard)) {
-			notation += "+";
+		if (GameRules.getInstance().isKingInCheck(movingPiece.getColor() == Color.BLACK? Color.WHITE:Color.BLACK, chessBoard)) {
+			
+			if (checkMate) {
+				notation += "#";
+			}else {
+				notation += "+";
+			}
 		}
 		move.setNotation(notation);
 	}
