@@ -2,7 +2,7 @@ package chess;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 /**
  * 
@@ -197,34 +197,18 @@ public class ChessGame implements Serializable{
 	 * @return
 	 */
 	public boolean computerMove() {
-		/**
+		
 		ArrayList<Move> computerMoves = availableMoves.getAvailableMoves(Color.values()[movesMade % 2]);
-		if (movesMade == 0) {
-			
-			theNullMove.setCounterMoves(computerMoves);
-			// for now we will make random moves (eventually we will pass theNullMove into the minimax algorithm as the root)
-			int randomInt = (int) (Math.random() * theNullMove.getCounterMoves().size());
-			Move moveToMake = theNullMove.getCounterMoves().get(randomInt);
-			makeMove(moveToMake.getSource(), moveToMake.getDestination());
-			return true;
-		} else {
-			if (computerMoves.size() > 0) {
-				int randomInt = (int) (Math.random() * computerMoves.size());
-				Move moveToMake = computerMoves.get(randomInt);
-				makeMove(moveToMake.getSource(), moveToMake.getDestination());
-				return true;
-			}
-			return false;
+		for (Move move: computerMoves) {
+			System.out.println(move);
 		}
-		**/
-		ArrayList<Move> computerMoves = availableMoves.getAvailableMoves(Color.values()[movesMade % 2]);
 		if (movesMade == 0) {
 			
 			theNullMove.setCounterMoves(computerMoves);
 			minimax(theNullMove, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
 			
 			computerMoves = theNullMove.getCounterMoves();
-			Move moveToMake = computerMoves.get(0);;
+			Move moveToMake = computerMoves.get((int) (Math.random() * theNullMove.getCounterMoves().size()));
 			for(Move move: computerMoves) {
 				if(move.getScore() > moveToMake.getScore()) {
 					moveToMake = move;
@@ -240,7 +224,7 @@ public class ChessGame implements Serializable{
 						moveJustMade.isCastling());
 				root.setCounterMoves(computerMoves);
 				minimax(root, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, movesMade % 2 == 0? true: false);
-				Move moveToMake = computerMoves.get(0);
+				Move moveToMake = computerMoves.get((int) (Math.random() * root.getCounterMoves().size()));
 				for (Move move: computerMoves) {
 					if (move.getScore() > moveToMake.getScore() && movesMade % 2 == 0) {
 						moveToMake = move;
@@ -489,7 +473,7 @@ public class ChessGame implements Serializable{
 		if (allPossibleMoves.isEmpty()) {
 			return true;
 		}
-		// IF YOU WANT TO PRINT OUT ALL AVAILABLE MOVES USE THIS CODE
+		/** IF YOU WANT TO PRINT OUT ALL AVAILABLE MOVES USE THIS CODE
 		else {
 			int row = 0;
 			String output = "";
@@ -503,7 +487,7 @@ public class ChessGame implements Serializable{
 			}
 			output += "\n";
 			System.out.println(output);
-		}
+		}**/
 		
 		return false;
 	}
