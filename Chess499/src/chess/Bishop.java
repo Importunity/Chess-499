@@ -25,6 +25,11 @@ public class Bishop extends ChessPiece{
 		return "B";
 	}
 	
+	@Override
+	public int getValue() {
+		return 300 * color.getBoardPerspective();
+	}
+	
 	/**
 	 * 
 	 */

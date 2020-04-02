@@ -38,6 +38,12 @@ public abstract class ChessPiece implements Serializable{
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public abstract int getValue();
+	
+	/**
+	 * 
 	 * @param piece
 	 * @return
 	 */

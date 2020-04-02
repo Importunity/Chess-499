@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.Color;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Labeled;
@@ -148,13 +149,34 @@ public class GameController {
 						targetSquare = -1;
 						updateBoard();
 						moveHistoryTable.addMove(game.lastMove());
+						// thanks to https://community.oracle.com/thread/2300778
+						
 						if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
-							if(game.computerMove()) {
-								moveHistoryTable.addMove(game.lastMove());
-								updateBoard();
-							}
+							
+							
+							new Thread(new Runnable() {
+								
+								public void run() {
+									
+									if (game.computerMove()) {
+										Platform.runLater(new Runnable() {
+											public void run() {
+												moveHistoryTable.addMove(game.lastMove());
+												updateBoard();
+											}
+										});
+									}
+											
+											
+								}
+										
+							}).start();
+							
 						}
+				
 					}
+					
+					
 				}else {
 					sourceSquare = -1;
 					targetSquare = -1;
@@ -281,4 +303,5 @@ public class GameController {
 		}
 		
 	}
+	
 }

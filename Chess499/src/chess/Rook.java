@@ -47,6 +47,11 @@ public class Rook extends ChessPiece {
 		return "R";
 	}
 	
+	@Override
+	public int getValue() {
+		return 500 * color.getBoardPerspective();
+	}
+	
 	/**
 	 * 
 	 */

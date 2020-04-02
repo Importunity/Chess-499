@@ -2,7 +2,7 @@ package chess;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 /**
  * 
@@ -105,6 +105,7 @@ public class ChessGame implements Serializable{
 				chessBoard.placePieceOnSquare(null, sourceSquare);
 				if (move.isPawnPromotion()) {
 					chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor(), true), targetSquare);
+					availableMoves.clearAvailableMovesForPiece(movingPiece);
 				} else if(move.isEnPassant()){
 					chessBoard.placePieceOnSquare(movingPiece, targetSquare);
 					chessBoard.placePieceOnSquare(null, targetSquare - (8 * movingPiece.getColor().getBoardPerspective()));
@@ -146,26 +147,153 @@ public class ChessGame implements Serializable{
 	
 	/**
 	 * 
+	 * @param move
+	 */
+	private void makeMove(Move move) {
+		ArrayList<Move> commonMoves = null;
+		ChessPiece movingPiece = move.getMovingPiece();
+		if(movingPiece instanceof Pawn) {
+			chessBoard.placePieceOnSquare(null, move.getSource());
+			if (move.isPawnPromotion()) {
+				chessBoard.placePieceOnSquare(new Queen(movingPiece.getColor(), true), move.getDestination());
+				availableMoves.clearAvailableMovesForPiece(movingPiece);
+			} else if(move.isEnPassant()){
+				chessBoard.placePieceOnSquare(movingPiece, move.getDestination());
+				chessBoard.placePieceOnSquare(null, move.getDestination() - (8 * movingPiece.getColor().getBoardPerspective()));
+			} else {
+				chessBoard.placePieceOnSquare(movingPiece, move.getDestination());
+			}
+			moveHistory.addMove(move);
+			movesMade++;
+		} else if (movingPiece instanceof King) {
+			chessBoard.placePieceOnSquare(null, move.getSource());
+			chessBoard.placePieceOnSquare(movingPiece, move.getDestination());
+			// castling KingSide
+			if (move.isCastling() && move.getDestination() > move.getSource()) {
+				chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(move.getDestination() + 1), move.getSource() + 1);
+				chessBoard.placePieceOnSquare(null, move.getDestination() + 1);
+			} 
+			// castling QueenSide
+			else if (move.isCastling()){
+				chessBoard.placePieceOnSquare(chessBoard.getPieceOnSquare(move.getDestination() - 2), move.getSource() - 1);
+				chessBoard.placePieceOnSquare(null, move.getDestination() - 2);
+			}
+			moveHistory.addMove(move);
+			movesMade++;
+		} else {
+			chessBoard.placePieceOnSquare(movingPiece, move.getDestination());
+			chessBoard.placePieceOnSquare(null, move.getSource());
+			moveHistory.addMove(move);
+			movesMade++;
+			commonMoves = availableMoves.getCommonMovesEqualDestination(move);
+		}
+		if (move.getCapturedPiece() != null) {
+			availableMoves.clearAvailableMovesForPiece(move.getCapturedPiece());
+		}
+		MoveFactory.getInstance().notateMove(move, chessBoard, commonMoves, isCheckmateOrStalemate(Color.values()[movesMade % 2]));
+		move.setCounterMoves(availableMoves.getAvailableMoves(Color.values()[movesMade % 2]));
+	}
+	
+	/**
+	 * 
 	 * @return
 	 */
 	public boolean computerMove() {
+		
 		ArrayList<Move> computerMoves = availableMoves.getAvailableMoves(Color.values()[movesMade % 2]);
+		
 		if (movesMade == 0) {
 			
 			theNullMove.setCounterMoves(computerMoves);
-			// for now we will make random moves (eventually we will pass theNullMove into the minimax algorithm as the root)
-			int randomInt = (int) (Math.random() * theNullMove.getCounterMoves().size());
-			Move moveToMake = theNullMove.getCounterMoves().get(randomInt);
+			minimax(theNullMove, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+			
+			computerMoves = theNullMove.getCounterMoves();
+			Move moveToMake = computerMoves.get((int) (Math.random() * theNullMove.getCounterMoves().size()));
+			for(Move move: computerMoves) {
+				if(move.getScore() > moveToMake.getScore()) {
+					moveToMake = move;
+				}
+			}
 			makeMove(moveToMake.getSource(), moveToMake.getDestination());
 			return true;
 		} else {
 			if (computerMoves.size() > 0) {
-				int randomInt = (int) (Math.random() * computerMoves.size());
-				Move moveToMake = computerMoves.get(randomInt);
+				Move moveJustMade = moveHistory.getLastMoveMade();
+				
+				Move root = new Move(moveJustMade.getSource(), moveJustMade.getDestination(), moveJustMade.getMovingPiece(), 
+						moveJustMade.getCapturedPiece(), moveJustMade.isPawnPromotion(), moveJustMade.isEnPassant(), 
+						moveJustMade.isCastling());
+				root.setCounterMoves(computerMoves);
+				minimax(root, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, movesMade % 2 == 0? true: false);
+				Move moveToMake = computerMoves.get((int) (Math.random() * root.getCounterMoves().size()));
+				for (Move move: computerMoves) {
+					if (move.getScore() > moveToMake.getScore() && movesMade % 2 == 0) {
+						moveToMake = move;
+					}else if (move.getScore() < moveToMake.getScore() && movesMade % 2 != 0) {
+						moveToMake = move;
+					}
+				}
 				makeMove(moveToMake.getSource(), moveToMake.getDestination());
 				return true;
 			}
 			return false;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param move
+	 * @param depth
+	 * @param alpha
+	 * @param beta
+	 * @param maximize
+	 */
+	private int minimax(Move move, int depth, int alpha, int beta, boolean maximize) {
+		int eval;
+		if (depth == 0) {
+			return BoardEvaluator.getInstance().evaluate(chessBoard, move);
+		}
+		
+		if (move.getCounterMoves().size() == 0) {
+			if(move.getNotation().contains("#")) {
+				return move.getMovingPiece().getColor().getBoardPerspective() * Integer.MAX_VALUE;
+			} else {
+				return 0;
+			}
+		}
+		
+		if (maximize) {
+			
+			int maxEval = Integer.MIN_VALUE;
+			for (Move counterMove: move.getCounterMoves()) {
+				makeMove(counterMove);
+				eval = minimax(counterMove, depth - 1, alpha, beta, !maximize);
+				counterMove.setScore(eval);
+				maxEval = Math.max(maxEval, eval);
+				alpha = Math.max(alpha, eval);
+				if (beta < alpha) {
+					undoMove();
+					return maxEval;
+				}
+				undoMove();
+			}
+			return maxEval;
+			
+		} else {
+			int minEval = Integer.MAX_VALUE;
+			for (Move counterMove: move.getCounterMoves()) {
+				makeMove(counterMove);
+				eval = minimax(counterMove, depth - 1, alpha, beta, !maximize);
+				counterMove.setScore(eval);
+				minEval = Math.min(minEval, eval);
+				beta = Math.min(beta, eval);
+				if (beta < alpha) {
+					undoMove();
+					return minEval;
+				}
+				undoMove();
+			}
+			return minEval;
 		}
 	}
 	
@@ -344,7 +472,7 @@ public class ChessGame implements Serializable{
 		if (allPossibleMoves.isEmpty()) {
 			return true;
 		}
-		// IF YOU WANT TO PRINT OUT ALL AVAILABLE MOVES USE THIS CODE
+		/** IF YOU WANT TO PRINT OUT ALL AVAILABLE MOVES USE THIS CODE
 		else {
 			int row = 0;
 			String output = "";
@@ -358,7 +486,7 @@ public class ChessGame implements Serializable{
 			}
 			output += "\n";
 			System.out.println(output);
-		}
+		}**/
 		
 		return false;
 	}
