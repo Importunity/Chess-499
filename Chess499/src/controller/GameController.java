@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import chess.ChessGame;
 import chess.ChessPiece;
@@ -16,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
+import view.LoggerPane;
 import view.MoveHistoryTable;
 import view.UtilityPane;
 import javafx.stage.FileChooser;
@@ -29,12 +31,15 @@ import javafx.stage.Stage;
 public class GameController {
 
 
+	private static GameController gameController;
 	private ChessGame game;
 	private ChessBoardUI board;
 	private ChessAppMenuBar menu;
 	private MoveHistoryTable moveHistoryTable;
 	private UtilityPane utilityPane;
+	private LoggerPane loggerPane;
 	private Stage stage;
+	private Logger chessLogger;
 	
 	private int mode;
 	private static final int HUMAN_MODE = 0;
@@ -45,21 +50,43 @@ public class GameController {
 	 * 
 	 * @param stage
 	 */
-	public GameController(Stage stage) {
+	private GameController() {
+		
+		chessLogger = Logger.getLogger(ChessGame.class.getName());
+		
 		// the model
 		game = new ChessGame();
 		game.isCheckmateOrStalemate(Color.WHITE);
 		
-		this.stage = stage;
 		// the view
 		board = new ChessBoardUI(new ChessBoardController());
 		menu = new ChessAppMenuBar(new MenuBarController());
 		moveHistoryTable = new MoveHistoryTable();
 		utilityPane = new UtilityPane(new UtilityPaneController());
+		loggerPane = new LoggerPane();
 		
 		ChessPieceImages.setImages();
 		mode = HUMAN_MODE;
 		updateBoard();
+	}
+	
+	public static GameController getInstance() {
+		if (gameController == null) {
+			gameController = new GameController();
+		}
+		return gameController;
+	}
+	
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+	
+	public void setLogger() {
+		try {
+			chessLogger.addHandler(ChessLogHandler.getInstance());
+		} catch (Exception ex) {
+			
+		}
 	}
 	
 	/**
@@ -92,6 +119,14 @@ public class GameController {
 	 */
 	public UtilityPane getUtilityPane() {
 		return utilityPane;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public LoggerPane getLoggerPane() {
+		return loggerPane;
 	}
 	
 	/**
@@ -223,6 +258,7 @@ public class GameController {
 				fileChooserLoad.setInitialDirectory(new File("./ChessGames"));
 				File fileToLoad = fileChooserLoad.showOpenDialog(stage);
 				game = Persistence.getInstance().loadGame(fileToLoad);
+				game.setLogger();
 				moveHistoryTable.loadMoves(game.getMoveHistory().getMovesMade());
 				updateBoard();
 				mode = HUMAN_MODE;

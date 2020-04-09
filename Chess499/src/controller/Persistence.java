@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 import chess.ChessGame;
 
 /**
@@ -47,7 +50,7 @@ public class Persistence {
 			output.writeObject(chessGame);
 		} 
 		catch (Exception ex) {
-			
+			Logger.getLogger(ChessGame.class.getName()).log(Level.SEVERE, ex.getMessage());
 		}
 	}
 	
@@ -57,7 +60,6 @@ public class Persistence {
 	 * @return
 	 */
 	public ChessGame loadGame(File fileToLoad) {
-		
 		try(	FileInputStream fileIn = new FileInputStream(fileToLoad);
 				ObjectInputStream input = new ObjectInputStream(fileIn))
 		{
@@ -65,6 +67,7 @@ public class Persistence {
 			return game;
 		}
 		catch (Exception ex) {
+			Logger.getLogger(ChessGame.class.getName()).log(Level.SEVERE, ex.getMessage());
 			return null;
 		}
 		

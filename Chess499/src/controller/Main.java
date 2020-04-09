@@ -2,13 +2,13 @@ package controller;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
+import view.LoggerPane;
 import view.MoveHistoryTable;
 import view.UtilityPane;
 
@@ -31,9 +31,6 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		// pane below the chessboard 
-		ScrollPane logger = new ScrollPane();
-		logger.setMaxWidth(480);
 		
 		// ChessPieceSet box to hold pieces
 		GridPane chessPieceSet = new GridPane();
@@ -43,15 +40,17 @@ public class Main extends Application{
 		VBox vbox2 = new VBox();
 		
 		// Set up a GameController to manage coordination between the view and the model
-		GameController gameController = new GameController(primaryStage);
+		GameController gameController = GameController.getInstance();
+		gameController.setStage(primaryStage);
 		// get the Board UI to place in the scene
 		ChessBoardUI board = gameController.getChessBoardView();
 		MoveHistoryTable historyOfMoves = gameController.getMoveHistoryTable();
 		UtilityPane utilityPane = gameController.getUtilityPane();
-		
+		LoggerPane loggerPane = gameController.getLoggerPane();
+		gameController.setLogger();
 		// Set up left side of scene with Board and Logger
 		vbox1.getChildren().add(board);
-		vbox1.getChildren().add(logger);
+		vbox1.getChildren().add(loggerPane);
 		// Set up right side of scene with History of Moves table, undo/redo controls, and the chesspiece set box
 		vbox2.getChildren().add(historyOfMoves);
 		vbox2.getChildren().add(utilityPane);

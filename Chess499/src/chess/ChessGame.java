@@ -2,6 +2,12 @@ package chess;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import controller.ChessLogHandler;
 
 
 /**
@@ -17,6 +23,7 @@ public class ChessGame implements Serializable{
 	private MoveHistory moveHistory;
 	private AvailableMoves availableMoves;
 	private Move theNullMove;
+	transient private Logger chessLogger;
 	
 	/**
 	 * 
@@ -28,8 +35,13 @@ public class ChessGame implements Serializable{
 		availableMoves = new AvailableMoves();
 		movesMade = 0;
 		theNullMove = new Move(-1, -1, null, null, false, false, false);
+		chessLogger = Logger.getLogger(ChessGame.class.getName());
 	}
 	
+	public void setLogger() {
+		chessLogger = Logger.getLogger(ChessGame.class.getName());
+		
+	}
 	/**
 	 * 
 	 * @return
@@ -140,6 +152,8 @@ public class ChessGame implements Serializable{
 				availableMoves.clearAvailableMovesForPiece(move.getCapturedPiece());
 			}
 			MoveFactory.getInstance().notateMove(move, chessBoard, commonMoves, isCheckmateOrStalemate(Color.values()[movesMade % 2]));
+			chessLogger.log(Level.INFO, availableMoves.getAvailableMoves(Color.values()[movesMade % 2]).toString());
+			
 			return true;
 		}
 		return false;
