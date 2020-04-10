@@ -10,9 +10,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 /**
  * 
@@ -34,10 +40,14 @@ public class ChessBoardUI extends GridPane{
 	 */
 	public ChessBoardUI(EventHandler<MouseEvent> eventHandler) {
 		setPrefSize(480,480);
+		setBorder(new Border(new BorderStroke(Paint.valueOf("firebrick"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
 		flipped = false;
+		styleRanksAndFiles();
 		for (int i = 0; i < 64; i++) {
 			StackPane square = new StackPane();
-			square.setMinSize(60, 60);
+			//square.setMinSize(60, 60);
+			square.prefWidthProperty().bind(widthProperty().divide(8));
+			square.prefHeightProperty().bind(heightProperty().divide(8));
 			square.setOnMouseClicked(eventHandler);
 			square.setBackground((i/8) % 2 == 0 && i % 2 == 0 ? lightSquare : (i / 8) % 2 == 1 && i % 2 == 1 ? lightSquare : darkSquare );
 			if (i % 8 == 0) {
@@ -55,8 +65,19 @@ public class ChessBoardUI extends GridPane{
 			add(square, i%8, i/8);
 			
 		}
+		
 	}
 	
+	private void styleRanksAndFiles() {
+		for (Label label: ranks) {
+			label.setStyle("-fx-font-weight: bold;"
+					+ "-fx-text-fill: darkorange;");
+		}
+		for (Label label: files) {
+			label.setStyle("-fx-font-weight: bold;"
+					+ "-fx-text-fill: darkorange;");
+		}
+	}
 	/**
 	 * 
 	 * @param imageView

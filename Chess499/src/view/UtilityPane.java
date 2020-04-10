@@ -29,7 +29,7 @@ public class UtilityPane extends FlowPane{
 		
 		getChildren().add(undoButton);
 		getChildren().add(redoButton);
-		
+		setPrefSize(200, 200);
 	}
 	
 }

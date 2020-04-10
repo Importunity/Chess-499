@@ -2,12 +2,11 @@ package chess;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import controller.ChessLogHandler;
+import controller.GameController;
 
 
 /**
@@ -23,7 +22,9 @@ public class ChessGame implements Serializable{
 	private MoveHistory moveHistory;
 	private AvailableMoves availableMoves;
 	private Move theNullMove;
+	
 	transient private Logger chessLogger;
+	public transient static final String LOGGER_NAME = "chessLogger";
 	
 	/**
 	 * 
@@ -35,11 +36,11 @@ public class ChessGame implements Serializable{
 		availableMoves = new AvailableMoves();
 		movesMade = 0;
 		theNullMove = new Move(-1, -1, null, null, false, false, false);
-		chessLogger = Logger.getLogger(ChessGame.class.getName());
+		chessLogger = Logger.getLogger(LOGGER_NAME);
 	}
 	
 	public void setLogger() {
-		chessLogger = Logger.getLogger(ChessGame.class.getName());
+		chessLogger = Logger.getLogger(LOGGER_NAME);
 		
 	}
 	/**
@@ -48,6 +49,14 @@ public class ChessGame implements Serializable{
 	 */
 	public int getMovesMade() {
 		return movesMade;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isGameOver() {
+		return availableMoves.getAvailableMoves(Color.values()[movesMade % 2]).size() == 0;
 	}
 	
 	/**
@@ -152,7 +161,7 @@ public class ChessGame implements Serializable{
 				availableMoves.clearAvailableMovesForPiece(move.getCapturedPiece());
 			}
 			MoveFactory.getInstance().notateMove(move, chessBoard, commonMoves, isCheckmateOrStalemate(Color.values()[movesMade % 2]));
-			chessLogger.log(Level.INFO, availableMoves.getAvailableMoves(Color.values()[movesMade % 2]).toString());
+			//chessLogger.log(Level.INFO, availableMoves.getAvailableMoves(Color.values()[movesMade % 2]).toString());
 			
 			return true;
 		}

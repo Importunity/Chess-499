@@ -3,7 +3,10 @@ package controller;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import chess.ChessGame;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -36,97 +39,97 @@ public class ChessPieceImages {
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\whitePawn.png")){
 			WHITE_PAWN = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\blackPawn.png")){
 			BLACK_PAWN = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\whiteRook.png")){
 			WHITE_ROOK = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\blackRook.png")){
 			BLACK_ROOK = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\whiteKnight.png")){
 			WHITE_KNIGHT = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\blackKnight.png")){
 			BLACK_KNIGHT = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\whiteBishop.png")){
 			WHITE_BISHOP = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\blackBishop.png")){
 			BLACK_BISHOP = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\whiteQueen.png")){
 			WHITE_QUEEN = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\blackQueen.png")){
 			BLACK_QUEEN = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\whiteKing.png")){
 			WHITE_KING = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 		
 		try (FileInputStream io = new FileInputStream(".\\chessPieceIcons\\blackKing.png")){
 			BLACK_KING = new Image(io);
 		}catch (FileNotFoundException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}catch (IOException ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
 	}
 	

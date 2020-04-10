@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import chess.ChessGame;
@@ -52,7 +53,7 @@ public class GameController {
 	 */
 	private GameController() {
 		
-		chessLogger = Logger.getLogger(ChessGame.class.getName());
+		chessLogger = Logger.getLogger(ChessGame.LOGGER_NAME);
 		
 		// the model
 		game = new ChessGame();
@@ -184,6 +185,13 @@ public class GameController {
 						targetSquare = -1;
 						updateBoard();
 						moveHistoryTable.addMove(game.lastMove());
+						if (game.isGameOver()) {
+							if (game.lastMove().contains("#")) {
+								chessLogger.log(Level.INFO, "Player " + Color.values()[(1 + game.getMovesMade()) % 2] + " wins!");
+							} else {
+							chessLogger.log(Level.INFO, "Stalemate");
+							}
+						}
 						// thanks to https://community.oracle.com/thread/2300778
 						
 						if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
@@ -198,6 +206,13 @@ public class GameController {
 											public void run() {
 												moveHistoryTable.addMove(game.lastMove());
 												updateBoard();
+												if (game.isGameOver()) {
+													if (game.lastMove().contains("#")) {
+														chessLogger.log(Level.INFO, "Player " + Color.values()[(1 + game.getMovesMade()) % 2] + " wins!");
+													} else {
+													chessLogger.log(Level.INFO, "Stalemate");
+													}
+												}
 											}
 										});
 									}
@@ -238,6 +253,7 @@ public class GameController {
 			switch (sourceObject.getText()) {
 			case "New Game":
 				game = new ChessGame();
+				chessLogger.log(Level.INFO, "Starting New Game!");
 				game.isCheckmateOrStalemate(Color.WHITE);
 				updateBoard();
 				moveHistoryTable.clear();
@@ -251,17 +267,23 @@ public class GameController {
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setInitialDirectory(new File("./ChessGames"));
 				File fileToSave = fileChooser.showSaveDialog(stage);
-				Persistence.getInstance().saveGame(fileToSave, game);
+				if (Persistence.getInstance().saveGame(fileToSave, game)) {
+					chessLogger.log(Level.INFO, "Saved Game Successfully!");
+				}
 				break;
 			case "Load Game":
 				FileChooser fileChooserLoad = new FileChooser();
 				fileChooserLoad.setInitialDirectory(new File("./ChessGames"));
 				File fileToLoad = fileChooserLoad.showOpenDialog(stage);
-				game = Persistence.getInstance().loadGame(fileToLoad);
-				game.setLogger();
-				moveHistoryTable.loadMoves(game.getMoveHistory().getMovesMade());
-				updateBoard();
-				mode = HUMAN_MODE;
+				ChessGame temp = Persistence.getInstance().loadGame(fileToLoad);
+				if (temp != null) {
+					game = temp;
+					game.setLogger();
+					moveHistoryTable.loadMoves(game.getMoveHistory().getMovesMade());
+					updateBoard();
+					mode = HUMAN_MODE;
+					chessLogger.log(Level.INFO, "Game Loaded Successfully!");
+				}
 				break;
 			case "Play as Black":
 				mode = COMPUTER_MODE_BLACK;
@@ -307,25 +329,42 @@ public class GameController {
 				if(mode == COMPUTER_MODE_BLACK && game.getMovesMade() < 2) {
 					break;
 				}
-				if (game.undoMove()) {
+				if (game.lastMove().contains("#")) {
+					if(mode == COMPUTER_MODE_BLACK && game.getMovesMade() % 2 == 0) {
+						game.undoMove();
+						moveHistoryTable.undoMove();
+					}
+					else if (mode == COMPUTER_MODE_WHITE && game.getMovesMade() % 2 == 1) {
+						game.undoMove();
+						moveHistoryTable.undoMove();
+					}
+					else {
+						game.undoMove();
+						moveHistoryTable.undoMove();
+						if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
+							game.undoMove();
+							moveHistoryTable.undoMove();
+						}
+					}
+				}
+				else if (game.undoMove()) {
 					moveHistoryTable.undoMove();
 					if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
 						if (game.undoMove()) {
 							moveHistoryTable.undoMove();
 						}
 					}
-					updateBoard();
 				}
+				updateBoard();
 				break;
 			case "Redo":
 				if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
 					if (game.redoMove()) {
 						moveHistoryTable.addMove(game.lastMove());
-						updateBoard();
 						if(game.redoMove()) {
 							moveHistoryTable.addMove(game.lastMove());
-							updateBoard();
 						}
+						updateBoard();
 					}
 				}else {
 					if(game.redoMove()) {
