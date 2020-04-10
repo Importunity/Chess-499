@@ -43,15 +43,17 @@ public class Persistence {
 	 * @param fileToSave
 	 * @param chessGame
 	 */
-	public void saveGame(File fileToSave, ChessGame chessGame) {
+	public boolean saveGame(File fileToSave, ChessGame chessGame) {
 		try(	FileOutputStream fileOut = new FileOutputStream(fileToSave);
 				ObjectOutputStream output = new ObjectOutputStream(fileOut);)
 		{
 			output.writeObject(chessGame);
+			return true;
 		} 
 		catch (Exception ex) {
-			Logger.getLogger(ChessGame.class.getName()).log(Level.SEVERE, ex.getMessage());
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
+		return false;
 	}
 	
 	/**
@@ -67,7 +69,7 @@ public class Persistence {
 			return game;
 		}
 		catch (Exception ex) {
-			Logger.getLogger(ChessGame.class.getName()).log(Level.SEVERE, ex.getMessage());
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, "There was a problem loading the file.\n" + ex.getMessage());
 			return null;
 		}
 		

@@ -8,15 +8,16 @@ public class LoggerPane extends ScrollPane{
 	private TextArea text;
 	
 	public LoggerPane() {
-		setMaxWidth(480);
 		text = new TextArea();
 		text.setWrapText(true);
 		text.setEditable(false);
+		text.prefWidthProperty().bind(widthProperty());
+		//text.prefHeightProperty().bind(heightProperty());
 		setContent(text);
 	}
 	
 	public void showLog(String info) {
-		text.appendText(info);
+		text.appendText(info + "\n");
 	}
 }
 
