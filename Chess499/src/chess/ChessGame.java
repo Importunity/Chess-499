@@ -69,6 +69,16 @@ public class ChessGame implements Serializable{
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public double getScore() {
+		if (movesMade == 0) {
+			return 0;
+		}
+		return BoardEvaluator.getInstance().evaluate(chessBoard, moveHistory.getLastMoveMade()) / 100.0;
+	}
+	/**
+	 * 
 	 * @param squareNumber
 	 * @return
 	 */

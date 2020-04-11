@@ -41,13 +41,7 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		
-		// ChessPieceSet box to hold pieces
-		GridPane chessPieceSet = new GridPane();
-		
-		// split the border pane into two separate panes
 		VBox vbox1 = new VBox();
-		VBox vbox2 = new VBox();
 		
 		// Set up a GameController to manage coordination between the view and the model
 		GameController gameController = GameController.getInstance();
@@ -58,18 +52,16 @@ public class Main extends Application{
 		UtilityPane utilityPane = gameController.getUtilityPane();
 		LoggerPane loggerPane = gameController.getLoggerPane();
 		gameController.setLogger();
-		// Set up left side of scene with Board and Logger
-		vbox1.getChildren().add(board);
-		//vbox1.getChildren().add(loggerPane);
+		
 		// Set up right side of scene with History of Moves table, undo/redo controls, and the chesspiece set box
-		vbox2.getChildren().add(historyOfMoves);
-		vbox2.getChildren().add(utilityPane);
-		vbox2.getChildren().add(chessPieceSet);
+		vbox1.getChildren().add(historyOfMoves);
+		vbox1.getChildren().add(utilityPane);
 		
 		// get the menu bar
 		ChessAppMenuBar menuBar = gameController.getMenuBar();
 		// root pane of scene
 		BorderPane bp = new BorderPane();
+		
 		HBox hbox = new HBox();
 		hbox.getChildren().add(loggerPane);
 		hbox.setMinHeight(80);
@@ -77,8 +69,8 @@ public class Main extends Application{
 		loggerPane.prefWidthProperty().bind(hbox.widthProperty());
 		loggerPane.prefHeightProperty().bind(hbox.heightProperty());
 		
-		bp.setCenter(vbox1);
-		bp.setRight(vbox2);
+		bp.setCenter(board);
+		bp.setRight(vbox1);
 		bp.setTop(menuBar);
 		bp.setBottom(hbox);
 		bp.setLeft(null);

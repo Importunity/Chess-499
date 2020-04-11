@@ -64,6 +64,7 @@ public class GameController {
 		menu = new ChessAppMenuBar(new MenuBarController());
 		moveHistoryTable = new MoveHistoryTable();
 		utilityPane = new UtilityPane(new UtilityPaneController());
+		utilityPane.setMargins();
 		loggerPane = new LoggerPane();
 		
 		ChessPieceImages.setImages();
@@ -143,6 +144,7 @@ public class GameController {
 				board.clearImageFromSquare(i);
 			}
 		}
+		utilityPane.setScore(game.getScore());
 	}
 	
 	/**
@@ -173,12 +175,14 @@ public class GameController {
 					targetSquares = game.getAvailableTargetSquares(squareID);
 					if (!targetSquares.isEmpty()) {
 						sourceSquare = squareID;
+						board.flipAvailabilityIndicator(targetSquares);
 					}
 				}
 				
 			}
 			else {
 				targetSquare = squareID;
+				board.flipAvailabilityIndicator(targetSquares);
 				if (targetSquares.contains( (Integer) targetSquare)) {
 					if(game.makeMove(sourceSquare, targetSquare)) {
 						sourceSquare = -1;
