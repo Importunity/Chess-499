@@ -2,5 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="Chess499/src"/>
+	<classpathentry kind="lib" path="C:/Users/Luke/Documents/GitHub/Chess-499/javax.mail.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Luke/Documents/GitHub/Chess-499/javax.activation.jar"/>
 	<classpathentry kind="output" path="Chess499/bin"/>
 </classpath>

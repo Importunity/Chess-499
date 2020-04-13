@@ -11,11 +11,18 @@ import chess.Color;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
 import view.LoggerPane;
@@ -23,6 +30,7 @@ import view.MoveHistoryTable;
 import view.UtilityPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.activation.DataHandler;
 
 /**
  * 
@@ -309,6 +317,41 @@ public class GameController {
 				break;
 			case "Human Mode":
 				mode = HUMAN_MODE;
+				break;
+			case "Give Feedback":
+				Stage emailStage = new Stage();
+				VBox box = new VBox();
+				HBox subject = new HBox();
+				HBox body = new HBox();
+				Label subjectLabel = new Label("Subject: ");
+				subjectLabel.setMinWidth(90);
+				Label bodyLabel = new Label("Message: ");
+				bodyLabel.setMinWidth(90);
+				TextField emailSubject = new TextField();
+				TextArea emailBodyMessage = new TextArea();
+				subject.getChildren().add(subjectLabel);
+				subject.getChildren().add(emailSubject);
+				body.getChildren().add(bodyLabel);
+				body.getChildren().add(emailBodyMessage);
+				Button send = new Button("Send");
+				
+				box.getChildren().add(subject);
+				box.getChildren().add(body);
+				box.getChildren().add(send);
+				send.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						SendEmail sm = new SendEmail(emailSubject.getText(), emailBodyMessage.getText());
+						sm.send();
+						emailStage.close();
+					}
+					
+				});
+				
+				Scene emailScene = new Scene(box, 600, 300);
+				emailStage.setScene(emailScene);
+				emailStage.show();
 				break;
 			default:
 				break;	
