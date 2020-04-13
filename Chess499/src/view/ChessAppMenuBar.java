@@ -47,6 +47,9 @@ public class ChessAppMenuBar extends MenuBar{
 		MenuItem loadGame = new MenuItem("Load Game");
 		fileMenu.getItems().add(loadGame);
 		loadGame.setOnAction(eventHandler);
+		MenuItem feedback = new MenuItem("Give Feedback");
+		fileMenu.getItems().add(feedback);
+		feedback.setOnAction(eventHandler);
 		
 		Menu computerMode = new Menu("Play Computer");
 		modeMenu.getItems().add(computerMode);
