@@ -2,6 +2,8 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import chess.ChessGame;
 import chess.ChessPiece;
@@ -16,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import view.ChessAppMenuBar;
 import view.ChessBoardUI;
+import view.LoggerPane;
 import view.MoveHistoryTable;
 import view.UtilityPane;
 import javafx.stage.FileChooser;
@@ -29,12 +32,15 @@ import javafx.stage.Stage;
 public class GameController {
 
 
+	private static GameController gameController;
 	private ChessGame game;
 	private ChessBoardUI board;
 	private ChessAppMenuBar menu;
 	private MoveHistoryTable moveHistoryTable;
 	private UtilityPane utilityPane;
+	private LoggerPane loggerPane;
 	private Stage stage;
+	private Logger chessLogger;
 	
 	private int mode;
 	private static final int HUMAN_MODE = 0;
@@ -45,21 +51,44 @@ public class GameController {
 	 * 
 	 * @param stage
 	 */
-	public GameController(Stage stage) {
+	private GameController() {
+		
+		chessLogger = Logger.getLogger(ChessGame.LOGGER_NAME);
+		
 		// the model
 		game = new ChessGame();
 		game.isCheckmateOrStalemate(Color.WHITE);
 		
-		this.stage = stage;
 		// the view
 		board = new ChessBoardUI(new ChessBoardController());
 		menu = new ChessAppMenuBar(new MenuBarController());
 		moveHistoryTable = new MoveHistoryTable();
 		utilityPane = new UtilityPane(new UtilityPaneController());
+		utilityPane.setMargins();
+		loggerPane = new LoggerPane();
 		
 		ChessPieceImages.setImages();
 		mode = HUMAN_MODE;
 		updateBoard();
+	}
+	
+	public static GameController getInstance() {
+		if (gameController == null) {
+			gameController = new GameController();
+		}
+		return gameController;
+	}
+	
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+	
+	public void setLogger() {
+		try {
+			chessLogger.addHandler(ChessLogHandler.getInstance());
+		} catch (Exception ex) {
+			
+		}
 	}
 	
 	/**
@@ -96,6 +125,14 @@ public class GameController {
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public LoggerPane getLoggerPane() {
+		return loggerPane;
+	}
+	
+	/**
+	 * 
 	 */
 	public void updateBoard() {
 		ChessPiece piece;
@@ -107,6 +144,7 @@ public class GameController {
 				board.clearImageFromSquare(i);
 			}
 		}
+		utilityPane.setScore(game.getScore());
 	}
 	
 	/**
@@ -137,18 +175,27 @@ public class GameController {
 					targetSquares = game.getAvailableTargetSquares(squareID);
 					if (!targetSquares.isEmpty()) {
 						sourceSquare = squareID;
+						board.flipAvailabilityIndicator(targetSquares);
 					}
 				}
 				
 			}
 			else {
 				targetSquare = squareID;
+				board.flipAvailabilityIndicator(targetSquares);
 				if (targetSquares.contains( (Integer) targetSquare)) {
 					if(game.makeMove(sourceSquare, targetSquare)) {
 						sourceSquare = -1;
 						targetSquare = -1;
 						updateBoard();
 						moveHistoryTable.addMove(game.lastMove());
+						if (game.isGameOver()) {
+							if (game.lastMove().contains("#")) {
+								chessLogger.log(Level.INFO, "Player " + Color.values()[(1 + game.getMovesMade()) % 2] + " wins!");
+							} else {
+							chessLogger.log(Level.INFO, "Stalemate");
+							}
+						}
 						// thanks to https://community.oracle.com/thread/2300778
 						
 						if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
@@ -163,6 +210,13 @@ public class GameController {
 											public void run() {
 												moveHistoryTable.addMove(game.lastMove());
 												updateBoard();
+												if (game.isGameOver()) {
+													if (game.lastMove().contains("#")) {
+														chessLogger.log(Level.INFO, "Player " + Color.values()[(1 + game.getMovesMade()) % 2] + " wins!");
+													} else {
+													chessLogger.log(Level.INFO, "Stalemate");
+													}
+												}
 											}
 										});
 									}
@@ -203,6 +257,7 @@ public class GameController {
 			switch (sourceObject.getText()) {
 			case "New Game":
 				game = new ChessGame();
+				chessLogger.log(Level.INFO, "Starting New Game!");
 				game.isCheckmateOrStalemate(Color.WHITE);
 				updateBoard();
 				moveHistoryTable.clear();
@@ -216,16 +271,23 @@ public class GameController {
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setInitialDirectory(new File("./ChessGames"));
 				File fileToSave = fileChooser.showSaveDialog(stage);
-				Persistence.getInstance().saveGame(fileToSave, game);
+				if (Persistence.getInstance().saveGame(fileToSave, game)) {
+					chessLogger.log(Level.INFO, "Saved Game Successfully!");
+				}
 				break;
 			case "Load Game":
 				FileChooser fileChooserLoad = new FileChooser();
 				fileChooserLoad.setInitialDirectory(new File("./ChessGames"));
 				File fileToLoad = fileChooserLoad.showOpenDialog(stage);
-				game = Persistence.getInstance().loadGame(fileToLoad);
-				moveHistoryTable.loadMoves(game.getMoveHistory().getMovesMade());
-				updateBoard();
-				mode = HUMAN_MODE;
+				ChessGame temp = Persistence.getInstance().loadGame(fileToLoad);
+				if (temp != null) {
+					game = temp;
+					game.setLogger();
+					moveHistoryTable.loadMoves(game.getMoveHistory().getMovesMade());
+					updateBoard();
+					mode = HUMAN_MODE;
+					chessLogger.log(Level.INFO, "Game Loaded Successfully!");
+				}
 				break;
 			case "Play as Black":
 				mode = COMPUTER_MODE_BLACK;
@@ -271,25 +333,42 @@ public class GameController {
 				if(mode == COMPUTER_MODE_BLACK && game.getMovesMade() < 2) {
 					break;
 				}
-				if (game.undoMove()) {
+				if (game.lastMove().contains("#")) {
+					if(mode == COMPUTER_MODE_BLACK && game.getMovesMade() % 2 == 0) {
+						game.undoMove();
+						moveHistoryTable.undoMove();
+					}
+					else if (mode == COMPUTER_MODE_WHITE && game.getMovesMade() % 2 == 1) {
+						game.undoMove();
+						moveHistoryTable.undoMove();
+					}
+					else {
+						game.undoMove();
+						moveHistoryTable.undoMove();
+						if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
+							game.undoMove();
+							moveHistoryTable.undoMove();
+						}
+					}
+				}
+				else if (game.undoMove()) {
 					moveHistoryTable.undoMove();
 					if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
 						if (game.undoMove()) {
 							moveHistoryTable.undoMove();
 						}
 					}
-					updateBoard();
 				}
+				updateBoard();
 				break;
 			case "Redo":
 				if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
 					if (game.redoMove()) {
 						moveHistoryTable.addMove(game.lastMove());
-						updateBoard();
 						if(game.redoMove()) {
 							moveHistoryTable.addMove(game.lastMove());
-							updateBoard();
 						}
+						updateBoard();
 					}
 				}else {
 					if(game.redoMove()) {

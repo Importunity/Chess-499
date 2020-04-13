@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 import chess.ChessGame;
 
 /**
@@ -40,15 +43,17 @@ public class Persistence {
 	 * @param fileToSave
 	 * @param chessGame
 	 */
-	public void saveGame(File fileToSave, ChessGame chessGame) {
+	public boolean saveGame(File fileToSave, ChessGame chessGame) {
 		try(	FileOutputStream fileOut = new FileOutputStream(fileToSave);
 				ObjectOutputStream output = new ObjectOutputStream(fileOut);)
 		{
 			output.writeObject(chessGame);
+			return true;
 		} 
 		catch (Exception ex) {
-			
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
 		}
+		return false;
 	}
 	
 	/**
@@ -57,7 +62,6 @@ public class Persistence {
 	 * @return
 	 */
 	public ChessGame loadGame(File fileToLoad) {
-		
 		try(	FileInputStream fileIn = new FileInputStream(fileToLoad);
 				ObjectInputStream input = new ObjectInputStream(fileIn))
 		{
@@ -65,6 +69,7 @@ public class Persistence {
 			return game;
 		}
 		catch (Exception ex) {
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, "There was a problem loading the file.\n" + ex.getMessage());
 			return null;
 		}
 		
