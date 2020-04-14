@@ -320,29 +320,37 @@ public class GameController {
 				break;
 			case "Give Feedback":
 				Stage emailStage = new Stage();
+				
 				VBox box = new VBox();
+				HBox email = new HBox();
 				HBox subject = new HBox();
 				HBox body = new HBox();
+				Label emailLabel = new Label("Your Email: ");
+				emailLabel.setMinWidth(90);
 				Label subjectLabel = new Label("Subject: ");
 				subjectLabel.setMinWidth(90);
 				Label bodyLabel = new Label("Message: ");
 				bodyLabel.setMinWidth(90);
+				TextField emailText = new TextField("Enter your email.");
 				TextField emailSubject = new TextField();
 				TextArea emailBodyMessage = new TextArea();
+				email.getChildren().add(emailLabel);
+				email.getChildren().add(emailText);
 				subject.getChildren().add(subjectLabel);
 				subject.getChildren().add(emailSubject);
 				body.getChildren().add(bodyLabel);
 				body.getChildren().add(emailBodyMessage);
 				Button send = new Button("Send");
-				
+				box.getChildren().add(email);
 				box.getChildren().add(subject);
 				box.getChildren().add(body);
 				box.getChildren().add(send);
+				
 				send.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent event) {
-						SendEmail sm = new SendEmail(emailSubject.getText(), emailBodyMessage.getText());
+						SendEmail sm = new SendEmail(emailSubject.getText(), emailText.getText() + "\n" + emailBodyMessage.getText());
 						sm.send();
 						emailStage.close();
 					}
