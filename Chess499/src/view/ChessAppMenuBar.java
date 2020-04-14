@@ -16,6 +16,7 @@ public class ChessAppMenuBar extends MenuBar{
 	private Menu fileMenu;
 	private Menu modeMenu;
 	private Menu viewMenu;
+	private Menu feedbackMenu;
 	
 	/**
 	 * 
@@ -26,9 +27,10 @@ public class ChessAppMenuBar extends MenuBar{
 		fileMenu = new Menu("File");
 		modeMenu = new Menu("Mode");
 		viewMenu = new Menu("View");
+		feedbackMenu = new Menu("Contact Us");
 		
 		setMenuItems(eventHandler);
-		getMenus().addAll(fileMenu, modeMenu, viewMenu);
+		getMenus().addAll(fileMenu, modeMenu, viewMenu, feedbackMenu);
 		
 	}
 	
@@ -47,8 +49,9 @@ public class ChessAppMenuBar extends MenuBar{
 		MenuItem loadGame = new MenuItem("Load Game");
 		fileMenu.getItems().add(loadGame);
 		loadGame.setOnAction(eventHandler);
+		
 		MenuItem feedback = new MenuItem("Give Feedback");
-		fileMenu.getItems().add(feedback);
+		feedbackMenu.getItems().add(feedback);
 		feedback.setOnAction(eventHandler);
 		
 		Menu computerMode = new Menu("Play Computer");
