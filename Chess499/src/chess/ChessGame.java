@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import controller.GameController;
-
 
 /**
+ * Represents a chess game with its significant subcomponents as instance variables.
  * 
- * @author Luke Newman
+ * @author Luke Newman 2020
  *
  */
+@SuppressWarnings("unused")
 public class ChessGame implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -21,6 +21,7 @@ public class ChessGame implements Serializable{
 	private int movesMade;
 	private MoveHistory moveHistory;
 	private AvailableMoves availableMoves;
+	// serves as the root of the move structure for the minimax algorithm
 	private Move theNullMove;
 	
 	transient private Logger chessLogger;
@@ -505,21 +506,6 @@ public class ChessGame implements Serializable{
 		if (allPossibleMoves.isEmpty()) {
 			return true;
 		}
-		/** IF YOU WANT TO PRINT OUT ALL AVAILABLE MOVES USE THIS CODE
-		else {
-			int row = 0;
-			String output = "";
-			Iterator<Move> it = allPossibleMoves.iterator();
-			while (it.hasNext()) {
-				if(row % 3 == 0){
-					output += "\n";
-				}
-				output += "[ " + it.next() + " ]";
-				row++;
-			}
-			output += "\n";
-			System.out.println(output);
-		}**/
 		
 		return false;
 	}

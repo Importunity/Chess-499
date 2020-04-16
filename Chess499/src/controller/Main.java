@@ -78,7 +78,7 @@ public class Main extends Application{
 		Scene scene = new Scene(bp, 700, 600);
 		bp.prefHeightProperty().bind(scene.heightProperty());
         bp.prefWidthProperty().bind(scene.widthProperty());
-        bp.setBackground(new Background(new BackgroundFill(Color.DARKGREEN, null, null)));
+        bp.setBackground(new Background(new BackgroundFill(Color.DARKSLATEBLUE, null, null)));
 		primaryStage.setTitle("ChessGuys");
 		primaryStage.setScene(scene);
 		primaryStage.show();

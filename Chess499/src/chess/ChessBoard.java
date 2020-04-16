@@ -3,8 +3,12 @@ package chess;
 import java.io.Serializable;
 
 /**
+ * Represents the ChessBoard.  It is a two dimensional 8 x 8 array of Square objects 
+ * 	in which ChessPieces may be placed.  The King positions for both Color.BLACK and 
+ * 	Color.WHITE are kept track of. In all honesty, a one dimensional array of size 
+ * 	64 would probably work and be more efficient but this is what I started with.
  * 
- * @author Luke Newman
+ * @author Luke Newman 2020
  *
  */
 public class ChessBoard implements Serializable{
@@ -132,7 +136,8 @@ public class ChessBoard implements Serializable{
 	}
 	
 	/**
-	 * 
+	 *   I used this method to print out a string representation of the board 
+	 *   	before having a GUI.
 	 */
 	public String toString() {
 		int rowCounter = 7;
