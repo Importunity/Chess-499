@@ -1,8 +1,9 @@
 package chess;
 /**
- * This class is used for obtaining square numbers from a reference square.
+ * This class is used for obtaining square numbers from a reference square. 
+ * 	For example, from square 0 going North you end up on square 8. (0,0) = 8
  * 
- * @author Luke Newman
+ * @author Luke Newman 2020
  *
  */
 public class AdjacentSquares {
@@ -14,8 +15,8 @@ public class AdjacentSquares {
 			{8, 9, 1, -1, -1, -1, -1, -1}, // Square 0
 			{9, 10, 2, -1, -1, -1, 0, 8}, // Square 1
 			{10, 11, 3, -1, -1, -1, 1, 9}, // Square 2
-			{11, 12, 4, -1, -1, -1, 2, 10},
-			{12, 13, 5, -1, -1, -1, 3, 11},
+			{11, 12, 4, -1, -1, -1, 2, 10}, // Square 3
+			{12, 13, 5, -1, -1, -1, 3, 11}, // ...
 			{13, 14, 6, -1, -1, -1, 4, 12},
 			{14, 15, 7, -1, -1, -1, 5, 13},
 			{15, -1, -1, -1, -1, -1, 6, 14},
