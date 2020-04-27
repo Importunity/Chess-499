@@ -19,8 +19,8 @@ public class LoggerPane extends ScrollPane{
 		text.setWrapText(true);
 		text.setEditable(false);
 		text.prefWidthProperty().bind(widthProperty());
-		//text.prefHeightProperty().bind(heightProperty());
 		setContent(text);
+		
 	}
 	
 	public void showLog(String info) {

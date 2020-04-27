@@ -23,6 +23,9 @@ public class ChessGame implements Serializable{
 	private AvailableMoves availableMoves;
 	// serves as the root of the move structure for the minimax algorithm
 	private Move theNullMove;
+	private int depth;
+	public static final int MAX_DEPTH = 4;
+	public static final int MIN_DEPTH = 3;
 	
 	transient private Logger chessLogger;
 	public transient static final String LOGGER_NAME = "chessLogger";
@@ -37,6 +40,7 @@ public class ChessGame implements Serializable{
 		availableMoves = new AvailableMoves();
 		movesMade = 0;
 		theNullMove = new Move(-1, -1, null, null, false, false, false);
+		depth = 3;
 		chessLogger = Logger.getLogger(LOGGER_NAME);
 	}
 	
@@ -78,6 +82,17 @@ public class ChessGame implements Serializable{
 		}
 		return BoardEvaluator.getInstance().evaluate(chessBoard, moveHistory.getLastMoveMade()) / 100.0;
 	}
+	
+	/**
+	 * 
+	 * @param depth
+	 */
+	public void setDepth(int depth) {
+		if (depth <= MAX_DEPTH && depth >= MIN_DEPTH) {
+			this.depth = depth;
+		}
+	}
+	
 	/**
 	 * 
 	 * @param squareNumber
@@ -239,7 +254,7 @@ public class ChessGame implements Serializable{
 		if (movesMade == 0) {
 			
 			theNullMove.setCounterMoves(computerMoves);
-			minimax(theNullMove, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+			minimax(theNullMove, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
 			
 			computerMoves = theNullMove.getCounterMoves();
 			Move moveToMake = computerMoves.get((int) (Math.random() * theNullMove.getCounterMoves().size()));
@@ -258,7 +273,7 @@ public class ChessGame implements Serializable{
 						moveJustMade.getCapturedPiece(), moveJustMade.isPawnPromotion(), moveJustMade.isEnPassant(), 
 						moveJustMade.isCastling());
 				root.setCounterMoves(computerMoves);
-				minimax(root, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, movesMade % 2 == 0? true: false);
+				minimax(root, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, movesMade % 2 == 0? true: false);
 				Move moveToMake = computerMoves.get((int) (Math.random() * root.getCounterMoves().size()));
 				for (Move move: computerMoves) {
 					if (move.getScore() > moveToMake.getScore() && movesMade % 2 == 0) {

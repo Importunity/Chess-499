@@ -1,9 +1,23 @@
 package controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import chess.ChessGame;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
@@ -80,6 +94,16 @@ public class Main extends Application{
         bp.prefWidthProperty().bind(scene.widthProperty());
         bp.setBackground(new Background(new BackgroundFill(Color.DARKSLATEBLUE, null, null)));
 		primaryStage.setTitle("ChessGuys");
+		
+		try (FileInputStream io = new FileInputStream(".\\Images\\ChessHead.png")){
+			Image chessHead = new Image(io);
+			primaryStage.getIcons().add(chessHead);
+		}catch (FileNotFoundException ex) {
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
+		}catch (IOException ex) {
+			Logger.getLogger(ChessGame.LOGGER_NAME).log(Level.SEVERE, ex.getMessage());
+		}
+		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		primaryStage.setResizable(false);

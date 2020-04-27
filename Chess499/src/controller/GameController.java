@@ -49,6 +49,7 @@ public class GameController {
 	private LoggerPane loggerPane;
 	private Stage stage;
 	private Logger chessLogger;
+	private ChessBoardController chessBoardController;
 	
 	private int mode;
 	private static final int HUMAN_MODE = 0;
@@ -67,8 +68,9 @@ public class GameController {
 		game = new ChessGame();
 		game.isCheckmateOrStalemate(Color.WHITE);
 		
+		chessBoardController = new ChessBoardController();
 		// the view
-		board = new ChessBoardUI(new ChessBoardController());
+		board = new ChessBoardUI(chessBoardController);
 		menu = new ChessAppMenuBar(new MenuBarController());
 		moveHistoryTable = new MoveHistoryTable();
 		utilityPane = new UtilityPane(new UtilityPaneController());
@@ -157,10 +159,17 @@ public class GameController {
 	
 	/**
 	 * 
+	 */
+	public void depthChanged(int newDepth) {
+		game.setDepth(newDepth);
+	}
+	
+	/**
+	 * 
 	 * @author Luke Newman
 	 *
 	 */
-	public class ChessBoardController implements EventHandler<MouseEvent>{
+	private class ChessBoardController implements EventHandler<MouseEvent>{
 		
 		private int sourceSquare;
 		private int targetSquare;
@@ -172,6 +181,19 @@ public class GameController {
 		public ChessBoardController() {
 			sourceSquare = -1;
 			targetSquare = -1;
+		}
+		
+		/**
+		 * 
+		 */
+		public void clearSelection() {
+			
+			if (sourceSquare != -1) {
+				sourceSquare = -1;
+				board.flipAvailabilityIndicator(targetSquares);
+				targetSquares.clear();
+			}
+			
 		}
 		
 		@Override
@@ -256,7 +278,7 @@ public class GameController {
 	 * @author Luke Newman
 	 *
 	 */
-	public class MenuBarController implements EventHandler<ActionEvent>{
+	private class MenuBarController implements EventHandler<ActionEvent>{
 
 		@Override
 		public void handle(ActionEvent event) {
@@ -268,6 +290,7 @@ public class GameController {
 				chessLogger.log(Level.INFO, "Starting New Game!");
 				game.isCheckmateOrStalemate(Color.WHITE);
 				updateBoard();
+				chessBoardController.clearSelection();
 				moveHistoryTable.clear();
 				mode = HUMAN_MODE;
 				break;
@@ -293,6 +316,7 @@ public class GameController {
 					game.setLogger();
 					moveHistoryTable.loadMoves(game.getMoveHistory().getMovesMade());
 					updateBoard();
+					chessBoardController.clearSelection();
 					mode = HUMAN_MODE;
 					chessLogger.log(Level.INFO, "Game Loaded Successfully!");
 				}
@@ -374,7 +398,7 @@ public class GameController {
 	 * @author Luke Newman
 	 *
 	 */
-	public class UtilityPaneController implements EventHandler<ActionEvent>{
+	private class UtilityPaneController implements EventHandler<ActionEvent>{
 
 		@Override
 		public void handle(ActionEvent event) {
