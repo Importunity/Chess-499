@@ -50,7 +50,7 @@ public class GameController {
 	private Stage stage;
 	private Logger chessLogger;
 	private ChessBoardController chessBoardController;
-	
+	private boolean busy;
 	private int mode;
 	private static final int HUMAN_MODE = 0;
 	private static final int COMPUTER_MODE_BLACK = 1;
@@ -78,6 +78,7 @@ public class GameController {
 		loggerPane = new LoggerPane();
 		
 		ChessPieceImages.setImages();
+		busy = false;
 		mode = HUMAN_MODE;
 		updateBoard();
 	}
@@ -144,7 +145,7 @@ public class GameController {
 	/**
 	 * 
 	 */
-	public void updateBoard() {
+	private void updateBoard() {
 		ChessPiece piece;
 		for (int i = 0; i < 64; i++) {
 			if ((piece = game.getChessBoard().getPieceOnSquare(i)) != null) {
@@ -161,6 +162,9 @@ public class GameController {
 	 * 
 	 */
 	public void depthChanged(int newDepth) {
+		if (busy) {
+			return;
+		}
 		game.setDepth(newDepth);
 	}
 	
@@ -198,6 +202,11 @@ public class GameController {
 		
 		@Override
 		public void handle(MouseEvent event) {
+			
+			if (busy) {
+				return;
+			}
+			
 			StackPane square = (StackPane) event.getSource();
 			int squareID = board.getSquareID(square);
 			if (sourceSquare == -1) {
@@ -230,7 +239,7 @@ public class GameController {
 						
 						if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
 							
-							
+							busy = true;
 							new Thread(new Runnable() {
 								
 								public void run() {
@@ -251,7 +260,7 @@ public class GameController {
 										});
 									}
 											
-											
+									busy = false;		
 								}
 										
 							}).start();
@@ -282,7 +291,9 @@ public class GameController {
 
 		@Override
 		public void handle(ActionEvent event) {
-			
+			if (busy) {
+				return;
+			}
 			MenuItem sourceObject = (MenuItem) event.getSource();
 			switch (sourceObject.getText()) {
 			case "New Game":
@@ -402,7 +413,9 @@ public class GameController {
 
 		@Override
 		public void handle(ActionEvent event) {
-			
+			if (busy) {
+				return;
+			}
 			switch( ((Labeled) event.getSource()).getText()) {
 			case "Undo":
 				if(mode == COMPUTER_MODE_BLACK && game.getMovesMade() < 2) {

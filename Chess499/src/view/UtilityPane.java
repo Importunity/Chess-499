@@ -80,7 +80,7 @@ public class UtilityPane extends FlowPane{
 		buttons.getChildren().add(redoButton);
 		
 		scoreLabel = new Label("Score: ");
-		scoreLabel.setStyle(" -fx-text-fill: red;"
+		scoreLabel.setStyle(" -fx-text-fill: papayawhip;"
 				+ "-fx-font-weight: bold;");
 		scoreValue = new TextField("");
 		scoreValue.setEditable(false);
@@ -88,7 +88,7 @@ public class UtilityPane extends FlowPane{
 		score.getChildren().add(scoreValue);
 		
 		depthLabel = new Label("Depth: ");
-		depthLabel.setStyle(" -fx-text-fill: red;"
+		depthLabel.setStyle(" -fx-text-fill: papayawhip;"
 				+ "-fx-font-weight: bold;");
 		options = new ArrayList<Integer>();
 		for (int i = ChessGame.MIN_DEPTH; i <= ChessGame.MAX_DEPTH; i++) {
@@ -97,7 +97,7 @@ public class UtilityPane extends FlowPane{
 		depthOption = new ChoiceBox<Integer>(FXCollections.observableArrayList(
 			    options)
 			);
-		
+		depthOption.setValue(options.get(0));
 		depthOption.getSelectionModel().selectedIndexProperty().addListener( new ChangeListener<Number>() {
 
 			public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
