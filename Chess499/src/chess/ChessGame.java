@@ -40,7 +40,7 @@ public class ChessGame implements Serializable{
 		availableMoves = new AvailableMoves();
 		movesMade = 0;
 		theNullMove = new Move(-1, -1, null, null, false, false, false);
-		depth = 3;
+		depth = MIN_DEPTH;
 		chessLogger = Logger.getLogger(LOGGER_NAME);
 	}
 	
@@ -276,6 +276,7 @@ public class ChessGame implements Serializable{
 				minimax(root, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, movesMade % 2 == 0? true: false);
 				Move moveToMake = computerMoves.get((int) (Math.random() * root.getCounterMoves().size()));
 				for (Move move: computerMoves) {
+					//System.out.println(move + " " + move.getScore());
 					if (move.getScore() > moveToMake.getScore() && movesMade % 2 == 0) {
 						moveToMake = move;
 					}else if (move.getScore() < moveToMake.getScore() && movesMade % 2 != 0) {
@@ -305,7 +306,7 @@ public class ChessGame implements Serializable{
 		
 		if (move.getCounterMoves().size() == 0) {
 			if(move.getNotation().contains("#")) {
-				return move.getMovingPiece().getColor().getBoardPerspective() * Integer.MAX_VALUE;
+				return move.getMovingPiece().getColor().getBoardPerspective() * Integer.MAX_VALUE - ((MAX_DEPTH - depth) * move.getMovingPiece().getColor().getBoardPerspective());
 			} else {
 				return 0;
 			}
