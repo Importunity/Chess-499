@@ -86,6 +86,15 @@ public class ChessBoardUI extends GridPane{
 					+ "-fx-text-fill: darkorange;");
 		}
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean getFlipped() {
+		return flipped;
+	}
+	
 	/**
 	 * 
 	 * @param imageView

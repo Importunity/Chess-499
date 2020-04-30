@@ -230,9 +230,9 @@ public class GameController {
 						moveHistoryTable.addMove(game.lastMove());
 						if (game.isGameOver()) {
 							if (game.lastMove().contains("#")) {
-								chessLogger.log(Level.INFO, "Player " + Color.values()[(1 + game.getMovesMade()) % 2] + " wins!");
+								chessLogger.log(Level.INFO, "PLAYER " + Color.values()[(1 + game.getMovesMade()) % 2] + " WINS!");
 							} else {
-							chessLogger.log(Level.INFO, "Stalemate");
+							chessLogger.log(Level.INFO, "STALEMATE!");
 							}
 						}
 						// thanks to https://community.oracle.com/thread/2300778
@@ -251,9 +251,9 @@ public class GameController {
 												updateBoard();
 												if (game.isGameOver()) {
 													if (game.lastMove().contains("#")) {
-														chessLogger.log(Level.INFO, "Player " + Color.values()[(1 + game.getMovesMade()) % 2] + " wins!");
+														chessLogger.log(Level.INFO, "PLAYER " + Color.values()[(1 + game.getMovesMade()) % 2] + " WINS!");
 													} else {
-													chessLogger.log(Level.INFO, "Stalemate");
+													chessLogger.log(Level.INFO, "STALEMATE!");
 													}
 												}
 											}
@@ -298,7 +298,7 @@ public class GameController {
 			switch (sourceObject.getText()) {
 			case "New Game":
 				game = new ChessGame();
-				chessLogger.log(Level.INFO, "Starting New Game!");
+				chessLogger.log(Level.INFO, "STARTING NEW GAME!");
 				game.isCheckmateOrStalemate(Color.WHITE);
 				updateBoard();
 				chessBoardController.clearSelection();
@@ -314,7 +314,7 @@ public class GameController {
 				fileChooser.setInitialDirectory(new File("./ChessGames"));
 				File fileToSave = fileChooser.showSaveDialog(stage);
 				if (Persistence.getInstance().saveGame(fileToSave, game)) {
-					chessLogger.log(Level.INFO, "Saved Game Successfully!");
+					chessLogger.log(Level.INFO, "SAVED GAME SUCCESSFULLY!");
 				}
 				break;
 			case "Load Game":
@@ -329,25 +329,83 @@ public class GameController {
 					updateBoard();
 					chessBoardController.clearSelection();
 					mode = HUMAN_MODE;
-					chessLogger.log(Level.INFO, "Game Loaded Successfully!");
+					chessLogger.log(Level.INFO, "GAME LOADED SUCCESSFULLY!");
 				}
 				break;
 			case "Play as Black":
 				mode = COMPUTER_MODE_BLACK;
+				chessBoardController.clearSelection();
+				if (!board.getFlipped()) {
+					board.flipBoard();
+					updateBoard();
+				}
 				if (game.getMovesMade() % 2 == 0) {
-					if(game.computerMove()) {
-						moveHistoryTable.addMove(game.lastMove());
-						updateBoard();
-					}
+					
+					busy = true;
+					new Thread(new Runnable() {
+						
+						public void run() {
+							
+							if (game.computerMove()) {
+								Platform.runLater(new Runnable() {
+									public void run() {
+										moveHistoryTable.addMove(game.lastMove());
+										updateBoard();
+										if (game.isGameOver()) {
+											if (game.lastMove().contains("#")) {
+												chessLogger.log(Level.INFO, "PLAYER " + Color.values()[(1 + game.getMovesMade()) % 2] + " WINS!");
+											} else {
+											chessLogger.log(Level.INFO, "STALEMATE!");
+											}
+										}
+									}
+								});
+							}
+									
+							busy = false;		
+						}
+								
+					}).start();
+						//moveHistoryTable.addMove(game.lastMove());
+						//updateBoard();
+					
 				}
 				break;
 			case "Play as White":
 				mode = COMPUTER_MODE_WHITE;
+				chessBoardController.clearSelection();
+				if (board.getFlipped()) {
+					board.flipBoard();
+					updateBoard();
+				}
 				if (game.getMovesMade() % 2 == 1) {
-					if(game.computerMove()) {
-						moveHistoryTable.addMove(game.lastMove());
-						updateBoard();
-					}
+					
+					busy = true;
+					new Thread(new Runnable() {
+						
+						public void run() {
+							
+							if (game.computerMove()) {
+								Platform.runLater(new Runnable() {
+									public void run() {
+										moveHistoryTable.addMove(game.lastMove());
+										updateBoard();
+										if (game.isGameOver()) {
+											if (game.lastMove().contains("#")) {
+												chessLogger.log(Level.INFO, "PLAYER " + Color.values()[(1 + game.getMovesMade()) % 2] + " WINS!");
+											} else {
+											chessLogger.log(Level.INFO, "STALEMATE!");
+											}
+										}
+									}
+								});
+							}
+									
+							busy = false;		
+						}
+								
+					}).start();
+					
 				}
 				break;
 			case "Human Mode":
@@ -418,6 +476,7 @@ public class GameController {
 			}
 			switch( ((Labeled) event.getSource()).getText()) {
 			case "Undo":
+				chessBoardController.clearSelection();
 				if(mode == COMPUTER_MODE_BLACK && game.getMovesMade() < 2) {
 					break;
 				}
@@ -450,6 +509,7 @@ public class GameController {
 				updateBoard();
 				break;
 			case "Redo":
+				chessBoardController.clearSelection();
 				if (mode == COMPUTER_MODE_BLACK || mode == COMPUTER_MODE_WHITE) {
 					if (game.redoMove()) {
 						moveHistoryTable.addMove(game.lastMove());
