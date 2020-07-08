@@ -1,2 +1,2 @@
-Please See User Manual
+Please See ChessGuysUserManual.pdf
 
