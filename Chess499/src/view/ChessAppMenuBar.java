@@ -62,7 +62,7 @@ public class ChessAppMenuBar extends MenuBar{
 		MenuItem playAsBlack = new MenuItem("Play as Black");
 		computerMode.getItems().add(playAsBlack);
 		playAsBlack.setOnAction(eventHandler);
-		MenuItem humanMode = new MenuItem("Human Mode");
+		MenuItem humanMode = new MenuItem("Manual Analysis");
 		modeMenu.getItems().add(humanMode);
 		humanMode.setOnAction(eventHandler);
 		
